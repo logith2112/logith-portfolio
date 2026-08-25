@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { ArrowDown } from "lucide-react";
 import gsap from "gsap";
+import profileImg from "../assets/profile.jpg";
 
 export default function Hero() {
   const canvasRef = useRef(null);
@@ -109,9 +110,20 @@ export default function Hero() {
             </span>
           </div>
 
-          <h1 className="text-5xl sm:text-7xl lg:text-8xl font-display font-bold tracking-tighter leading-[0.9] text-white">
-            LOGITH
-          </h1>
+          <div className="flex flex-col sm:flex-row sm:items-end gap-6 mt-2">
+            <h1 className="text-5xl sm:text-7xl lg:text-8xl font-display font-bold tracking-tighter leading-[0.9] text-white">
+              LOGITH
+            </h1>
+            <div className="w-24 sm:w-28 aspect-[9/16] rounded-lg overflow-hidden border border-white/10 shadow-2xl relative shrink-0 group">
+              <img
+                src={profileImg}
+                alt="Logith T"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-cyber-lime/10 mix-blend-color opacity-25 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#090A0C]/40 to-transparent pointer-events-none" />
+            </div>
+          </div>
 
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-light text-slate-300 tracking-tight leading-relaxed max-w-2xl">
             BUILDING INTELLIGENT SYSTEMS FOR REAL-WORLD IMPACT.

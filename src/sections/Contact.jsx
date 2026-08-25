@@ -1,4 +1,4 @@
-import { Linkedin, Github, Mail, ArrowUpRight } from "lucide-react";
+import { Linkedin, Github, Mail, Phone, ArrowUpRight } from "lucide-react";
 
 export default function Contact() {
   const contactLinks = [
@@ -19,6 +19,12 @@ export default function Contact() {
       href: "mailto:logithithiru@gmail.com",
       icon: <Mail className="w-5 h-5" />,
       color: "hover:text-purple-400 hover:border-purple-400/30"
+    },
+    {
+      name: "PHONE",
+      href: "tel:+919962295921",
+      icon: <Phone className="w-5 h-5" />,
+      color: "hover:text-cyber-lime hover:border-cyber-lime/30"
     }
   ];
 
@@ -44,7 +50,7 @@ export default function Contact() {
           </p>
 
           {/* Social Contact Buttons */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full mt-8 max-w-xl">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 w-full mt-8 max-w-2xl">
             {contactLinks.map((link) => (
               <a
                 key={link.name}
