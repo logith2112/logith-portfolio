@@ -10,34 +10,50 @@ export default function Loader({ onComplete }) {
     // Prevent scrolling during load
     document.body.style.overflow = "hidden";
 
+    // Detect prefers-reduced-motion
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const cleanupAndComplete = () => {
+      document.body.style.overflow = "";
+      onComplete();
+    };
+
+    if (prefersReducedMotion) {
+      // Direct fast fade out for users who prefer reduced motion
+      gsap.to(containerRef.current, {
+        opacity: 0,
+        duration: 0.3,
+        ease: "power2.out",
+        onComplete: cleanupAndComplete
+      });
+      return;
+    }
+
     const tl = gsap.timeline({
-      onComplete: () => {
-        document.body.style.overflow = "";
-        onComplete();
-      }
+      onComplete: cleanupAndComplete
     });
 
-    // 1. Animate drawing of monogram border and characters
+    // 1. Animate drawing of monogram border (0.45 seconds)
     tl.fromTo(
       pathRef.current,
       { strokeDasharray: 500, strokeDashoffset: 500 },
-      { strokeDashoffset: 0, duration: 1.8, ease: "power2.inOut" }
+      { strokeDashoffset: 0, duration: 0.45, ease: "power2.out" }
     );
 
-    // 2. Staggered fade in text logo details
+    // 2. Staggered fade in text logo details (0.25 seconds, overlapping)
     tl.fromTo(
       textRef.current,
-      { opacity: 0, y: 15 },
-      { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
-      "-=0.6"
+      { opacity: 0, y: 10 },
+      { opacity: 1, y: 0, duration: 0.25, ease: "power2.out" },
+      "-=0.2"
     );
 
-    // 3. Immersive transition out
+    // 3. Exit transition (0.3 seconds)
     tl.to(containerRef.current, {
       clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
-      duration: 0.8,
-      ease: "power4.inOut",
-      delay: 0.4,
+      duration: 0.3,
+      ease: "power3.inOut",
+      delay: 0.1,
     });
   }, [onComplete]);
 

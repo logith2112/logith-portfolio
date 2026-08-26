@@ -7,35 +7,49 @@ export default function Hero() {
   const canvasRef = useRef(null);
   const titleRef = useRef(null);
   const containerRef = useRef(null);
-
   useEffect(() => {
     // 1. Title fade and reveal using GSAP mask/stagger effects
     const elements = titleRef.current.children;
     gsap.fromTo(
       elements,
       { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 1, stagger: 0.15, ease: "power4.out", delay: 0.2 }
+      { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out", delay: 0.2 }
     );
 
-    // 2. Animated Particle Mesh Visual in the Background/Right
+    // 2. Animated Particle Mesh Visual with Optimization
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     let animationFrameId;
-    let width = (canvas.width = canvas.parentElement.clientWidth);
-    let height = (canvas.height = canvas.parentElement.clientHeight || 500);
+    let isVisible = false;
+    let lastTime = 0;
+    const fpsInterval = 1000 / 30; // Limit to 30 FPS
+
+    let width = 300;
+    let height = 500;
+    const isMobile = window.innerWidth < 768;
+    const particleCount = isMobile ? 18 : 45;
+    const connectDistance = isMobile ? 80 : 110;
 
     const resize = () => {
       if (canvas && canvas.parentElement) {
-        width = canvas.width = canvas.parentElement.clientWidth;
-        height = canvas.height = canvas.parentElement.clientHeight || 500;
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+        const rect = canvas.getBoundingClientRect();
+        width = rect.width || canvas.parentElement.clientWidth || 300;
+        height = rect.height || canvas.parentElement.clientHeight || 500;
+        
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        ctx.resetTransform();
+        ctx.scale(dpr, dpr);
       }
     };
-    window.addEventListener("resize", resize);
+    resize();
+    window.addEventListener("resize", resize, { passive: true });
 
     const particles = [];
-    const particleCount = 45;
-
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * width,
@@ -46,38 +60,49 @@ export default function Hero() {
       });
     }
 
-    const draw = () => {
-      ctx.clearRect(0, 0, width, height);
+    const draw = (timestamp) => {
+      if (!isVisible || document.visibilityState === "hidden") {
+        animationFrameId = requestAnimationFrame(draw);
+        return;
+      }
 
-      // Draw particle nodes
-      particles.forEach((p) => {
-        p.x += p.vx;
-        p.y += p.vy;
+      if (!lastTime) lastTime = timestamp;
+      const elapsed = timestamp - lastTime;
 
-        if (p.x < 0 || p.x > width) p.vx *= -1;
-        if (p.y < 0 || p.y > height) p.vy *= -1;
+      if (elapsed >= fpsInterval) {
+        lastTime = timestamp - (elapsed % fpsInterval);
+        ctx.clearRect(0, 0, width, height);
 
-        ctx.fillStyle = "rgba(181, 255, 26, 0.45)";
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fill();
-      });
+        // Draw particle nodes
+        particles.forEach((p) => {
+          p.x += p.vx;
+          p.y += p.vy;
 
-      // Draw connection lines
-      ctx.lineWidth = 0.5;
-      for (let i = 0; i < particleCount; i++) {
-        for (let j = i + 1; j < particleCount; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (p.x < 0 || p.x > width) p.vx *= -1;
+          if (p.y < 0 || p.y > height) p.vy *= -1;
 
-          if (dist < 110) {
-            const alpha = (1 - dist / 110) * 0.15;
-            ctx.strokeStyle = `rgba(0, 240, 255, ${alpha})`;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
+          ctx.fillStyle = "rgba(181, 255, 26, 0.45)";
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        // Draw connection lines
+        ctx.lineWidth = 0.5;
+        for (let i = 0; i < particleCount; i++) {
+          for (let j = i + 1; j < particleCount; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < connectDistance) {
+              const alpha = (1 - dist / connectDistance) * 0.15;
+              ctx.strokeStyle = `rgba(0, 240, 255, ${alpha})`;
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.stroke();
+            }
           }
         }
       }
@@ -85,11 +110,22 @@ export default function Hero() {
       animationFrameId = requestAnimationFrame(draw);
     };
 
-    draw();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isVisible = entry.isIntersecting;
+        });
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(canvas);
+
+    animationFrameId = requestAnimationFrame(draw);
 
     return () => {
       window.removeEventListener("resize", resize);
       cancelAnimationFrame(animationFrameId);
+      observer.disconnect();
     };
   }, []);
 

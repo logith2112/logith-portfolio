@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import CustomCursor from "./components/CustomCursor";
 import Loader from "./components/Loader";
 import BackgroundGrid from "./components/BackgroundGrid";
@@ -12,20 +12,34 @@ import Contact from "./sections/Contact";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const progressBarRef = useRef(null);
+  const tickingRef = useRef(false);
 
   useEffect(() => {
-    const handleScroll = () => {
+    if (loading) return;
+
+    const updateProgressBar = () => {
       const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-      if (totalScroll > 0) {
+      if (totalScroll > 0 && progressBarRef.current) {
         const progress = (window.scrollY / totalScroll) * 100;
-        setScrollProgress(progress);
+        progressBarRef.current.style.width = `${progress}%`;
+      }
+      tickingRef.current = false;
+    };
+
+    const handleScroll = () => {
+      if (!tickingRef.current) {
+        requestAnimationFrame(updateProgressBar);
+        tickingRef.current = true;
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    // Run initial update
+    handleScroll();
+
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [loading]);
 
   return (
     <>
@@ -38,8 +52,9 @@ export default function App() {
 
           {/* Smooth Scroll Progress Indicator */}
           <div
+            ref={progressBarRef}
             className="progress-line"
-            style={{ width: `${scrollProgress}%` }}
+            style={{ width: "0%" }}
           />
 
           {/* Ambient Background Layout */}

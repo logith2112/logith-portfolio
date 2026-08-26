@@ -5,45 +5,65 @@ export default function CustomCursor() {
   const mainCursorRef = useRef(null);
   const secondaryCursorRef = useRef(null);
   const [visible, setVisible] = useState(false);
-  const [clicked, setClicked] = useState(false);
-  const [hovered, setHovered] = useState(false);
 
   useEffect(() => {
-    // Only enable custom cursor on desktops
-    const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
+    // Only enable custom cursor on desktops with a pointing device (mouse/trackpad)
+    const isDesktop = window.matchMedia("(min-width: 1024px) and (pointer: fine)").matches;
     if (!isDesktop) return;
 
     document.documentElement.classList.add("custom-cursor-enabled");
     setVisible(true);
 
-    const onMouseMove = (e) => {
-      const { clientX, clientY } = e;
-      
-      // Fast main cursor dot
-      gsap.to(mainCursorRef.current, {
-        x: clientX,
-        y: clientY,
-        duration: 0.1,
-        ease: "power2.out",
-      });
+    let xToMain, yToMain, xToSec, yToSec;
 
-      // Slower lagging ring
-      gsap.to(secondaryCursorRef.current, {
-        x: clientX,
-        y: clientY,
-        duration: 0.35,
-        ease: "power2.out",
-      });
+    // Use a small timeout to make sure references are mounted
+    const timer = setTimeout(() => {
+      if (!mainCursorRef.current || !secondaryCursorRef.current) return;
+      
+      xToMain = gsap.quickTo(mainCursorRef.current, "x", { duration: 0.08, ease: "power2.out" });
+      yToMain = gsap.quickTo(mainCursorRef.current, "y", { duration: 0.08, ease: "power2.out" });
+      xToSec = gsap.quickTo(secondaryCursorRef.current, "x", { duration: 0.25, ease: "power2.out" });
+      yToSec = gsap.quickTo(secondaryCursorRef.current, "y", { duration: 0.25, ease: "power2.out" });
+    }, 50);
+
+    const onMouseMove = (e) => {
+      if (xToMain && yToMain && xToSec && yToSec) {
+        xToMain(e.clientX);
+        yToMain(e.clientY);
+        xToSec(e.clientX);
+        yToSec(e.clientY);
+      }
     };
 
-    const onMouseDown = () => setClicked(true);
-    const onMouseUp = () => setClicked(false);
+    // Direct DOM manipulation instead of React state updates to prevent re-renders
+    const onMouseDown = () => {
+      if (mainCursorRef.current) {
+        mainCursorRef.current.style.transform = "scale(0.5)";
+      }
+      if (secondaryCursorRef.current) {
+        secondaryCursorRef.current.style.transform = "scale(0.75)";
+        secondaryCursorRef.current.style.borderColor = "#b5ff1a";
+      }
+    };
 
-    // Event delegation for hover states
+    const onMouseUp = () => {
+      if (mainCursorRef.current) {
+        mainCursorRef.current.style.transform = "scale(1)";
+      }
+      if (secondaryCursorRef.current) {
+        secondaryCursorRef.current.style.transform = "scale(1)";
+        secondaryCursorRef.current.style.borderColor = "rgba(181, 255, 26, 0.4)";
+      }
+    };
+
     const onMouseOver = (e) => {
       const target = e.target.closest("a, button, [role='button'], input, textarea, select, .interactive-hover");
       if (target) {
-        setHovered(true);
+        if (secondaryCursorRef.current) {
+          secondaryCursorRef.current.style.transform = "scale(1.5)";
+          secondaryCursorRef.current.style.backgroundColor = "rgba(181, 255, 26, 0.1)";
+          secondaryCursorRef.current.style.borderColor = "#b5ff1a";
+        }
         // Subtle magnetic suction effect on hover target
         if (target.classList.contains("magnetic-btn")) {
           const rect = target.getBoundingClientRect();
@@ -62,7 +82,11 @@ export default function CustomCursor() {
     const onMouseOut = (e) => {
       const target = e.target.closest("a, button, [role='button'], input, textarea, select, .interactive-hover");
       if (target) {
-        setHovered(false);
+        if (secondaryCursorRef.current) {
+          secondaryCursorRef.current.style.transform = "scale(1)";
+          secondaryCursorRef.current.style.backgroundColor = "transparent";
+          secondaryCursorRef.current.style.borderColor = "rgba(181, 255, 26, 0.4)";
+        }
         if (target.classList.contains("magnetic-btn")) {
           gsap.to(target, {
             x: 0,
@@ -74,13 +98,14 @@ export default function CustomCursor() {
       }
     };
 
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("mousedown", onMouseDown);
-    window.addEventListener("mouseup", onMouseUp);
-    document.addEventListener("mouseover", onMouseOver);
-    document.addEventListener("mouseout", onMouseOut);
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    window.addEventListener("mousedown", onMouseDown, { passive: true });
+    window.addEventListener("mouseup", onMouseUp, { passive: true });
+    document.addEventListener("mouseover", onMouseOver, { passive: true });
+    document.addEventListener("mouseout", onMouseOut, { passive: true });
 
     return () => {
+      clearTimeout(timer);
       document.documentElement.classList.remove("custom-cursor-enabled");
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mousedown", onMouseDown);
@@ -97,16 +122,12 @@ export default function CustomCursor() {
       {/* Tiny solid dot cursor */}
       <div
         ref={mainCursorRef}
-        className={`fixed top-0 left-0 w-2 h-2 -ml-1 -mt-1 bg-cyber-lime rounded-full pointer-events-none z-[99999] mix-blend-difference transition-transform duration-200 ${
-          clicked ? "scale-50" : "scale-100"
-        }`}
+        className="fixed top-0 left-0 w-2 h-2 -ml-1 -mt-1 bg-cyber-lime rounded-full pointer-events-none z-[99999] mix-blend-difference transition-transform duration-100 ease-out origin-center"
       />
       {/* Outer tracking ring */}
       <div
         ref={secondaryCursorRef}
-        className={`fixed top-0 left-0 w-8 h-8 -ml-4 -mt-4 border border-cyber-lime/40 rounded-full pointer-events-none z-[99998] transition-transform duration-300 ${
-          hovered ? "scale-150 bg-cyber-lime/10 border-cyber-lime" : "scale-100"
-        } ${clicked ? "scale-75 border-cyber-lime" : ""}`}
+        className="fixed top-0 left-0 w-8 h-8 -ml-4 -mt-4 border border-cyber-lime/40 rounded-full pointer-events-none z-[99998] transition-transform duration-200 ease-out origin-center"
       />
     </>
   );
