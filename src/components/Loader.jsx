@@ -33,25 +33,25 @@ export default function Loader({ onComplete }) {
       onComplete: cleanupAndComplete
     });
 
-    // 1. Animate drawing of monogram border (1.0 second)
+    // 1. Animate drawing of monogram border (0.7 second)
     tl.fromTo(
       pathRef.current,
       { strokeDasharray: 500, strokeDashoffset: 500 },
-      { strokeDashoffset: 0, duration: 1.0, ease: "power2.inOut" }
+      { strokeDashoffset: 0, duration: 0.7, ease: "power3.out" }
     );
 
-    // 2. Staggered fade in text logo details (0.4 seconds, overlapping)
+    // 2. Staggered fade in text logo details (0.45 seconds, overlapping)
     tl.fromTo(
       textRef.current,
       { opacity: 0, y: 12 },
-      { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" },
-      "-=0.3"
+      { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" },
+      "-=0.35"
     );
 
-    // 3. Exit transition (0.5 seconds)
+    // 3. Exit transition (0.45 seconds)
     tl.to(containerRef.current, {
       clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
-      duration: 0.5,
+      duration: 0.45,
       ease: "power4.inOut",
       delay: 0.2,
     });

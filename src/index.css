@@ -91,7 +91,7 @@
   background: linear-gradient(90deg, #b5ff1a, #00f0ff);
   z-index: 1000;
   width: 0%;
-  transition: width 0.1s ease-out;
+  transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Hide default cursor on desktop */
@@ -111,7 +111,7 @@ html {
 .magnetic-btn {
   display: inline-block;
   position: relative;
-  transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Custom Utilities */
@@ -123,4 +123,22 @@ html {
 .text-stroke-white {
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.15);
   color: transparent;
+}
+
+/* 2.2s Floating scroll indicator animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.animate-float-slow {
+  animation: float 2.2s ease-in-out infinite;
+}
+
+/* Throttled pulse to 2.8 seconds */
+@keyframes pulseSlow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .4; }
+}
+.animate-pulse {
+  animation: pulseSlow 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

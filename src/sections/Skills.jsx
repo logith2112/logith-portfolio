@@ -34,7 +34,7 @@ export default function Skills() {
 
       {/* Marquee Ticker 1: Areas of Interest */}
       <div className="w-full border-y border-white/[0.03] py-4 bg-[#0c0d10] mb-20 relative z-10 select-none overflow-hidden flex whitespace-nowrap">
-        <div className="flex gap-16 animate-[marquee_25s_linear_infinite] shrink-0 text-stroke-lime uppercase font-display font-black text-2xl tracking-[0.2em]">
+        <div className="flex gap-16 animate-[marquee_38s_linear_infinite] shrink-0 text-stroke-lime uppercase font-display font-black text-2xl tracking-[0.2em]">
           <span>ARTIFICIAL INTELLIGENCE</span>
           <span>MACHINE LEARNING</span>
           <span>INTERNET OF THINGS</span>
@@ -42,7 +42,7 @@ export default function Skills() {
           <span>BLOCKCHAIN TECHNOLOGY</span>
           <span>FULL STACK SYSTEM DESIGN</span>
         </div>
-        <div className="flex gap-16 animate-[marquee_25s_linear_infinite] shrink-0 text-stroke-lime uppercase font-display font-black text-2xl tracking-[0.2em] ml-16" aria-hidden="true">
+        <div className="flex gap-16 animate-[marquee_38s_linear_infinite] shrink-0 text-stroke-lime uppercase font-display font-black text-2xl tracking-[0.2em] ml-16" aria-hidden="true">
           <span>ARTIFICIAL INTELLIGENCE</span>
           <span>MACHINE LEARNING</span>
           <span>INTERNET OF THINGS</span>

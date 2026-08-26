@@ -36,10 +36,10 @@ export default function Navigation() {
             href="#"
             className="flex items-center gap-3 font-display font-bold tracking-tighter text-xl text-white group magnetic-btn"
           >
-            <div className="w-8 h-8 rounded-md bg-[#111215] border border-white/10 flex items-center justify-center text-[13px] text-cyber-lime transition-all duration-300 group-hover:border-cyber-lime group-hover:shadow-[0_0_10px_rgba(181,255,26,0.1)]">
+            <div className="w-8 h-8 rounded-md bg-[#111215] border border-white/10 flex items-center justify-center text-[13px] text-cyber-lime transition-all duration-[350ms] group-hover:border-cyber-lime group-hover:shadow-[0_0_10px_rgba(181,255,26,0.1)]">
               LI
             </div>
-            <span className="hidden sm:inline-block text-[11px] tracking-[0.25em] text-[#8f939e] group-hover:text-white transition-colors duration-300">
+            <span className="hidden sm:inline-block text-[11px] tracking-[0.25em] text-[#8f939e] group-hover:text-white transition-colors duration-[350ms]">
               LOGITH T
             </span>
           </a>
@@ -50,7 +50,7 @@ export default function Navigation() {
               <a
                 key={link.name}
                 href={link.href}
-                className="text-[10px] sm:text-xs font-display tracking-[0.2em] font-medium text-[#8f939e] hover:text-cyber-lime transition-colors duration-300 uppercase magnetic-btn"
+                className="text-[10px] sm:text-xs font-display tracking-[0.2em] font-medium text-[#8f939e] hover:text-cyber-lime transition-colors duration-[350ms] uppercase magnetic-btn"
               >
                 {link.name}
               </a>

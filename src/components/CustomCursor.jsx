@@ -20,10 +20,10 @@ export default function CustomCursor() {
     const timer = setTimeout(() => {
       if (!mainCursorRef.current || !secondaryCursorRef.current) return;
       
-      xToMain = gsap.quickTo(mainCursorRef.current, "x", { duration: 0.08, ease: "power2.out" });
-      yToMain = gsap.quickTo(mainCursorRef.current, "y", { duration: 0.08, ease: "power2.out" });
-      xToSec = gsap.quickTo(secondaryCursorRef.current, "x", { duration: 0.25, ease: "power2.out" });
-      yToSec = gsap.quickTo(secondaryCursorRef.current, "y", { duration: 0.25, ease: "power2.out" });
+      xToMain = gsap.quickTo(mainCursorRef.current, "x", { duration: 0.16, ease: "power3.out" });
+      yToMain = gsap.quickTo(mainCursorRef.current, "y", { duration: 0.16, ease: "power3.out" });
+      xToSec = gsap.quickTo(secondaryCursorRef.current, "x", { duration: 0.42, ease: "power3.out" });
+      yToSec = gsap.quickTo(secondaryCursorRef.current, "y", { duration: 0.42, ease: "power3.out" });
     }, 50);
 
     const onMouseMove = (e) => {
@@ -72,8 +72,8 @@ export default function CustomCursor() {
           gsap.to(target, {
             x: relX * 0.3,
             y: relY * 0.3,
-            duration: 0.3,
-            ease: "power2.out",
+            duration: 0.35,
+            ease: "power3.out",
           });
         }
       }
@@ -91,8 +91,8 @@ export default function CustomCursor() {
           gsap.to(target, {
             x: 0,
             y: 0,
-            duration: 0.3,
-            ease: "power2.out",
+            duration: 0.35,
+            ease: "power3.out",
           });
         }
       }

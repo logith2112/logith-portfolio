@@ -13,7 +13,7 @@ export default function Hero() {
     gsap.fromTo(
       elements,
       { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 1.0, stagger: 0.18, ease: "power3.out", delay: 0.4 }
+      { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: "power3.out", delay: 0.4 }
     );
 
     // 2. Animated Particle Mesh Visual with Optimization
@@ -214,7 +214,7 @@ export default function Hero() {
 
       {/* Down indicator */}
       <div className="absolute bottom-8 left-6 sm:left-12 flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center animate-bounce">
+        <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center animate-float-slow">
           <ArrowDown className="w-4 h-4 text-cyber-lime" />
         </div>
         <span className="text-[9px] tracking-[0.2em] font-display text-slate-500 uppercase">

@@ -95,7 +95,7 @@ export default function Projects() {
                   </div>
                 </div>
 
-                <h3 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight leading-snug group-hover:text-cyber-lime transition-colors duration-300">
+                <h3 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight leading-snug group-hover:text-cyber-lime transition-colors duration-[450ms]">
                   {project.title}
                 </h3>
 
@@ -137,7 +137,7 @@ export default function Projects() {
 
               {/* Right Column: Dynamic Interactive Canvas */}
               <div className="lg:col-span-6 order-1 lg:order-2 w-full">
-                <div className="relative group-hover:scale-[1.01] transition-transform duration-500">
+                <div className="relative group-hover:scale-[1.03] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
                   {/* Glowing halo behind visuals */}
                   <div className="absolute inset-0 bg-cyber-cyan/5 filter blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <ProjectVisual index={project.id} />
