@@ -13,7 +13,7 @@ export default function Hero() {
     gsap.fromTo(
       elements,
       { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: "power2.out", delay: 0.2 }
+      { opacity: 1, y: 0, duration: 1.0, stagger: 0.18, ease: "power3.out", delay: 0.4 }
     );
 
     // 2. Animated Particle Mesh Visual with Optimization
