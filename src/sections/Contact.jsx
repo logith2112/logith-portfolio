@@ -1,4 +1,5 @@
 import { Linkedin, Github, Mail, Phone, ArrowUpRight } from "lucide-react";
+import SplitHeading from "../components/SplitHeading";
 
 export default function Contact() {
   const contactLinks = [
@@ -41,9 +42,11 @@ export default function Contact() {
             Contact // Inquiries
           </div>
 
-          <h2 className="text-4xl sm:text-6xl font-display font-bold tracking-tighter text-white uppercase leading-none">
-            Let's build something intelligent.
-          </h2>
+          <SplitHeading
+            as="h2"
+            text="LET'S BUILD SOMETHING INTELLIGENT."
+            className="text-4xl sm:text-6xl font-display font-bold tracking-tighter text-white uppercase leading-none"
+          />
 
           <p className="text-slate-400 text-sm sm:text-base leading-relaxed max-w-md font-light">
             Open to collaborations, internships, AI/ML projects, and opportunities to create meaningful technology.

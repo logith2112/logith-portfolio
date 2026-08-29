@@ -1,3 +1,5 @@
+import SplitHeading from "../components/SplitHeading";
+
 export default function Skills() {
   const skillGroups = [
     {
@@ -59,9 +61,11 @@ export default function Skills() {
           <div className="text-[10px] tracking-[0.3em] font-display text-cyber-cyan uppercase font-semibold">
             SKILLS // TOOLKIT
           </div>
-          <h2 className="text-4xl sm:text-6xl font-display font-bold tracking-tighter text-white uppercase">
-            TECHNICAL TOOLKIT & FOCUS
-          </h2>
+          <SplitHeading
+            as="h2"
+            text="TECHNICAL TOOLKIT & FOCUS"
+            className="text-4xl sm:text-6xl font-display font-bold tracking-tighter text-white uppercase"
+          />
         </div>
 
         {/* Skills Grid */}

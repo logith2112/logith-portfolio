@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { ArrowDown } from "lucide-react";
 import gsap from "gsap";
 import profileImg from "../assets/profile.jpg";
+import SplitHeading from "../components/SplitHeading";
 
 export default function Hero() {
   const canvasRef = useRef(null);
@@ -135,9 +136,11 @@ export default function Hero() {
 
           {/* Name + portrait row */}
           <div className="flex flex-col sm:flex-row sm:items-end gap-6 mt-2">
-            <h1 className="text-5xl sm:text-7xl lg:text-8xl font-display font-bold tracking-tighter leading-[0.9] text-white">
-              LOGITH
-            </h1>
+            <SplitHeading
+              as="h1"
+              text="LOGITH"
+              className="text-5xl sm:text-7xl lg:text-8xl font-display font-bold tracking-tighter leading-[0.9] text-white"
+            />
             {/* Portrait — editorial, clean, lime glow on hover */}
             <div className="w-24 sm:w-28 aspect-[9/16] rounded-lg overflow-hidden border border-white/10 shadow-2xl relative shrink-0 portrait-glow">
               <img

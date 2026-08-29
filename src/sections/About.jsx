@@ -1,4 +1,5 @@
 import { Brain, Cpu, Database, Network } from "lucide-react";
+import SplitHeading from "../components/SplitHeading";
 
 export default function About() {
   const focuses = [
@@ -35,9 +36,11 @@ export default function About() {
               About // Mission
             </div>
 
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display font-bold tracking-tighter text-white leading-tight uppercase">
-              Engineering ideas into intelligent experiences.
-            </h2>
+            <SplitHeading
+              as="h2"
+              text="ENGINEERING IDEAS INTO INTELLIGENT EXPERIENCES."
+              className="text-3xl sm:text-5xl lg:text-6xl font-display font-bold tracking-tighter text-white leading-tight uppercase"
+            />
 
             <p className="text-slate-400 text-sm sm:text-base leading-relaxed mt-2 font-light">
               I am Logith T, a Computer Science and Engineering student specializing in Artificial Intelligence and Machine Learning. I enjoy turning complex real-world problems into useful digital products through machine learning, IoT, NLP, and modern web development.

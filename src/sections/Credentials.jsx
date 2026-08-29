@@ -1,4 +1,5 @@
 import { Award, ShieldCheck, Cpu } from "lucide-react";
+import SplitHeading from "../components/SplitHeading";
 
 export default function Credentials() {
   const credentials = [
@@ -35,11 +36,11 @@ export default function Credentials() {
               Credentials // Achievements
             </div>
 
-            <h2 className="text-4xl sm:text-6xl font-display font-bold tracking-tighter text-white leading-none uppercase">
-              Learning.<br />
-              Building.<br />
-              Evolving.
-            </h2>
+            <SplitHeading
+              as="h2"
+              text="LEARNING. BUILDING. EVOLVING."
+              className="text-4xl sm:text-6xl font-display font-bold tracking-tighter text-white leading-none uppercase"
+            />
 
             <p className="text-slate-400 text-sm sm:text-base leading-relaxed mt-1 font-light">
               Continuous learning is core to building intelligent systems. I actively pursue industry certifications and structured specializations to supplement my academic curriculum.

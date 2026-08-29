@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import ProjectVisual from "../components/ProjectVisuals";
+import SplitHeading from "../components/SplitHeading";
 
 export default function Projects() {
   const projectList = [
@@ -69,9 +70,11 @@ export default function Projects() {
           <div className="text-[10px] tracking-[0.3em] font-display text-cyber-lime uppercase font-semibold">
             Projects // Portfolio
           </div>
-          <h2 className="text-4xl sm:text-6xl font-display font-bold tracking-tighter text-white uppercase max-w-2xl leading-none">
-            Selected Intelligent Systems
-          </h2>
+          <SplitHeading
+            as="h2"
+            text="SELECTED INTELLIGENT SYSTEMS"
+            className="text-4xl sm:text-6xl font-display font-bold tracking-tighter text-white uppercase max-w-3xl leading-none"
+          />
           <p className="text-slate-500 text-xs sm:text-sm max-w-md mt-1 font-light leading-relaxed">
             Hardware integrations, machine learning systems, natural language processing, and responsive web platforms.
           </p>
