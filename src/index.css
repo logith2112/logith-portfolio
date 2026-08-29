@@ -9,8 +9,10 @@
   
   body {
     background-color: #090A0C;
-    color: #e2e8f0;
+    color: #cbd5e1; /* slate-300 — slightly brighter base text for readability */
     font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -20,20 +22,20 @@
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 ::-webkit-scrollbar-track {
   background: #090A0C;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1d1f24;
+  background: #1a1c22;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #b5ff1a;
 }
 
-/* Grain Overlay */
+/* Grain Overlay — slightly more subtle */
 .grain-overlay {
   position: fixed;
   top: 0;
@@ -41,20 +43,22 @@
   width: 100vw;
   height: 100vh;
   content: "";
-  opacity: 0.025;
+  opacity: 0.018;
   z-index: 9999;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
-/* Noise texture on cards */
+/* Noise texture on cards — refined shadow and border transitions */
 .noise-card {
   position: relative;
   overflow: hidden;
-  background: rgba(17, 18, 21, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  background: rgba(15, 16, 19, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  transition: border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .noise-card::before {
@@ -62,33 +66,33 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  opacity: 0.02;
+  opacity: 0.015;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
 .noise-card:hover {
-  border-color: rgba(181, 255, 26, 0.2);
-  box-shadow: 0 0 30px rgba(181, 255, 26, 0.02);
+  border-color: rgba(181, 255, 26, 0.14);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(181, 255, 26, 0.04);
 }
 
-/* Glowing Radial Blur background */
+/* Glowing Radial Blur background — reduced opacity by ~12% for better text priority */
 .glow-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.12;
+  filter: blur(130px);
+  opacity: 0.09;
   pointer-events: none;
   mix-blend-mode: screen;
 }
 
-/* Scroll Indicators and Progress */
+/* Scroll Progress Bar */
 .progress-line {
   position: fixed;
   top: 0;
   left: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #b5ff1a, #00f0ff);
+  height: 2px;
+  background: linear-gradient(90deg, #b5ff1a 0%, #00f0ff 100%);
   z-index: 1000;
   width: 0%;
   transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -102,43 +106,99 @@
   }
 }
 
-/* Smooth Scrolling setup */
+/* Smooth Scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-/* Magnetic link highlight */
+/* Magnetic buttons */
 .magnetic-btn {
   display: inline-block;
   position: relative;
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Custom Utilities */
+/* Text utilities */
 .text-stroke-lime {
-  -webkit-text-stroke: 1px rgba(181, 255, 26, 0.4);
+  -webkit-text-stroke: 1px rgba(181, 255, 26, 0.35);
   color: transparent;
 }
 
 .text-stroke-white {
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.15);
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.12);
   color: transparent;
 }
 
-/* 2.2s Floating scroll indicator animation */
+/* Section reveal — small upward fade used by GSAP */
+.section-reveal {
+  opacity: 0;
+  transform: translateY(22px);
+}
+
+/* 2.2s Floating scroll indicator */
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
 }
 .animate-float-slow {
   animation: float 2.2s ease-in-out infinite;
 }
 
-/* Throttled pulse to 2.8 seconds */
+/* Pulse at 2.8s — not 1s (overrides Tailwind default) */
 @keyframes pulseSlow {
   0%, 100% { opacity: 1; }
-  50% { opacity: .4; }
+  50% { opacity: 0.35; }
 }
 .animate-pulse {
-  animation: pulseSlow 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation: pulseSlow 2.8s ease-in-out infinite;
+}
+
+/* Profile photo hover glow — lime border shimmer */
+.portrait-glow {
+  transition: box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.portrait-glow:hover {
+  box-shadow: 0 0 0 1px rgba(181, 255, 26, 0.4), 0 0 20px rgba(181, 255, 26, 0.12);
+  border-color: rgba(181, 255, 26, 0.35) !important;
+}
+
+/* Project CTA action button — minimal, editorial */
+.project-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 7px 14px;
+  border-radius: 2px;
+  transition: background 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.project-cta-live {
+  color: #090A0C;
+  background: #b5ff1a;
+  border: 1px solid #b5ff1a;
+}
+.project-cta-live:hover {
+  background: rgba(181, 255, 26, 0.88);
+}
+.project-cta-github {
+  color: #b5ff1a;
+  background: rgba(181, 255, 26, 0.06);
+  border: 1px solid rgba(181, 255, 26, 0.2);
+}
+.project-cta-github:hover {
+  background: rgba(181, 255, 26, 0.12);
+  border-color: rgba(181, 255, 26, 0.4);
+}
+.project-cta-wip {
+  color: #5c606a;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  cursor: default;
 }
