@@ -2,116 +2,168 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 export default function CustomCursor() {
-  const mainCursorRef = useRef(null);
-  const secondaryCursorRef = useRef(null);
+  const dotRef = useRef(null);
+  const ringRef = useRef(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // Only enable custom cursor on desktops with a pointing device (mouse/trackpad)
-    const isDesktop = window.matchMedia("(min-width: 1024px) and (pointer: fine)").matches;
+    // Only on desktop with a real pointer (mouse/trackpad)
+    const isDesktop = window.matchMedia(
+      "(min-width: 1024px) and (pointer: fine)"
+    ).matches;
     if (!isDesktop) return;
 
     document.documentElement.classList.add("custom-cursor-enabled");
     setVisible(true);
 
-    let xToMain, yToMain, xToSec, yToSec;
+    // Target mouse position (updated instantly on every move)
+    const mouse = { x: -100, y: -100 };
 
-    // Use a small timeout to make sure references are mounted
-    const timer = setTimeout(() => {
-      if (!mainCursorRef.current || !secondaryCursorRef.current) return;
-      
-      xToMain = gsap.quickTo(mainCursorRef.current, "x", { duration: 0.16, ease: "power3.out" });
-      yToMain = gsap.quickTo(mainCursorRef.current, "y", { duration: 0.16, ease: "power3.out" });
-      xToSec = gsap.quickTo(secondaryCursorRef.current, "x", { duration: 0.42, ease: "power3.out" });
-      yToSec = gsap.quickTo(secondaryCursorRef.current, "y", { duration: 0.42, ease: "power3.out" });
-    }, 50);
+    // Current rendered positions (lerped smoothly every frame)
+    const dot = { x: -100, y: -100 };
+    const ring = { x: -100, y: -100 };
 
-    const onMouseMove = (e) => {
-      if (xToMain && yToMain && xToSec && yToSec) {
-        xToMain(e.clientX);
-        yToMain(e.clientY);
-        xToSec(e.clientX);
-        yToSec(e.clientY);
+    // Lerp factors — lower = smoother/more trailing
+    const DOT_LERP = 0.28;   // dot follows closely but not instantly
+    const RING_LERP = 0.10;  // ring trails softly behind
+
+    let rafId;
+    let isHovering = false;
+
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    const tick = () => {
+      // Smoothly interpolate positions each frame
+      dot.x = lerp(dot.x, mouse.x, DOT_LERP);
+      dot.y = lerp(dot.y, mouse.y, DOT_LERP);
+      ring.x = lerp(ring.x, mouse.x, RING_LERP);
+      ring.y = lerp(ring.y, mouse.y, RING_LERP);
+
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate(${dot.x}px, ${dot.y}px)`;
       }
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translate(${ring.x}px, ${ring.y}px)`;
+      }
+
+      rafId = requestAnimationFrame(tick);
     };
 
-    // Direct DOM manipulation instead of React state updates to prevent re-renders
+    rafId = requestAnimationFrame(tick);
+
+    const onMouseMove = (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
+
     const onMouseDown = () => {
-      if (mainCursorRef.current) {
-        mainCursorRef.current.style.transform = "scale(0.5)";
+      if (dotRef.current) {
+        dotRef.current.style.opacity = "0.6";
+        dotRef.current.style.scale = "0.5";
       }
-      if (secondaryCursorRef.current) {
-        secondaryCursorRef.current.style.transform = "scale(0.75)";
-        secondaryCursorRef.current.style.borderColor = "#b5ff1a";
+      if (ringRef.current) {
+        ringRef.current.style.borderColor = "#b5ff1a";
+        ringRef.current.style.scale = "0.85";
       }
     };
 
     const onMouseUp = () => {
-      if (mainCursorRef.current) {
-        mainCursorRef.current.style.transform = "scale(1)";
+      if (dotRef.current) {
+        dotRef.current.style.opacity = "1";
+        dotRef.current.style.scale = "1";
       }
-      if (secondaryCursorRef.current) {
-        secondaryCursorRef.current.style.transform = "scale(1)";
-        secondaryCursorRef.current.style.borderColor = "rgba(181, 255, 26, 0.4)";
-      }
-    };
-
-    const onMouseOver = (e) => {
-      const target = e.target.closest("a, button, [role='button'], input, textarea, select, .interactive-hover");
-      if (target) {
-        if (secondaryCursorRef.current) {
-          secondaryCursorRef.current.style.transform = "scale(1.5)";
-          secondaryCursorRef.current.style.backgroundColor = "rgba(181, 255, 26, 0.1)";
-          secondaryCursorRef.current.style.borderColor = "#b5ff1a";
-        }
-        // Subtle magnetic suction effect on hover target
-        if (target.classList.contains("magnetic-btn")) {
-          const rect = target.getBoundingClientRect();
-          const relX = e.clientX - rect.left - rect.width / 2;
-          const relY = e.clientY - rect.top - rect.height / 2;
-          gsap.to(target, {
-            x: relX * 0.3,
-            y: relY * 0.3,
-            duration: 0.35,
-            ease: "power3.out",
-          });
-        }
+      if (ringRef.current) {
+        ringRef.current.style.borderColor = "rgba(181, 255, 26, 0.35)";
+        ringRef.current.style.scale = "1";
       }
     };
 
-    const onMouseOut = (e) => {
-      const target = e.target.closest("a, button, [role='button'], input, textarea, select, .interactive-hover");
-      if (target) {
-        if (secondaryCursorRef.current) {
-          secondaryCursorRef.current.style.transform = "scale(1)";
-          secondaryCursorRef.current.style.backgroundColor = "transparent";
-          secondaryCursorRef.current.style.borderColor = "rgba(181, 255, 26, 0.4)";
-        }
-        if (target.classList.contains("magnetic-btn")) {
-          gsap.to(target, {
-            x: 0,
-            y: 0,
-            duration: 0.35,
-            ease: "power3.out",
-          });
-        }
+    const onMouseEnterLink = (e) => {
+      const target = e.target.closest(
+        "a, button, [role='button'], input, textarea, select, .interactive-hover"
+      );
+      if (!target) return;
+      isHovering = true;
+
+      if (ringRef.current) {
+        ringRef.current.style.scale = "1.7";
+        ringRef.current.style.backgroundColor = "rgba(181, 255, 26, 0.06)";
+        ringRef.current.style.borderColor = "rgba(181, 255, 26, 0.5)";
       }
+      if (dotRef.current) {
+        dotRef.current.style.opacity = "0.5";
+      }
+
+      // Magnetic pull on magnetic-btn elements
+      if (target.classList.contains("magnetic-btn")) {
+        const rect = target.getBoundingClientRect();
+        const relX = e.clientX - rect.left - rect.width / 2;
+        const relY = e.clientY - rect.top - rect.height / 2;
+        gsap.to(target, {
+          x: relX * 0.25,
+          y: relY * 0.25,
+          duration: 0.35,
+          ease: "power3.out",
+          overwrite: true,
+        });
+      }
+    };
+
+    const onMouseLeaveLink = (e) => {
+      const target = e.target.closest(
+        "a, button, [role='button'], input, textarea, select, .interactive-hover"
+      );
+      if (!target) return;
+      isHovering = false;
+
+      if (ringRef.current) {
+        ringRef.current.style.scale = "1";
+        ringRef.current.style.backgroundColor = "transparent";
+        ringRef.current.style.borderColor = "rgba(181, 255, 26, 0.35)";
+      }
+      if (dotRef.current) {
+        dotRef.current.style.opacity = "1";
+      }
+
+      if (target.classList.contains("magnetic-btn")) {
+        gsap.to(target, {
+          x: 0,
+          y: 0,
+          duration: 0.4,
+          ease: "power3.out",
+          overwrite: true,
+        });
+      }
+    };
+
+    // Hide ring when leaving the window
+    const onMouseLeaveWindow = () => {
+      if (dotRef.current) dotRef.current.style.opacity = "0";
+      if (ringRef.current) ringRef.current.style.opacity = "0";
+    };
+    const onMouseEnterWindow = () => {
+      if (dotRef.current) dotRef.current.style.opacity = "1";
+      if (ringRef.current) ringRef.current.style.opacity = "1";
     };
 
     window.addEventListener("mousemove", onMouseMove, { passive: true });
     window.addEventListener("mousedown", onMouseDown, { passive: true });
     window.addEventListener("mouseup", onMouseUp, { passive: true });
-    document.addEventListener("mouseover", onMouseOver, { passive: true });
-    document.addEventListener("mouseout", onMouseOut, { passive: true });
+    document.addEventListener("mouseover", onMouseEnterLink, { passive: true });
+    document.addEventListener("mouseout", onMouseLeaveLink, { passive: true });
+    document.documentElement.addEventListener("mouseleave", onMouseLeaveWindow);
+    document.documentElement.addEventListener("mouseenter", onMouseEnterWindow);
 
     return () => {
-      clearTimeout(timer);
+      cancelAnimationFrame(rafId);
       document.documentElement.classList.remove("custom-cursor-enabled");
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mousedown", onMouseDown);
       window.removeEventListener("mouseup", onMouseUp);
-      document.removeEventListener("mouseover", onMouseOver);
-      document.removeEventListener("mouseout", onMouseOut);
+      document.removeEventListener("mouseover", onMouseEnterLink);
+      document.removeEventListener("mouseout", onMouseLeaveLink);
+      document.documentElement.removeEventListener("mouseleave", onMouseLeaveWindow);
+      document.documentElement.removeEventListener("mouseenter", onMouseEnterWindow);
     };
   }, []);
 
@@ -119,15 +171,45 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* Tiny solid dot cursor */}
+      {/* Dot — small, crisp, close follow */}
       <div
-        ref={mainCursorRef}
-        className="fixed top-0 left-0 w-2 h-2 -ml-1 -mt-1 bg-cyber-lime rounded-full pointer-events-none z-[99999] mix-blend-difference transition-transform duration-100 ease-out origin-center"
+        ref={dotRef}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "7px",
+          height: "7px",
+          marginLeft: "-3.5px",
+          marginTop: "-3.5px",
+          background: "#b5ff1a",
+          borderRadius: "50%",
+          pointerEvents: "none",
+          zIndex: 99999,
+          willChange: "transform",
+          transition: "opacity 0.3s ease, scale 0.2s ease",
+          mixBlendMode: "difference",
+        }}
       />
-      {/* Outer tracking ring */}
+      {/* Ring — larger, softer trail */}
       <div
-        ref={secondaryCursorRef}
-        className="fixed top-0 left-0 w-8 h-8 -ml-4 -mt-4 border border-cyber-lime/40 rounded-full pointer-events-none z-[99998] transition-transform duration-200 ease-out origin-center"
+        ref={ringRef}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "36px",
+          height: "36px",
+          marginLeft: "-18px",
+          marginTop: "-18px",
+          border: "1px solid rgba(181, 255, 26, 0.35)",
+          borderRadius: "50%",
+          pointerEvents: "none",
+          zIndex: 99998,
+          willChange: "transform",
+          transition:
+            "scale 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease, background-color 0.35s ease, border-color 0.35s ease",
+        }}
       />
     </>
   );
