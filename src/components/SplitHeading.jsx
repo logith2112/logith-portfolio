@@ -55,20 +55,24 @@ export default function SplitHeading({ text, as: Tag = "h2", className = "" }) {
     };
   }, [text]);
 
-  // Split into characters, preserving spaces as non-breaking
+  // Split into words; within each word split into characters.
+  // Words are wrapped in inline-block so they never break mid-word.
   const renderChars = (str) => {
-    return str.split("").map((char, i) => (
-      <span
-        key={i}
-        className="sh-char inline-block cursor-default select-none"
-        style={{
-          display: "inline-block",
-          willChange: "transform, color",
-          // Spaces need a small explicit width so they don't collapse
-          minWidth: char === " " ? "0.25em" : undefined,
-        }}
-      >
-        {char === " " ? "\u00A0" : char}
+    return str.split(" ").map((word, wi) => (
+      <span key={wi} className="inline-block whitespace-nowrap">
+        {word.split("").map((char, ci) => (
+          <span
+            key={ci}
+            className="sh-char inline-block cursor-default"
+            style={{ willChange: "transform, color" }}
+          >
+            {char}
+          </span>
+        ))}
+        {/* Re-add the space between words as a non-animating gap */}
+        {wi < str.split(" ").length - 1 && (
+          <span className="inline-block" style={{ minWidth: "0.28em" }}>&nbsp;</span>
+        )}
       </span>
     ));
   };
@@ -77,7 +81,7 @@ export default function SplitHeading({ text, as: Tag = "h2", className = "" }) {
     <Tag
       ref={containerRef}
       className={className}
-      style={{ display: "block" }}
+      style={{ display: "flex", flexWrap: "wrap", gap: "0 0.02em" }}
     >
       {renderChars(text)}
     </Tag>
