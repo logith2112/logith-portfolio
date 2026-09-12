@@ -30,7 +30,7 @@ export default function Contact() {
   ];
 
   return (
-    <section id="contact" className="py-24 sm:py-32 border-t border-white/[0.03] relative bg-[#07080a]">
+    <section id="contact" className="py-24 sm:py-32 border-t border-white/[0.03] relative bg-[#07080a] overflow-hidden">
 
       {/* Subtle background radial — reduced opacity */}
       <div className="absolute bottom-0 inset-x-0 h-72 glow-orb bg-cyber-lime/4 opacity-40 z-0 rounded-none" />
@@ -38,29 +38,34 @@ export default function Contact() {
       <div className="max-w-7xl mx-auto px-6 sm:px-12 relative z-10">
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto gap-8">
 
-          <div className="text-[10px] tracking-[0.3em] font-display text-cyber-lime uppercase font-semibold">
+          {/* 1. Badge */}
+          <div className="reveal-up text-[10px] tracking-[0.3em] font-display text-cyber-lime uppercase font-semibold">
             Contact // Inquiries
           </div>
 
-          <SplitHeading
-            as="h2"
-            text="LET'S BUILD SOMETHING INTELLIGENT."
-            className="text-4xl sm:text-6xl font-display font-bold tracking-tighter text-white uppercase leading-none"
-          />
+          {/* 2. Heading */}
+          <div className="reveal-up" style={{ transitionDelay: "100ms" }}>
+            <SplitHeading
+              as="h2"
+              text="LET'S BUILD SOMETHING INTELLIGENT."
+              className="text-4xl sm:text-6xl font-display font-bold tracking-tighter text-white uppercase leading-none"
+            />
+          </div>
 
-          <p className="text-slate-400 text-sm sm:text-base leading-relaxed max-w-md font-light">
+          {/* 3. Description */}
+          <p className="reveal-up text-slate-400 text-sm sm:text-base leading-relaxed max-w-md font-light" style={{ transitionDelay: "200ms" }}>
             Open to collaborations, internships, AI/ML projects, and opportunities to create meaningful technology.
           </p>
 
-          {/* Contact Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 w-full mt-6 max-w-2xl">
+          {/* 4. Contact Cards: Sequential entrance one after another */}
+          <div className="stagger-container grid grid-cols-2 lg:grid-cols-4 gap-4 w-full mt-6 max-w-2xl">
             {contactLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`noise-card flex flex-col items-center gap-3 py-7 rounded-lg border border-white/[0.05] transition-all duration-[350ms] ${link.color} group magnetic-btn`}
+                className={`stagger-item reveal-up noise-card flex flex-col items-center gap-3 py-7 rounded-lg border border-white/[0.05] transition-all duration-[350ms] ${link.color} group magnetic-btn`}
               >
                 <div className="w-10 h-10 rounded-full bg-[#0e0f12] border border-white/[0.06] flex items-center justify-center text-slate-400 group-hover:text-white transition-colors duration-[350ms]">
                   {link.icon}
@@ -75,8 +80,8 @@ export default function Contact() {
             ))}
           </div>
 
-          {/* Footer */}
-          <div className="w-full mt-20 border-t border-white/[0.04] pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-slate-600 text-[10px] sm:text-xs tracking-wider">
+          {/* 5. Footer */}
+          <div className="reveal-up w-full mt-20 border-t border-white/[0.04] pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-slate-600 text-[10px] sm:text-xs tracking-wider" style={{ transitionDelay: "150ms" }}>
             <div>© 2026 Logith T. All rights reserved.</div>
             <div className="font-display font-semibold text-slate-600 uppercase flex items-center gap-1.5">
               <span>Designed for curious systems</span>

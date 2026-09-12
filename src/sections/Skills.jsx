@@ -35,7 +35,7 @@ export default function Skills() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 glow-orb w-[500px] h-[500px] bg-cyber-lime/5 opacity-50" />
 
       {/* Marquee Ticker 1: Areas of Interest */}
-      <div className="w-full border-y border-white/[0.03] py-4 bg-[#0c0d10] mb-20 relative z-10 select-none overflow-hidden flex whitespace-nowrap">
+      <div className="reveal w-full border-y border-white/[0.03] py-4 bg-[#0c0d10] mb-20 relative z-10 select-none overflow-hidden flex whitespace-nowrap">
         <div className="flex gap-16 animate-[marquee_38s_linear_infinite] shrink-0 text-stroke-lime uppercase font-display font-black text-2xl tracking-[0.2em]">
           <span>ARTIFICIAL INTELLIGENCE</span>
           <span>MACHINE LEARNING</span>
@@ -58,22 +58,24 @@ export default function Skills() {
         
         {/* Editorial Title */}
         <div className="flex flex-col gap-4 text-left mb-16">
-          <div className="text-[10px] tracking-[0.3em] font-display text-cyber-cyan uppercase font-semibold">
+          <div className="reveal-up text-[10px] tracking-[0.3em] font-display text-cyber-cyan uppercase font-semibold">
             SKILLS // TOOLKIT
           </div>
-          <SplitHeading
-            as="h2"
-            text="TECHNICAL TOOLKIT & FOCUS"
-            className="text-4xl sm:text-6xl font-display font-bold tracking-tighter text-white uppercase"
-          />
+          <div className="reveal-up" style={{ transitionDelay: "120ms" }}>
+            <SplitHeading
+              as="h2"
+              text="TECHNICAL TOOLKIT & FOCUS"
+              className="text-4xl sm:text-6xl font-display font-bold tracking-tighter text-white uppercase"
+            />
+          </div>
         </div>
 
-        {/* Skills Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+        {/* Skills Grid: Sequential one-by-one card entrance */}
+        <div className="stagger-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
           {skillGroups.map((group) => (
             <div
               key={group.category}
-              className="noise-card p-6 sm:p-8 rounded-lg border border-white/[0.02] flex flex-col justify-between"
+              className="stagger-item noise-card p-6 sm:p-8 rounded-lg border border-white/[0.02] flex flex-col justify-between"
             >
               <div>
                 <div className="text-[9px] font-display tracking-[0.25em] text-[#6b7280] uppercase font-bold mb-6">

@@ -26,38 +26,40 @@ export default function Credentials() {
   ];
 
   return (
-    <section id="credentials" className="py-24 sm:py-32 border-t border-white/[0.03] relative">
+    <section id="credentials" className="py-24 sm:py-32 border-t border-white/[0.03] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 sm:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
 
-          {/* Left: Heading */}
+          {/* Left: Heading (slides in from left) */}
           <div className="lg:col-span-5 flex flex-col gap-6 text-left">
-            <div className="text-[10px] tracking-[0.3em] font-display text-cyber-lime uppercase font-semibold">
+            <div className="reveal-left text-[10px] tracking-[0.3em] font-display text-cyber-lime uppercase font-semibold">
               Credentials // Achievements
             </div>
 
-            <SplitHeading
-              as="h2"
-              text="LEARNING. BUILDING. EVOLVING."
-              className="text-4xl sm:text-6xl font-display font-bold tracking-tighter text-white leading-none uppercase"
-            />
+            <div className="reveal-left" style={{ transitionDelay: "100ms" }}>
+              <SplitHeading
+                as="h2"
+                text="LEARNING. BUILDING. EVOLVING."
+                className="text-4xl sm:text-6xl font-display font-bold tracking-tighter text-white leading-none uppercase"
+              />
+            </div>
 
-            <p className="text-slate-400 text-sm sm:text-base leading-relaxed mt-1 font-light">
+            <p className="reveal-left text-slate-400 text-sm sm:text-base leading-relaxed mt-1 font-light" style={{ transitionDelay: "200ms" }}>
               Continuous learning is core to building intelligent systems. I actively pursue industry certifications and structured specializations to supplement my academic curriculum.
             </p>
 
-            <div className="flex items-center gap-2 mt-2 text-[10px] text-slate-500 font-mono">
+            <div className="reveal-left flex items-center gap-2 mt-2 text-[10px] text-slate-500 font-mono" style={{ transitionDelay: "300ms" }}>
               <Cpu className="w-3.5 h-3.5 text-cyber-cyan" />
               <span>TOTAL_INDEXED_CREDS: 02 // SECURE_SHA256</span>
             </div>
           </div>
 
-          {/* Right: Cards */}
-          <div className="lg:col-span-7 flex flex-col gap-5 text-left">
+          {/* Right: Cards (progressive stagger from right) */}
+          <div className="stagger-container lg:col-span-7 flex flex-col gap-5 text-left">
             {credentials.map((cred) => (
               <div
                 key={cred.id}
-                className="noise-card p-6 sm:p-8 rounded-lg hover:border-cyber-lime/20 relative group overflow-hidden"
+                className="stagger-item reveal-right noise-card p-6 sm:p-8 rounded-lg hover:border-cyber-lime/20 relative group overflow-hidden"
               >
                 {/* Left accent line */}
                 <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-white/[0.06] group-hover:bg-cyber-lime/60 transition-colors duration-[450ms]" />

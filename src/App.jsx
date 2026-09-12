@@ -9,11 +9,15 @@ import Projects from "./sections/Projects";
 import Skills from "./sections/Skills";
 import Credentials from "./sections/Credentials";
 import Contact from "./sections/Contact";
+import useScrollReveal from "./hooks/useScrollReveal";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
   const progressBarRef = useRef(null);
   const tickingRef = useRef(false);
+
+  // Hook for lightweight scroll-driven IntersectionObserver reveals
+  useScrollReveal(!loading);
 
   useEffect(() => {
     if (loading) return;

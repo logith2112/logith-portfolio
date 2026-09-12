@@ -26,28 +26,30 @@ export default function About() {
   ];
 
   return (
-    <section id="about" className="py-24 sm:py-32 border-t border-white/[0.03] relative">
+    <section id="about" className="py-24 sm:py-32 border-t border-white/[0.03] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 sm:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
 
-          {/* Left: Story */}
+          {/* Left: Story & Education (slides from left, heading fades upward) */}
           <div className="lg:col-span-7 flex flex-col gap-6 text-left">
-            <div className="text-[10px] tracking-[0.3em] font-display text-cyber-cyan uppercase font-semibold">
+            <div className="reveal-up text-[10px] tracking-[0.3em] font-display text-cyber-cyan uppercase font-semibold">
               About // Mission
             </div>
 
-            <SplitHeading
-              as="h2"
-              text="ENGINEERING IDEAS INTO INTELLIGENT EXPERIENCES."
-              className="text-3xl sm:text-5xl lg:text-6xl font-display font-bold tracking-tighter text-white leading-tight uppercase"
-            />
+            <div className="reveal-up" style={{ transitionDelay: "100ms" }}>
+              <SplitHeading
+                as="h2"
+                text="ENGINEERING IDEAS INTO INTELLIGENT EXPERIENCES."
+                className="text-3xl sm:text-5xl lg:text-6xl font-display font-bold tracking-tighter text-white leading-tight uppercase"
+              />
+            </div>
 
-            <p className="text-slate-400 text-sm sm:text-base leading-relaxed mt-2 font-light">
+            <p className="reveal-left text-slate-400 text-sm sm:text-base leading-relaxed mt-2 font-light" style={{ transitionDelay: "200ms" }}>
               I am Logith T, a Computer Science and Engineering student specializing in Artificial Intelligence and Machine Learning. I enjoy turning complex real-world problems into useful digital products through machine learning, IoT, NLP, and modern web development.
             </p>
 
-            {/* Education card */}
-            <div className="noise-card p-6 sm:p-8 rounded-lg mt-4">
+            {/* Education card — slides in from left */}
+            <div className="reveal-left noise-card p-6 sm:p-8 rounded-lg mt-4" style={{ transitionDelay: "320ms" }}>
               <div className="text-[9px] text-slate-600 tracking-widest uppercase mb-5">Education Profile</div>
               <div className="flex flex-col gap-4">
                 <div>
@@ -75,17 +77,17 @@ export default function About() {
             </div>
           </div>
 
-          {/* Right: Focus Grid */}
+          {/* Right: Focus Grid (slides from right, items enter one by one) */}
           <div className="lg:col-span-5 flex flex-col gap-6 text-left">
-            <div className="text-[10px] tracking-[0.3em] font-display text-slate-500 uppercase font-semibold">
+            <div className="reveal-right text-[10px] tracking-[0.3em] font-display text-slate-500 uppercase font-semibold">
               Core Specialization
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="stagger-container grid grid-cols-1 sm:grid-cols-2 gap-4">
               {focuses.map((focus) => (
                 <div
                   key={focus.title}
-                  className="noise-card p-5 rounded-lg flex flex-col gap-4 justify-between"
+                  className="stagger-item reveal-right noise-card p-5 rounded-lg flex flex-col gap-4 justify-between"
                 >
                   <div className="w-9 h-9 rounded-md bg-[#0e0f12] flex items-center justify-center border border-white/[0.06]">
                     {focus.icon}

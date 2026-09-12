@@ -6,17 +6,92 @@ import SplitHeading from "../components/SplitHeading";
 
 export default function Hero() {
   const canvasRef = useRef(null);
-  const titleRef = useRef(null);
   const containerRef = useRef(null);
 
+  // Discrete element refs for staggered timing on initial page load
+  const badgeRef = useRef(null);
+  const nameRowRef = useRef(null);
+  const photoRef = useRef(null);
+  const subtitleRef = useRef(null);
+  const descRef = useRef(null);
+  const buttonsRef = useRef(null);
+  const telemetryRef = useRef(null);
+  const canvasContainerRef = useRef(null);
+  const scrollIndicatorRef = useRef(null);
+
   useEffect(() => {
-    // 1. Title fade and reveal using GSAP stagger
-    const elements = titleRef.current.children;
-    gsap.fromTo(
-      elements,
-      { opacity: 0, y: 24 },
-      { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: "power3.out", delay: 0.4 }
-    );
+    // 1. Initial page load staggered entrance animation
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const targets = [
+      badgeRef.current,
+      nameRowRef.current,
+      photoRef.current,
+      subtitleRef.current,
+      descRef.current,
+      buttonsRef.current,
+      telemetryRef.current,
+      canvasContainerRef.current,
+      scrollIndicatorRef.current,
+    ].filter(Boolean);
+
+    if (prefersReducedMotion) {
+      gsap.set(targets, { opacity: 1, y: 0, x: 0, scale: 1 });
+    } else {
+      const isMobile = window.innerWidth < 768;
+      const yDist = isMobile ? 16 : 24;
+      const xDist = isMobile ? -18 : -30;
+
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+      // Name & status badge: 0.0s
+      if (badgeRef.current) {
+        tl.fromTo(badgeRef.current, { opacity: 0, y: yDist }, { opacity: 1, y: 0, duration: 0.7 }, 0.0);
+      }
+      if (nameRowRef.current) {
+        tl.fromTo(nameRowRef.current, { opacity: 0, y: yDist }, { opacity: 1, y: 0, duration: 0.8 }, 0.0);
+      }
+      if (photoRef.current) {
+        tl.fromTo(photoRef.current, { opacity: 0, x: xDist }, { opacity: 1, x: 0, duration: 0.8 }, 0.08);
+      }
+
+      // Subtitle / role: 0.15s
+      if (subtitleRef.current) {
+        tl.fromTo(subtitleRef.current, { opacity: 0, y: yDist }, { opacity: 1, y: 0, duration: 0.75 }, 0.15);
+      }
+
+      // Description: 0.30s
+      if (descRef.current) {
+        tl.fromTo(descRef.current, { opacity: 0, y: yDist }, { opacity: 1, y: 0, duration: 0.75 }, 0.30);
+      }
+
+      // Buttons: 0.45s
+      if (buttonsRef.current) {
+        tl.fromTo(buttonsRef.current, { opacity: 0, y: yDist }, { opacity: 1, y: 0, duration: 0.75 }, 0.45);
+      }
+
+      // Location telemetry: 0.60s
+      if (telemetryRef.current) {
+        tl.fromTo(telemetryRef.current, { opacity: 0, y: yDist }, { opacity: 1, y: 0, duration: 0.7 }, 0.60);
+      }
+
+      // Particle Canvas container: smooth reveal at 0.25s
+      if (canvasContainerRef.current) {
+        tl.fromTo(
+          canvasContainerRef.current,
+          { opacity: 0, scale: 0.97 },
+          { opacity: 1, scale: 1, duration: 0.85 },
+          0.25
+        );
+      }
+
+      // Scroll indicator at 0.70s
+      if (scrollIndicatorRef.current) {
+        tl.fromTo(scrollIndicatorRef.current, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6 }, 0.70);
+      }
+    }
 
     // 2. Optimized Particle Mesh — 30 FPS, IntersectionObserver, capped DPR
     const canvas = canvasRef.current;
@@ -124,10 +199,10 @@ export default function Hero() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
 
         {/* Left: Editorial Info */}
-        <div ref={titleRef} className="lg:col-span-7 flex flex-col gap-6 text-left">
+        <div className="lg:col-span-7 flex flex-col gap-6 text-left">
 
           {/* Status chip */}
-          <div className="inline-flex items-center gap-2">
+          <div ref={badgeRef} className="inline-flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-cyber-lime animate-pulse" />
             <span className="text-[10px] tracking-[0.3em] font-display text-cyber-lime uppercase font-semibold">
               AI / ML Engineering Student
@@ -135,14 +210,14 @@ export default function Hero() {
           </div>
 
           {/* Name + portrait row */}
-          <div className="flex flex-col sm:flex-row sm:items-end gap-6 mt-2">
+          <div ref={nameRowRef} className="flex flex-col sm:flex-row sm:items-end gap-6 mt-2">
             <SplitHeading
               as="h1"
               text="LOGITH"
               className="text-5xl sm:text-7xl lg:text-8xl font-display font-bold tracking-tighter leading-[0.9] text-white"
             />
             {/* Portrait — editorial, clean, lime glow on hover */}
-            <div className="w-24 sm:w-28 aspect-[9/16] rounded-lg overflow-hidden border border-white/10 shadow-2xl relative shrink-0 portrait-glow">
+            <div ref={photoRef} className="w-24 sm:w-28 aspect-[9/16] rounded-lg overflow-hidden border border-white/10 shadow-2xl relative shrink-0 portrait-glow">
               <img
                 src={profileImg}
                 alt="Logith T — AI/ML Engineering Student"
@@ -157,17 +232,17 @@ export default function Hero() {
           </div>
 
           {/* Tagline */}
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-display font-light text-slate-200 tracking-tight leading-relaxed max-w-2xl">
+          <h2 ref={subtitleRef} className="text-xl sm:text-2xl lg:text-3xl font-display font-light text-slate-200 tracking-tight leading-relaxed max-w-2xl">
             Building intelligent systems for real-world impact.
           </h2>
 
           {/* Body */}
-          <p className="text-slate-400 text-sm sm:text-base leading-relaxed max-w-xl font-light">
+          <p ref={descRef} className="text-slate-400 text-sm sm:text-base leading-relaxed max-w-xl font-light">
             AI/ML and full-stack engineering student building practical systems across IoT, machine learning, NLP, and responsive web platforms.
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-wrap items-center gap-4 mt-2">
+          <div ref={buttonsRef} className="flex flex-wrap items-center gap-4 mt-2">
             <a
               href="#projects"
               className="text-[10px] sm:text-xs font-display tracking-[0.2em] font-semibold text-black bg-cyber-lime hover:bg-cyber-lime/88 px-6 py-3.5 rounded-sm transition-all duration-300 uppercase magnetic-btn"
@@ -183,7 +258,7 @@ export default function Hero() {
           </div>
 
           {/* Location telemetry */}
-          <div className="flex items-center gap-10 mt-10 border-t border-white/[0.05] pt-6 max-w-sm">
+          <div ref={telemetryRef} className="flex items-center gap-10 mt-10 border-t border-white/[0.05] pt-6 max-w-sm">
             <div>
               <div className="text-[9px] text-slate-600 tracking-widest uppercase mb-1">Location</div>
               <div className="text-xs text-slate-300 font-medium tracking-wide font-display">Tamil Nadu, India</div>
@@ -197,7 +272,7 @@ export default function Hero() {
         </div>
 
         {/* Right: Particle Canvas */}
-        <div className="lg:col-span-5 h-[300px] lg:h-[500px] w-full relative rounded-xl border border-white/[0.04] bg-[#0e0f12]/30 overflow-hidden">
+        <div ref={canvasContainerRef} className="lg:col-span-5 h-[300px] lg:h-[500px] w-full relative rounded-xl border border-white/[0.04] bg-[#0e0f12]/30 overflow-hidden">
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
           <div className="absolute top-4 left-4 font-mono text-[9px] text-[#3a3f4a] tracking-wider uppercase select-none">
             MESH_NETWORK // AGENT_MODEL: VER_1.1
@@ -211,7 +286,7 @@ export default function Hero() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-6 sm:left-12 flex items-center gap-3">
+      <div ref={scrollIndicatorRef} className="absolute bottom-8 left-6 sm:left-12 flex items-center gap-3">
         <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center animate-float-slow">
           <ArrowDown className="w-4 h-4 text-cyber-lime" />
         </div>

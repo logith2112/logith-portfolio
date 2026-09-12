@@ -202,3 +202,154 @@ html {
   border: 1px solid rgba(255, 255, 255, 0.06);
   cursor: default;
 }
+
+/* ==========================================================================
+   Modern One-by-One & Slide-Style Reveal Animation System
+   ========================================================================== */
+
+/* Prevent horizontal scrollbars caused by slide translations */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Base Reveal Upwards */
+.reveal,
+.reveal-up {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+/* Reveal from Left */
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+/* Reveal from Right */
+.reveal-right {
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+/* Active State — Return to natural layout position */
+.reveal.active,
+.reveal-up.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-left.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-right.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Stagger Item System */
+.stagger-item {
+  opacity: 0;
+  transform: translateY(35px);
+  transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.stagger-container.active > .stagger-item,
+.stagger-container.active .stagger-item,
+.stagger-item.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Automatic nth-child delays for sequential stagger */
+.stagger-container > .stagger-item:nth-child(1),
+.stagger-auto > *:nth-child(1) { --delay: 0ms; }
+.stagger-container > .stagger-item:nth-child(2),
+.stagger-auto > *:nth-child(2) { --delay: 110ms; }
+.stagger-container > .stagger-item:nth-child(3),
+.stagger-auto > *:nth-child(3) { --delay: 220ms; }
+.stagger-container > .stagger-item:nth-child(4),
+.stagger-auto > *:nth-child(4) { --delay: 330ms; }
+.stagger-container > .stagger-item:nth-child(5),
+.stagger-auto > *:nth-child(5) { --delay: 440ms; }
+.stagger-container > .stagger-item:nth-child(6),
+.stagger-auto > *:nth-child(6) { --delay: 550ms; }
+.stagger-container > .stagger-item:nth-child(7),
+.stagger-auto > *:nth-child(7) { --delay: 660ms; }
+.stagger-container > .stagger-item:nth-child(8),
+.stagger-auto > *:nth-child(8) { --delay: 770ms; }
+.stagger-container > .stagger-item:nth-child(9),
+.stagger-auto > *:nth-child(9) { --delay: 880ms; }
+.stagger-container > .stagger-item:nth-child(10),
+.stagger-auto > *:nth-child(10) { --delay: 990ms; }
+.stagger-container > .stagger-item:nth-child(11),
+.stagger-auto > *:nth-child(11) { --delay: 1100ms; }
+.stagger-container > .stagger-item:nth-child(12),
+.stagger-auto > *:nth-child(12) { --delay: 1210ms; }
+
+/* Subtle project card hover uplift & scale */
+.project-card-interactive {
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.project-card-interactive:hover {
+  transform: translateY(-4px) scale(1.018);
+}
+
+/* Mobile responsive adjustments: reduced movement distance & snappy timing */
+@media (max-width: 767px) {
+  .reveal,
+  .reveal-up {
+    transform: translateY(26px);
+    transition-duration: 0.5s;
+  }
+  .reveal-left {
+    transform: translateX(-24px);
+    transition-duration: 0.5s;
+  }
+  .reveal-right {
+    transform: translateX(24px);
+    transition-duration: 0.5s;
+  }
+  .stagger-item {
+    transform: translateY(20px);
+    transition-duration: 0.5s;
+  }
+  .project-card-interactive:hover {
+    transform: translateY(-2px) scale(1.008);
+  }
+}
+
+/* Accessibility: prefers-reduced-motion override */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal,
+  .reveal-up,
+  .reveal-left,
+  .reveal-right,
+  .stagger-item {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+

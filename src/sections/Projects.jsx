@@ -62,30 +62,33 @@ export default function Projects() {
   ];
 
   return (
-    <section id="projects" className="py-24 sm:py-32 border-t border-white/[0.03] relative">
+    <section id="projects" className="py-24 sm:py-32 border-t border-white/[0.03] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 sm:px-12">
 
         {/* Section Heading */}
         <div className="flex flex-col gap-3 text-left mb-20 sm:mb-28">
-          <div className="text-[10px] tracking-[0.3em] font-display text-cyber-lime uppercase font-semibold">
+          <div className="reveal-up text-[10px] tracking-[0.3em] font-display text-cyber-lime uppercase font-semibold">
             Projects // Portfolio
           </div>
-          <SplitHeading
-            as="h2"
-            text="SELECTED INTELLIGENT SYSTEMS"
-            className="text-4xl sm:text-6xl font-display font-bold tracking-tighter text-white uppercase max-w-3xl leading-none"
-          />
-          <p className="text-slate-500 text-xs sm:text-sm max-w-md mt-1 font-light leading-relaxed">
+          <div className="reveal-up" style={{ transitionDelay: "100ms" }}>
+            <SplitHeading
+              as="h2"
+              text="SELECTED INTELLIGENT SYSTEMS"
+              className="text-4xl sm:text-6xl font-display font-bold tracking-tighter text-white uppercase max-w-3xl leading-none"
+            />
+          </div>
+          <p className="reveal-up text-slate-500 text-xs sm:text-sm max-w-md mt-1 font-light leading-relaxed" style={{ transitionDelay: "200ms" }}>
             Hardware integrations, machine learning systems, natural language processing, and responsive web platforms.
           </p>
         </div>
 
-        {/* Project List */}
+        {/* Project List: One-by-one progressive reveal as user scrolls */}
         <div className="flex flex-col gap-28 sm:gap-36">
-          {projectList.map((project) => (
+          {projectList.map((project, idx) => (
             <div
               key={project.id}
-              className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center text-left group"
+              className="reveal-up project-card-interactive grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center text-left group"
+              style={{ transitionDelay: `${(idx % 2) * 90}ms` }}
             >
 
               {/* Left: Details */}
