@@ -56,6 +56,14 @@ export default function Navigation() {
               </a>
             ))}
             <a
+              href={`${import.meta.env.BASE_URL}Logith_T_Resume.pdf`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[10px] sm:text-xs font-display tracking-[0.2em] font-medium text-[#8f939e] hover:text-cyber-lime transition-colors duration-[350ms] uppercase magnetic-btn flex items-center gap-1"
+            >
+              RESUME <ArrowUpRight className="w-3 h-3" />
+            </a>
+            <a
               href="mailto:logithithiru@gmail.com"
               className="text-[10px] sm:text-xs font-display tracking-[0.15em] font-medium text-black bg-cyber-lime hover:bg-cyber-lime/90 px-4 py-2 rounded-sm transition-colors duration-300 uppercase flex items-center gap-1.5 magnetic-btn"
             >
@@ -100,11 +108,25 @@ export default function Navigation() {
             </a>
           ))}
           <a
+            href={`${import.meta.env.BASE_URL}Logith_T_Resume.pdf`}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setIsOpen(false)}
+            className="text-3xl font-display font-bold tracking-tight text-white hover:text-cyber-lime transition-colors duration-300 flex items-center gap-2"
+            style={{
+              transitionDelay: `${navLinks.length * 75}ms`,
+              transform: isOpen ? "translateY(0)" : "translateY(20px)",
+              opacity: isOpen ? 1 : 0,
+            }}
+          >
+            RESUME <ArrowUpRight className="w-5 h-5" />
+          </a>
+          <a
             href="mailto:logithithiru@gmail.com"
             onClick={() => setIsOpen(false)}
             className="mt-4 text-lg font-display tracking-wider font-semibold text-cyber-lime hover:underline flex items-center gap-1.5"
             style={{
-              transitionDelay: `${navLinks.length * 75}ms`,
+              transitionDelay: `${(navLinks.length + 1) * 75}ms`,
               transform: isOpen ? "translateY(0)" : "translateY(20px)",
               opacity: isOpen ? 1 : 0,
             }}

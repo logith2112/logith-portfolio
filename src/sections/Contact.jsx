@@ -1,4 +1,4 @@
-import { Linkedin, Github, Mail, Phone, ArrowUpRight } from "lucide-react";
+import { Linkedin, Github, Mail, Phone, FileText, ArrowUpRight } from "lucide-react";
 import SplitHeading from "../components/SplitHeading";
 
 export default function Contact() {
@@ -8,24 +8,35 @@ export default function Contact() {
       href: "https://www.linkedin.com/in/logith-t-635294378/",
       icon: <Linkedin className="w-5 h-5" />,
       color: "hover:text-cyber-cyan hover:border-cyber-cyan/20",
+      action: "Connect",
     },
     {
       name: "GitHub",
       href: "https://github.com/logith2112",
       icon: <Github className="w-5 h-5" />,
       color: "hover:text-cyber-lime hover:border-cyber-lime/20",
+      action: "Connect",
+    },
+    {
+      name: "Resume PDF",
+      href: `${import.meta.env.BASE_URL}Logith_T_Resume.pdf`,
+      icon: <FileText className="w-5 h-5" />,
+      color: "hover:text-cyber-lime hover:border-cyber-lime/20",
+      action: "View PDF",
     },
     {
       name: "Email",
       href: "mailto:logithithiru@gmail.com",
       icon: <Mail className="w-5 h-5" />,
       color: "hover:text-purple-400 hover:border-purple-400/20",
+      action: "Connect",
     },
     {
       name: "Phone",
       href: "tel:+919962295921",
       icon: <Phone className="w-5 h-5" />,
       color: "hover:text-cyber-lime hover:border-cyber-lime/20",
+      action: "Connect",
     },
   ];
 
@@ -58,14 +69,14 @@ export default function Contact() {
           </p>
 
           {/* 4. Contact Cards: Sequential entrance one after another */}
-          <div className="stagger-container grid grid-cols-2 lg:grid-cols-4 gap-4 w-full mt-6 max-w-2xl">
+          <div className="stagger-container grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 w-full mt-6 max-w-4xl">
             {contactLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`stagger-item reveal-up noise-card flex flex-col items-center gap-3 py-7 rounded-lg border border-white/[0.05] transition-all duration-[350ms] ${link.color} group magnetic-btn`}
+                className={`stagger-item reveal-up noise-card flex flex-col items-center gap-3 py-7 rounded-lg border border-white/[0.05] transition-all duration-[350ms] ${link.color} group magnetic-btn last:col-span-2 sm:last:col-span-1`}
               >
                 <div className="w-10 h-10 rounded-full bg-[#0e0f12] border border-white/[0.06] flex items-center justify-center text-slate-400 group-hover:text-white transition-colors duration-[350ms]">
                   {link.icon}
@@ -74,7 +85,7 @@ export default function Contact() {
                   {link.name}
                 </span>
                 <span className="text-[9px] font-mono text-slate-600 group-hover:text-cyber-lime flex items-center gap-0.5 transition-colors duration-[350ms]">
-                  Connect <ArrowUpRight className="w-2.5 h-2.5" />
+                  {link.action || "Connect"} <ArrowUpRight className="w-2.5 h-2.5" />
                 </span>
               </a>
             ))}
