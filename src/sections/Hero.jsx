@@ -151,21 +151,21 @@ export default function Hero() {
           p.y += p.vy;
           if (p.x < 0 || p.x > width) p.vx *= -1;
           if (p.y < 0 || p.y > height) p.vy *= -1;
-          // Slightly more subtle particle opacity
-          ctx.fillStyle = "rgba(181, 255, 26, 0.32)";
+          // Subtle champagne gold particles
+          ctx.fillStyle = "rgba(229, 199, 107, 0.45)";
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
           ctx.fill();
         });
-        ctx.lineWidth = 0.4;
+        ctx.lineWidth = 0.5;
         for (let i = 0; i < particleCount; i++) {
           for (let j = i + 1; j < particleCount; j++) {
             const dx = particles[i].x - particles[j].x;
             const dy = particles[i].y - particles[j].y;
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist < connectDistance) {
-              const alpha = (1 - dist / connectDistance) * 0.1;
-              ctx.strokeStyle = `rgba(0, 240, 255, ${alpha})`;
+              const alpha = (1 - dist / connectDistance) * 0.16;
+              ctx.strokeStyle = `rgba(201, 162, 39, ${alpha})`;
               ctx.beginPath();
               ctx.moveTo(particles[i].x, particles[i].y);
               ctx.lineTo(particles[j].x, particles[j].y);
@@ -203,8 +203,8 @@ export default function Hero() {
 
           {/* Status chip */}
           <div ref={badgeRef} className="inline-flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyber-lime animate-pulse" />
-            <span className="text-[10px] tracking-[0.3em] font-display text-cyber-lime uppercase font-semibold">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#C9A227] animate-pulse" />
+            <span className="text-[10px] tracking-[0.3em] font-sans text-[#E5C76B] uppercase font-semibold">
               AI / ML Engineering Student
             </span>
           </div>
@@ -214,10 +214,10 @@ export default function Hero() {
             <SplitHeading
               as="h1"
               text="LOGITH"
-              className="text-5xl sm:text-7xl lg:text-8xl font-display font-bold tracking-tighter leading-[0.9] text-white"
+              className="text-5xl sm:text-7xl lg:text-8xl font-serif font-bold tracking-tight leading-[0.9] text-[#F5F1E8]"
             />
-            {/* Portrait — editorial, clean, lime glow on hover */}
-            <div ref={photoRef} className="w-24 sm:w-28 aspect-[9/16] rounded-lg overflow-hidden border border-white/10 shadow-2xl relative shrink-0 portrait-glow">
+            {/* Portrait — editorial, clean, champagne gold glow on hover */}
+            <div ref={photoRef} className="w-24 sm:w-28 aspect-[9/16] rounded-lg overflow-hidden border border-[#2A2418] shadow-2xl relative shrink-0 portrait-glow">
               <img
                 src={profileImg}
                 alt="Logith T — AI/ML Engineering Student"
@@ -225,19 +225,19 @@ export default function Hero() {
                 loading="eager"
               />
               {/* Subtle dark base overlay — keeps photo from competing with heading */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#090A0C]/50 via-transparent to-transparent pointer-events-none" />
-              {/* Lime tint: invisible by default, accent only */}
-              <div className="absolute inset-0 bg-cyber-lime/0 hover:bg-cyber-lime/5 transition-colors duration-500 pointer-events-none mix-blend-color" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/60 via-transparent to-transparent pointer-events-none" />
+              {/* Gold tint: subtle accent */}
+              <div className="absolute inset-0 bg-[#C9A227]/0 hover:bg-[#C9A227]/5 transition-colors duration-500 pointer-events-none mix-blend-color" />
             </div>
           </div>
 
           {/* Tagline */}
-          <h2 ref={subtitleRef} className="text-xl sm:text-2xl lg:text-3xl font-display font-light text-slate-200 tracking-tight leading-relaxed max-w-2xl">
+          <h2 ref={subtitleRef} className="text-xl sm:text-2xl lg:text-3xl font-serif font-normal text-[#F5F1E8] tracking-normal leading-relaxed max-w-2xl">
             Building intelligent systems for real-world impact.
           </h2>
 
           {/* Body */}
-          <p ref={descRef} className="text-slate-400 text-sm sm:text-base leading-relaxed max-w-xl font-light">
+          <p ref={descRef} className="text-[#A8A29E] text-sm sm:text-base leading-relaxed max-w-xl font-light">
             AI/ML and full-stack engineering student building practical systems across IoT, machine learning, NLP, and responsive web platforms.
           </p>
 
@@ -245,40 +245,40 @@ export default function Hero() {
           <div ref={buttonsRef} className="flex flex-wrap items-center gap-4 mt-2">
             <a
               href="#projects"
-              className="text-[10px] sm:text-xs font-display tracking-[0.2em] font-semibold text-black bg-cyber-lime hover:bg-cyber-lime/88 px-6 py-3.5 rounded-sm transition-all duration-300 uppercase magnetic-btn"
+              className="text-[10px] sm:text-xs font-sans tracking-[0.2em] font-semibold text-[#0A0A0A] bg-[#C9A227] hover:bg-[#E5C76B] px-6 py-3.5 rounded-sm transition-all duration-300 uppercase shadow-[0_4px_20px_rgba(201,162,39,0.2)] magnetic-btn"
             >
               Explore Work
             </a>
             <a
               href="#contact"
-              className="text-[10px] sm:text-xs font-display tracking-[0.2em] font-semibold text-slate-300 border border-white/10 hover:border-cyber-lime/40 hover:text-cyber-lime px-6 py-3.5 rounded-sm transition-all duration-[350ms] uppercase magnetic-btn"
+              className="text-[10px] sm:text-xs font-sans tracking-[0.2em] font-semibold text-[#E5C76B] border border-[#2A2418] hover:border-[#C9A227] hover:bg-[#C9A227]/10 px-6 py-3.5 rounded-sm transition-all duration-[350ms] uppercase magnetic-btn"
             >
               Connect
             </a>
           </div>
 
           {/* Location telemetry */}
-          <div ref={telemetryRef} className="flex items-center gap-10 mt-10 border-t border-white/[0.05] pt-6 max-w-sm">
+          <div ref={telemetryRef} className="flex items-center gap-10 mt-10 border-t border-[#2A2418] pt-6 max-w-sm">
             <div>
-              <div className="text-[9px] text-slate-600 tracking-widest uppercase mb-1">Location</div>
-              <div className="text-xs text-slate-300 font-medium tracking-wide font-display">Tamil Nadu, India</div>
+              <div className="text-[9px] text-[#A8A29E]/60 tracking-widest uppercase mb-1">Location</div>
+              <div className="text-xs text-[#F5F1E8] font-medium tracking-wide font-sans">Tamil Nadu, India</div>
             </div>
             <div>
-              <div className="text-[9px] text-slate-600 tracking-widest uppercase mb-1">Coordinates</div>
-              <div className="text-xs text-slate-300 font-medium tracking-wide font-display">11.0168° N, 77.9332° E</div>
+              <div className="text-[9px] text-[#A8A29E]/60 tracking-widest uppercase mb-1">Coordinates</div>
+              <div className="text-xs text-[#F5F1E8] font-medium tracking-wide font-sans">11.0168° N, 77.9332° E</div>
             </div>
           </div>
 
         </div>
 
         {/* Right: Particle Canvas */}
-        <div ref={canvasContainerRef} className="lg:col-span-5 h-[300px] lg:h-[500px] w-full relative rounded-xl border border-white/[0.04] bg-[#0e0f12]/30 overflow-hidden">
+        <div ref={canvasContainerRef} className="lg:col-span-5 h-[300px] lg:h-[500px] w-full relative rounded-xl border border-[#2A2418] bg-[#111111]/60 overflow-hidden">
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
-          <div className="absolute top-4 left-4 font-mono text-[9px] text-[#3a3f4a] tracking-wider uppercase select-none">
+          <div className="absolute top-4 left-4 font-mono text-[9px] text-[#A8A29E]/50 tracking-wider uppercase select-none">
             MESH_NETWORK // AGENT_MODEL: VER_1.1
           </div>
           {/* Corner decorations */}
-          <div className="absolute bottom-4 right-4 font-mono text-[8px] text-[#3a3f4a] tracking-wider uppercase select-none">
+          <div className="absolute bottom-4 right-4 font-mono text-[8px] text-[#C9A227]/80 tracking-wider uppercase select-none">
             NODE_DYNAMICS // LIVE
           </div>
         </div>
@@ -287,10 +287,10 @@ export default function Hero() {
 
       {/* Scroll indicator */}
       <div ref={scrollIndicatorRef} className="absolute bottom-8 left-6 sm:left-12 flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center animate-float-slow">
-          <ArrowDown className="w-4 h-4 text-cyber-lime" />
+        <div className="w-8 h-8 rounded-full border border-[#2A2418] flex items-center justify-center animate-float-slow">
+          <ArrowDown className="w-4 h-4 text-[#C9A227]" />
         </div>
-        <span className="text-[9px] tracking-[0.22em] font-display text-slate-600 uppercase">
+        <span className="text-[9px] tracking-[0.22em] font-sans text-[#A8A29E]/80 uppercase">
           Scroll to story
         </span>
       </div>

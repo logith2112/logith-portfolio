@@ -62,7 +62,7 @@ export default function CustomCursor() {
         dotRef.current.style.scale = "0.5";
       }
       if (ringRef.current) {
-        ringRef.current.style.borderColor = "#b5ff1a";
+        ringRef.current.style.borderColor = "#E5C76B";
         ringRef.current.style.scale = "0.85";
       }
     };
@@ -73,7 +73,7 @@ export default function CustomCursor() {
         dotRef.current.style.scale = "1";
       }
       if (ringRef.current) {
-        ringRef.current.style.borderColor = "rgba(181, 255, 26, 0.35)";
+        ringRef.current.style.borderColor = "rgba(201, 162, 39, 0.4)";
         ringRef.current.style.scale = "1";
       }
     };
@@ -87,8 +87,8 @@ export default function CustomCursor() {
 
       if (ringRef.current) {
         ringRef.current.style.scale = "1.7";
-        ringRef.current.style.backgroundColor = "rgba(181, 255, 26, 0.06)";
-        ringRef.current.style.borderColor = "rgba(181, 255, 26, 0.5)";
+        ringRef.current.style.backgroundColor = "rgba(201, 162, 39, 0.08)";
+        ringRef.current.style.borderColor = "rgba(229, 199, 107, 0.65)";
       }
       if (dotRef.current) {
         dotRef.current.style.opacity = "0.5";
@@ -119,7 +119,7 @@ export default function CustomCursor() {
       if (ringRef.current) {
         ringRef.current.style.scale = "1";
         ringRef.current.style.backgroundColor = "transparent";
-        ringRef.current.style.borderColor = "rgba(181, 255, 26, 0.35)";
+        ringRef.current.style.borderColor = "rgba(201, 162, 39, 0.4)";
       }
       if (dotRef.current) {
         dotRef.current.style.opacity = "1";
@@ -171,7 +171,7 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* Dot — small, crisp, close follow */}
+      {/* Dot — luxury champagne gold */}
       <div
         ref={dotRef}
         style={{
@@ -182,7 +182,7 @@ export default function CustomCursor() {
           height: "7px",
           marginLeft: "-3.5px",
           marginTop: "-3.5px",
-          background: "#b5ff1a",
+          background: "#C9A227",
           borderRadius: "50%",
           pointerEvents: "none",
           zIndex: 99999,
@@ -191,7 +191,7 @@ export default function CustomCursor() {
           mixBlendMode: "difference",
         }}
       />
-      {/* Ring — larger, softer trail */}
+      {/* Ring — larger, softer luxury gold trail */}
       <div
         ref={ringRef}
         style={{
@@ -202,7 +202,7 @@ export default function CustomCursor() {
           height: "36px",
           marginLeft: "-18px",
           marginTop: "-18px",
-          border: "1px solid rgba(181, 255, 26, 0.35)",
+          border: "1px solid rgba(201, 162, 39, 0.4)",
           borderRadius: "50%",
           pointerEvents: "none",
           zIndex: 99998,

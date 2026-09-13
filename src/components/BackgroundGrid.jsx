@@ -36,24 +36,24 @@ export default function BackgroundGrid() {
   return (
     <div ref={containerRef} className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
       {/* Editorial grid background */}
-      <div className="absolute inset-0 bg-grid-pattern bg-[size:40px_40px] opacity-[0.07] border-b border-cyber-border" />
+      <div className="absolute inset-0 bg-grid-pattern bg-[size:40px_40px] opacity-[0.04] border-b border-[#2A2418]" />
 
-      {/* Cyber glows */}
+      {/* Luxury champagne gold & bronze ambient mists */}
       <div
-        className={`glow-orb bg-cyber-lime/10 top-[-200px] left-[-200px] will-change-transform ${
-          isMobile ? "w-[300px] h-[300px] blur-[80px]" : "w-[600px] h-[600px] blur-[120px]"
+        className={`glow-orb bg-[#C9A227]/[0.035] top-[-200px] left-[-200px] will-change-transform ${
+          isMobile ? "w-[300px] h-[300px] blur-[90px]" : "w-[600px] h-[600px] blur-[140px]"
         }`}
       />
       <div
-        className={`glow-orb bg-cyber-cyan/5 bottom-[-100px] right-[-100px] will-change-transform ${
-          isMobile ? "w-[300px] h-[300px] blur-[80px]" : "w-[600px] h-[600px] blur-[120px]"
+        className={`glow-orb bg-[#2A2418]/[0.15] bottom-[-100px] right-[-100px] will-change-transform ${
+          isMobile ? "w-[300px] h-[300px] blur-[90px]" : "w-[600px] h-[600px] blur-[140px]"
         }`}
       />
       
       {/* Hide third orb completely on mobile */}
       {!isMobile && (
         <div
-          className="glow-orb w-[400px] h-[400px] bg-purple-500/5 top-[40%] left-[60%] will-change-transform blur-[120px]"
+          className="glow-orb w-[400px] h-[400px] bg-[#E5C76B]/[0.02] top-[40%] left-[60%] will-change-transform blur-[140px]"
         />
       )}
     </div>

@@ -62,22 +62,22 @@ export default function Projects() {
   ];
 
   return (
-    <section id="projects" className="py-24 sm:py-32 border-t border-white/[0.03] relative overflow-hidden">
+    <section id="projects" className="py-24 sm:py-32 border-t border-[#2A2418] bg-[#0A0A0A] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 sm:px-12">
 
         {/* Section Heading */}
         <div className="flex flex-col gap-3 text-left mb-20 sm:mb-28">
-          <div className="reveal-up text-[10px] tracking-[0.3em] font-display text-cyber-lime uppercase font-semibold">
+          <div className="reveal-up text-[10px] tracking-[0.3em] font-sans text-[#C9A227] uppercase font-semibold">
             Projects // Portfolio
           </div>
           <div className="reveal-up" style={{ transitionDelay: "100ms" }}>
             <SplitHeading
               as="h2"
               text="SELECTED INTELLIGENT SYSTEMS"
-              className="text-4xl sm:text-6xl font-display font-bold tracking-tighter text-white uppercase max-w-3xl leading-none"
+              className="text-4xl sm:text-6xl font-serif font-bold tracking-tight text-[#F5F1E8] uppercase max-w-3xl leading-none"
             />
           </div>
-          <p className="reveal-up text-slate-500 text-xs sm:text-sm max-w-md mt-1 font-light leading-relaxed" style={{ transitionDelay: "200ms" }}>
+          <p className="reveal-up text-[#A8A29E] text-xs sm:text-sm max-w-md mt-1 font-light leading-relaxed" style={{ transitionDelay: "200ms" }}>
             Hardware integrations, machine learning systems, natural language processing, and responsive web platforms.
           </p>
         </div>
@@ -87,7 +87,7 @@ export default function Projects() {
           {projectList.map((project, idx) => (
             <div
               key={project.id}
-              className="reveal-up project-card-interactive grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center text-left group"
+              className="reveal-up project-card-interactive grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center text-left group p-6 sm:p-8 lg:p-10"
               style={{ transitionDelay: `${(idx % 2) * 90}ms` }}
             >
 
@@ -96,21 +96,21 @@ export default function Projects() {
 
                 {/* Number + Category */}
                 <div className="flex items-center gap-4">
-                  <span className="text-3xl sm:text-4xl font-display font-black text-stroke-white tracking-tighter select-none">
+                  <span className="text-3xl sm:text-4xl font-serif font-bold text-stroke-gold tracking-tighter select-none">
                     {project.num}
                   </span>
-                  <div className="px-2.5 py-1 rounded bg-white/[0.02] border border-white/[0.05] text-[9px] font-display tracking-widest text-slate-500 uppercase font-medium">
+                  <div className="px-2.5 py-1 rounded bg-[#0E0E0E] border border-[#2A2418] text-[9px] font-sans tracking-widest text-[#E5C76B] uppercase font-medium">
                     {project.category}
                   </div>
                 </div>
 
                 {/* Title — primary focal point */}
-                <h3 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight leading-snug group-hover:text-cyber-lime transition-colors duration-[450ms]">
+                <h3 className="text-2xl sm:text-3xl font-serif font-bold text-[#F5F1E8] tracking-tight leading-snug group-hover:text-[#E5C76B] transition-colors duration-[400ms]">
                   {project.title}
                 </h3>
 
-                {/* Description — slightly higher contrast than before */}
-                <p className="text-slate-400 text-sm leading-relaxed font-light">
+                {/* Description */}
+                <p className="text-[#A8A29E] text-sm leading-relaxed font-light">
                   {project.desc}
                 </p>
 
@@ -119,7 +119,7 @@ export default function Projects() {
                   {project.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-[9px] sm:text-[10px] font-mono text-slate-500 bg-white/[0.02] border border-white/[0.04] px-2.5 py-0.5 rounded-sm"
+                      className="text-[9px] sm:text-[10px] font-mono text-[#A8A29E] bg-[#0E0E0E] border border-[#2A2418] px-2.5 py-0.5 rounded-sm"
                     >
                       #{tag}
                     </span>
@@ -161,10 +161,12 @@ export default function Projects() {
 
               {/* Right: Canvas Visual — secondary, subtle */}
               <div className="lg:col-span-6 order-1 lg:order-2 w-full">
-                <div className="relative transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.02]">
-                  {/* Soft cyan halo — only on hover, very subtle */}
-                  <div className="absolute inset-0 bg-cyber-cyan/[0.03] filter blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-xl" />
-                  <ProjectVisual index={project.id} />
+                <div className="project-visual-frame relative">
+                  {/* Soft gold halo — only on hover, very subtle */}
+                  <div className="absolute inset-0 bg-[#C9A227]/[0.05] filter blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-xl" />
+                  <div className="project-visual-zoom">
+                    <ProjectVisual index={project.id} />
+                  </div>
                 </div>
               </div>
 

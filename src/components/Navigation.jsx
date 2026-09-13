@@ -26,7 +26,7 @@ export default function Navigation() {
       <nav
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
           scrolled
-            ? "py-3 bg-[#090A0C]/80 border-b border-white/[0.03] backdrop-blur-md"
+            ? "py-3 bg-[#0A0A0A]/90 border-b border-[#2A2418] backdrop-blur-md"
             : "py-6 bg-transparent"
         }`}
       >
@@ -34,12 +34,12 @@ export default function Navigation() {
           {/* Logo / Monogram */}
           <a
             href="#"
-            className="flex items-center gap-3 font-display font-bold tracking-tighter text-xl text-white group magnetic-btn"
+            className="flex items-center gap-3 font-display font-bold tracking-tighter text-xl text-[#F5F1E8] group magnetic-btn"
           >
-            <div className="w-8 h-8 rounded-md bg-[#111215] border border-white/10 flex items-center justify-center text-[13px] text-cyber-lime transition-all duration-[350ms] group-hover:border-cyber-lime group-hover:shadow-[0_0_10px_rgba(181,255,26,0.1)]">
+            <div className="w-8 h-8 rounded-md bg-[#161616] border border-[#2A2418] flex items-center justify-center text-[13px] text-[#C9A227] transition-all duration-[350ms] group-hover:border-[#C9A227] group-hover:shadow-[0_0_12px_rgba(201,162,39,0.2)]">
               LI
             </div>
-            <span className="hidden sm:inline-block text-[11px] tracking-[0.25em] text-[#8f939e] group-hover:text-white transition-colors duration-[350ms]">
+            <span className="hidden sm:inline-block text-[11px] tracking-[0.25em] text-[#A8A29E] group-hover:text-[#F5F1E8] transition-colors duration-[350ms]">
               LOGITH T
             </span>
           </a>
@@ -50,7 +50,7 @@ export default function Navigation() {
               <a
                 key={link.name}
                 href={link.href}
-                className="text-[10px] sm:text-xs font-display tracking-[0.2em] font-medium text-[#8f939e] hover:text-cyber-lime transition-colors duration-[350ms] uppercase magnetic-btn"
+                className="text-[10px] sm:text-xs font-display tracking-[0.2em] font-medium text-[#A8A29E] hover:text-[#E5C76B] transition-colors duration-[350ms] uppercase magnetic-btn"
               >
                 {link.name}
               </a>
@@ -59,13 +59,13 @@ export default function Navigation() {
               href={`${import.meta.env.BASE_URL}Logith_T_Resume.pdf`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[10px] sm:text-xs font-display tracking-[0.2em] font-medium text-[#8f939e] hover:text-cyber-lime transition-colors duration-[350ms] uppercase magnetic-btn flex items-center gap-1"
+              className="text-[10px] sm:text-xs font-display tracking-[0.2em] font-medium text-[#A8A29E] hover:text-[#E5C76B] transition-colors duration-[350ms] uppercase magnetic-btn flex items-center gap-1"
             >
-              RESUME <ArrowUpRight className="w-3 h-3" />
+              RESUME <ArrowUpRight className="w-3 h-3 text-[#C9A227]" />
             </a>
             <a
               href="mailto:logithithiru@gmail.com"
-              className="text-[10px] sm:text-xs font-display tracking-[0.15em] font-medium text-black bg-cyber-lime hover:bg-cyber-lime/90 px-4 py-2 rounded-sm transition-colors duration-300 uppercase flex items-center gap-1.5 magnetic-btn"
+              className="text-[10px] sm:text-xs font-display tracking-[0.15em] font-semibold text-[#0A0A0A] bg-[#C9A227] hover:bg-[#E5C76B] px-4 py-2 rounded-sm transition-colors duration-300 uppercase flex items-center gap-1.5 magnetic-btn"
             >
               EMAIL ME <ArrowUpRight className="w-3.5 h-3.5" />
             </a>
@@ -74,17 +74,17 @@ export default function Navigation() {
           {/* Mobile Navigation Toggle Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden w-10 h-10 rounded-full bg-[#111215] border border-white/10 flex items-center justify-center text-white hover:border-cyber-lime transition-all duration-300 active:scale-95"
+            className="md:hidden w-10 h-10 rounded-full bg-[#161616] border border-[#2A2418] flex items-center justify-center text-[#F5F1E8] hover:border-[#C9A227] transition-all duration-300 active:scale-95"
             aria-label="Toggle navigation menu"
           >
-            {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {isOpen ? <X className="w-5 h-5 text-[#C9A227]" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </nav>
 
       {/* Mobile Navigation Overlay */}
       <div
-        className={`fixed inset-0 z-40 bg-[#090A0C] transition-all duration-500 flex flex-col justify-center px-10 ${
+        className={`fixed inset-0 z-40 bg-[#0A0A0A] transition-all duration-500 flex flex-col justify-center px-10 ${
           isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >
@@ -97,7 +97,7 @@ export default function Navigation() {
               key={link.name}
               href={link.href}
               onClick={() => setIsOpen(false)}
-              className="text-3xl font-display font-bold tracking-tight text-white hover:text-cyber-lime transition-colors duration-300"
+              className="text-3xl font-display font-bold tracking-tight text-[#F5F1E8] hover:text-[#E5C76B] transition-colors duration-300"
               style={{
                 transitionDelay: `${idx * 75}ms`,
                 transform: isOpen ? "translateY(0)" : "translateY(20px)",
@@ -112,19 +112,19 @@ export default function Navigation() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => setIsOpen(false)}
-            className="text-3xl font-display font-bold tracking-tight text-white hover:text-cyber-lime transition-colors duration-300 flex items-center gap-2"
+            className="text-3xl font-display font-bold tracking-tight text-[#F5F1E8] hover:text-[#E5C76B] transition-colors duration-300 flex items-center gap-2"
             style={{
               transitionDelay: `${navLinks.length * 75}ms`,
               transform: isOpen ? "translateY(0)" : "translateY(20px)",
               opacity: isOpen ? 1 : 0,
             }}
           >
-            RESUME <ArrowUpRight className="w-5 h-5" />
+            RESUME <ArrowUpRight className="w-5 h-5 text-[#C9A227]" />
           </a>
           <a
             href="mailto:logithithiru@gmail.com"
             onClick={() => setIsOpen(false)}
-            className="mt-4 text-lg font-display tracking-wider font-semibold text-cyber-lime hover:underline flex items-center gap-1.5"
+            className="mt-4 text-lg font-display tracking-wider font-semibold text-[#C9A227] hover:text-[#E5C76B] flex items-center gap-1.5"
             style={{
               transitionDelay: `${(navLinks.length + 1) * 75}ms`,
               transform: isOpen ? "translateY(0)" : "translateY(20px)",

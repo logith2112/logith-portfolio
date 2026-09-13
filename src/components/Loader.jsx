@@ -60,7 +60,7 @@ export default function Loader({ onComplete }) {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 bg-[#090A0C] z-[99999] flex flex-col items-center justify-center select-none"
+      className="fixed inset-0 bg-[#0A0A0A] z-[99999] flex flex-col items-center justify-center select-none"
       style={{ clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" }}
     >
       <div className="relative flex flex-col items-center gap-4">
@@ -80,7 +80,7 @@ export default function Loader({ onComplete }) {
             height="90"
             rx="16"
             fill="none"
-            stroke="#b5ff1a"
+            stroke="#C9A227"
             strokeWidth="2.5"
             strokeLinecap="round"
           />
@@ -89,7 +89,7 @@ export default function Loader({ onComplete }) {
             x="50%"
             y="68%"
             textAnchor="middle"
-            fill="#e2e8f0"
+            fill="#F5F1E8"
             fontSize="48"
             fontWeight="bold"
             fontFamily="sans-serif"
@@ -101,10 +101,10 @@ export default function Loader({ onComplete }) {
 
         {/* Supporting branding */}
         <div ref={textRef} className="text-center">
-          <div className="text-[10px] sm:text-xs tracking-[0.4em] text-cyber-lime font-display font-medium uppercase">
+          <div className="text-[10px] sm:text-xs tracking-[0.4em] text-[#E5C76B] font-display font-semibold uppercase">
             LOGITH T
           </div>
-          <div className="text-[8px] sm:text-[10px] tracking-[0.2em] text-[#6b6f7a] font-sans mt-1">
+          <div className="text-[8px] sm:text-[10px] tracking-[0.2em] text-[#A8A29E] font-sans mt-1">
             AI / ML ENGINEERING
           </div>
         </div>

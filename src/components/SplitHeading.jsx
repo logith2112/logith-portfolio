@@ -24,7 +24,7 @@ export default function SplitHeading({ text, as: Tag = "h2", className = "" }) {
         gsap.to(char, {
           scale: 1.18,
           y: -4,
-          color: "#b5ff1a",
+          color: "#C9A227",
           duration: 0.32,
           ease: "power3.out",
           overwrite: true,

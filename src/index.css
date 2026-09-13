@@ -8,34 +8,34 @@
   }
   
   body {
-    background-color: #090A0C;
-    color: #cbd5e1; /* slate-300 — slightly brighter base text for readability */
+    background-color: #0A0A0A;
+    color: #F5F1E8; /* luxury ivory base text */
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Space Grotesk', 'Playfair Display', sans-serif;
   }
 }
 
-/* Custom Scrollbar */
+/* Custom Luxury Scrollbar */
 ::-webkit-scrollbar {
   width: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #090A0C;
+  background: #0A0A0A;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1a1c22;
+  background: #2A2418;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #b5ff1a;
+  background: #C9A227;
 }
 
-/* Grain Overlay — slightly more subtle */
+/* Grain Overlay — subtle luxury finish */
 .grain-overlay {
   position: fixed;
   top: 0;
@@ -43,18 +43,18 @@
   width: 100vw;
   height: 100vh;
   content: "";
-  opacity: 0.018;
+  opacity: 0.015;
   z-index: 9999;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
-/* Noise texture on cards — refined shadow and border transitions */
+/* Noise texture on cards — luxury surface & champagne gold border */
 .noise-card {
   position: relative;
   overflow: hidden;
-  background: rgba(15, 16, 19, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: #161616;
+  border: 1px solid #2A2418;
   backdrop-filter: blur(16px);
   transition: border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
               box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
@@ -66,33 +66,33 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  opacity: 0.015;
+  opacity: 0.012;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
 .noise-card:hover {
-  border-color: rgba(181, 255, 26, 0.14);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(181, 255, 26, 0.04);
+  border-color: #C9A227;
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.6), 0 0 16px rgba(201, 162, 39, 0.08);
 }
 
-/* Glowing Radial Blur background — reduced opacity by ~12% for better text priority */
+/* Glowing Radial Blur background — subtle warm champagne mist */
 .glow-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(130px);
-  opacity: 0.09;
+  filter: blur(140px);
+  opacity: 0.04;
   pointer-events: none;
   mix-blend-mode: screen;
 }
 
-/* Scroll Progress Bar */
+/* Scroll Progress Bar — Champagne Gold gradient */
 .progress-line {
   position: fixed;
   top: 0;
   left: 0;
   height: 2px;
-  background: linear-gradient(90deg, #b5ff1a 0%, #00f0ff 100%);
+  background: linear-gradient(90deg, #C9A227 0%, #E5C76B 100%);
   z-index: 1000;
   width: 0%;
   transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -118,14 +118,15 @@ html {
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Text utilities */
+/* Text utilities — Champagne Gold & Ivory Strokes */
+.text-stroke-gold,
 .text-stroke-lime {
-  -webkit-text-stroke: 1px rgba(181, 255, 26, 0.35);
+  -webkit-text-stroke: 1px rgba(201, 162, 39, 0.35);
   color: transparent;
 }
 
 .text-stroke-white {
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.12);
+  -webkit-text-stroke: 1px rgba(245, 241, 232, 0.12);
   color: transparent;
 }
 
@@ -144,7 +145,7 @@ html {
   animation: float 2.2s ease-in-out infinite;
 }
 
-/* Pulse at 2.8s — not 1s (overrides Tailwind default) */
+/* Pulse at 2.8s */
 @keyframes pulseSlow {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.35; }
@@ -153,17 +154,17 @@ html {
   animation: pulseSlow 2.8s ease-in-out infinite;
 }
 
-/* Profile photo hover glow — lime border shimmer */
+/* Profile photo hover glow — champagne gold border shimmer */
 .portrait-glow {
   transition: box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
               border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .portrait-glow:hover {
-  box-shadow: 0 0 0 1px rgba(181, 255, 26, 0.4), 0 0 20px rgba(181, 255, 26, 0.12);
-  border-color: rgba(181, 255, 26, 0.35) !important;
+  box-shadow: 0 0 0 1px rgba(201, 162, 39, 0.4), 0 0 24px rgba(201, 162, 39, 0.15);
+  border-color: rgba(201, 162, 39, 0.45) !important;
 }
 
-/* Project CTA action button — minimal, editorial */
+/* Project CTA action button — luxury, editorial */
 .project-cta {
   display: inline-flex;
   align-items: center;
@@ -173,33 +174,34 @@ html {
   letter-spacing: 0.15em;
   font-weight: 600;
   text-transform: uppercase;
-  padding: 7px 14px;
+  padding: 8px 16px;
   border-radius: 2px;
   transition: background 0.3s cubic-bezier(0.16, 1, 0.3, 1),
               color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .project-cta-live {
-  color: #090A0C;
-  background: #b5ff1a;
-  border: 1px solid #b5ff1a;
+  color: #0A0A0A;
+  background: #C9A227;
+  border: 1px solid #C9A227;
 }
 .project-cta-live:hover {
-  background: rgba(181, 255, 26, 0.88);
+  background: #E5C76B;
+  border-color: #E5C76B;
 }
 .project-cta-github {
-  color: #b5ff1a;
-  background: rgba(181, 255, 26, 0.06);
-  border: 1px solid rgba(181, 255, 26, 0.2);
+  color: #E5C76B;
+  background: rgba(201, 162, 39, 0.06);
+  border: 1px solid #2A2418;
 }
 .project-cta-github:hover {
-  background: rgba(181, 255, 26, 0.12);
-  border-color: rgba(181, 255, 26, 0.4);
+  background: rgba(201, 162, 39, 0.12);
+  border-color: #C9A227;
 }
 .project-cta-wip {
-  color: #5c606a;
+  color: #78716C;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid #2A2418;
   cursor: default;
 }
 
@@ -301,36 +303,63 @@ html, body {
 .stagger-container > .stagger-item:nth-child(12),
 .stagger-auto > *:nth-child(12) { --delay: 1210ms; }
 
-/* Subtle project card hover uplift & scale */
+/* Project card luxury hover: lift -6px, gold border & subtle gold glow */
 .project-card-interactive {
+  background: #161616;
+  border: 1px solid #2A2418;
+  border-radius: 0.75rem;
   transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .project-card-interactive:hover {
-  transform: translateY(-4px) scale(1.018);
+  transform: translateY(-6px);
+  border-color: #C9A227;
+  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.7), 0 0 24px rgba(201, 162, 39, 0.07);
+}
+
+/* Project Visual container & image hover zoom 1.02 over 0.4s */
+.project-visual-frame {
+  overflow: hidden;
+  border-radius: 0.75rem;
+  border: 1px solid #2A2418;
+  transition: border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.project-card-interactive:hover .project-visual-frame {
+  border-color: rgba(201, 162, 39, 0.4);
+}
+.project-visual-zoom {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+.project-card-interactive:hover .project-visual-zoom {
+  transform: scale(1.02);
 }
 
 /* Mobile responsive adjustments: reduced movement distance & snappy timing */
 @media (max-width: 767px) {
   .reveal,
   .reveal-up {
-    transform: translateY(26px);
+    transform: translateY(25px);
     transition-duration: 0.5s;
   }
   .reveal-left {
-    transform: translateX(-24px);
+    transform: translateX(-20px);
     transition-duration: 0.5s;
   }
   .reveal-right {
-    transform: translateX(24px);
+    transform: translateX(20px);
     transition-duration: 0.5s;
   }
   .stagger-item {
-    transform: translateY(20px);
+    transform: translateY(18px);
     transition-duration: 0.5s;
   }
   .project-card-interactive:hover {
-    transform: translateY(-2px) scale(1.008);
+    transform: translateY(-3px);
+  }
+  .project-card-interactive:hover .project-visual-zoom {
+    transform: scale(1.01);
   }
 }
 

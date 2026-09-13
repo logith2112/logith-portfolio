@@ -106,7 +106,7 @@ export function WaterBuoyVisual() {
     ctx.lineWidth = 1.5;
     const waveCount = isMobile ? 1 : 3;
     for (let waveIndex = 0; waveIndex < waveCount; waveIndex++) {
-      ctx.strokeStyle = waveIndex === 0 ? "rgba(181, 255, 26, 0.4)" : "rgba(0, 240, 255, 0.2)";
+      ctx.strokeStyle = waveIndex === 0 ? "rgba(201, 162, 39, 0.45)" : "rgba(229, 199, 107, 0.25)";
       ctx.beginPath();
       
       // Step size is wider on mobile to save CPU cycles
@@ -133,7 +133,7 @@ export function WaterBuoyVisual() {
       const yPos = h / 2 + Math.sin(angle) * 15 + Math.cos(angle * 0.5) * 5;
 
       // Vertical line
-      ctx.strokeStyle = "rgba(0, 240, 255, 0.25)";
+      ctx.strokeStyle = "rgba(201, 162, 39, 0.25)";
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
       ctx.moveTo(xPos, yPos);
@@ -142,33 +142,33 @@ export function WaterBuoyVisual() {
       ctx.setLineDash([]);
 
       // Buoy head
-      ctx.fillStyle = "#b5ff1a";
+      ctx.fillStyle = "#C9A227";
       ctx.beginPath();
       ctx.arc(xPos, yPos, 4, 0, Math.PI * 2);
       ctx.fill();
 
       // Anchor node
-      ctx.fillStyle = "#00f0ff";
+      ctx.fillStyle = "#E5C76B";
       ctx.beginPath();
       ctx.arc(xPos, yPos + (isMobile ? 40 : 60), 3, 0, Math.PI * 2);
       ctx.fill();
 
       // Label (Skip text rendering on small screens to save load)
       if (!isMobile) {
-        ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
+        ctx.fillStyle = "rgba(245, 241, 232, 0.6)";
         ctx.font = "9px ui-monospace, SFMono-Regular, monospace";
         ctx.fillText(node.label, xPos - 20, yPos - 12);
       }
     });
 
-    ctx.fillStyle = "rgba(181, 255, 26, 0.5)";
+    ctx.fillStyle = "rgba(201, 162, 39, 0.6)";
     ctx.font = "8px ui-monospace, SFMono-Regular, monospace";
     ctx.fillText(`SENSOR_SYS: ONLINE // SAMPLE_RATE: 2.4GHz`, 15, 20);
   };
 
   useCanvasOptimizer(canvasRef, drawFrame);
 
-  return <canvas ref={canvasRef} className="w-full bg-[#111215]/30 rounded-lg border border-white/[0.03]" />;
+  return <canvas ref={canvasRef} className="w-full bg-[#111111]/60 rounded-lg border border-[#2A2418]" />;
 }
 
 // Project 2: Human Activity Recognition System
@@ -202,9 +202,9 @@ export function ActivityRecognitionVisual() {
     dataPointsRef.current.push({ x: noiseX, y: noiseY, z: noiseZ });
 
     const channels = [
-      { key: "x", color: "#b5ff1a" },
-      { key: "y", color: "#00f0ff" },
-      { key: "z", color: "rgba(255, 255, 255, 0.4)" }
+      { key: "x", color: "#C9A227" },
+      { key: "y", color: "#E5C76B" },
+      { key: "z", color: "rgba(245, 241, 232, 0.4)" }
     ];
 
     const dataPoints = dataPointsRef.current;
@@ -228,57 +228,57 @@ export function ActivityRecognitionVisual() {
       ctx.stroke();
     });
 
-    ctx.fillStyle = "#b5ff1a";
+    ctx.fillStyle = "#C9A227";
     ctx.font = "9px ui-monospace, SFMono-Regular, monospace";
     ctx.fillText(`CLASSIFIER_STATE: ${state}`, 15, 20);
 
-    ctx.fillStyle = "rgba(255,255,255,0.4)";
+    ctx.fillStyle = "rgba(245, 241, 232, 0.4)";
     ctx.fillText(`FREQ: 50Hz // CHANNELS: 3D_ACCEL`, w - (isMobile ? 140 : 160), 20);
   };
 
   useCanvasOptimizer(canvasRef, drawFrame);
 
-  return <canvas ref={canvasRef} className="w-full bg-[#111215]/30 rounded-lg border border-white/[0.03]" />;
+  return <canvas ref={canvasRef} className="w-full bg-[#111111]/60 rounded-lg border border-[#2A2418]" />;
 }
 
 // Project 3: Clinical Note Summarization & Coding Assistant
 export function ClinicalNLPVisual() {
   return (
-    <div className="w-full h-[240px] bg-[#111215]/40 rounded-lg border border-white/[0.03] p-4 font-mono text-[10px] sm:text-xs overflow-hidden flex flex-col justify-between">
-      <div className="flex items-center justify-between border-b border-white/[0.03] pb-2 text-[10px] text-slate-500">
+    <div className="w-full h-[240px] bg-[#111111]/60 rounded-lg border border-[#2A2418] p-4 font-mono text-[10px] sm:text-xs overflow-hidden flex flex-col justify-between">
+      <div className="flex items-center justify-between border-b border-[#2A2418] pb-2 text-[10px] text-stone-500">
         <span>PATIENT_RECORD_SUMMARIZER_V1.0</span>
         <span className="flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-cyber-lime animate-pulse"></span>
-          READY
+          <span className="w-1.5 h-1.5 rounded-full bg-[#C9A227] animate-pulse"></span>
+          <span className="text-[#E5C76B]">READY</span>
         </span>
       </div>
 
-      <div className="flex-1 py-3 flex flex-col gap-2.5 text-slate-300">
+      <div className="flex-1 py-3 flex flex-col gap-2.5 text-stone-300">
         <div>
-          <span className="text-[#686f7a]">&gt;_ INPUT_NOTE:</span>
-          <p className="leading-relaxed mt-1 text-slate-400">
+          <span className="text-[#78716C]">&gt;_ INPUT_NOTE:</span>
+          <p className="leading-relaxed mt-1 text-stone-400">
             Patient presents with severe dyspnea and productive cough. Checked vitals: Temp{" "}
-            <span className="px-1 py-0.5 rounded bg-cyber-cyan/10 border border-cyber-cyan/30 text-cyber-cyan font-semibold">
+            <span className="px-1 py-0.5 rounded bg-[#E5C76B]/10 border border-[#E5C76B]/30 text-[#E5C76B] font-semibold">
               38.5C [FEVER]
             </span>
             , HR 105. Suspected acute bronchial infection. Prescribed{" "}
-            <span className="px-1 py-0.5 rounded bg-cyber-lime/10 border border-cyber-lime/30 text-cyber-lime font-semibold">
+            <span className="px-1 py-0.5 rounded bg-[#C9A227]/10 border border-[#C9A227]/30 text-[#C9A227] font-semibold">
               Amoxicillin [RX]
             </span>{" "}
             500mg.
           </p>
         </div>
 
-        <div className="border-t border-white/[0.03] pt-2">
-          <span className="text-[#686f7a]">&gt;_ AI_SUMMARY_NER:</span>
+        <div className="border-t border-[#2A2418] pt-2">
+          <span className="text-[#78716C]">&gt;_ AI_SUMMARY_NER:</span>
           <div className="grid grid-cols-2 gap-2 mt-1">
-            <div className="p-1.5 rounded bg-white/[0.02] border border-white/[0.04]">
-              <div className="text-[9px] text-slate-500">ICD-10 CODE REC</div>
-              <div className="text-cyber-lime font-semibold">J20.9 (Bronchitis)</div>
+            <div className="p-1.5 rounded bg-[#161616] border border-[#2A2418]">
+              <div className="text-[9px] text-stone-500">ICD-10 CODE REC</div>
+              <div className="text-[#C9A227] font-semibold">J20.9 (Bronchitis)</div>
             </div>
-            <div className="p-1.5 rounded bg-white/[0.02] border border-white/[0.04]">
-              <div className="text-[9px] text-slate-500">MEDICATIONS FOUND</div>
-              <div className="text-cyber-cyan font-semibold">Amoxicillin (500mg)</div>
+            <div className="p-1.5 rounded bg-[#161616] border border-[#2A2418]">
+              <div className="text-[9px] text-stone-500">MEDICATIONS FOUND</div>
+              <div className="text-[#E5C76B] font-semibold">Amoxicillin (500mg)</div>
             </div>
           </div>
         </div>
@@ -297,7 +297,7 @@ export function FinanceVisual() {
     const offset = offsetRef.current;
 
     // Draw Grid (Wider spacings on mobile)
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.02)";
+    ctx.strokeStyle = "rgba(42, 36, 24, 0.4)";
     ctx.lineWidth = 1;
     const gridSize = isMobile ? 60 : 30;
     
@@ -316,7 +316,7 @@ export function FinanceVisual() {
 
     // Chart points
     const chartPoints = [];
-    const steps = isMobile ? 8 : 15; // half the calculations on mobile
+    const steps = isMobile ? 8 : 15;
     for (let i = 0; i <= steps; i++) {
       const xVal = (i / steps) * (w - 40) + 20;
       const noise = Math.sin(i * 0.5 + offset) * 12 + Math.cos(i * 0.8) * 6;
@@ -326,8 +326,8 @@ export function FinanceVisual() {
 
     // Gradient Fill
     const grad = ctx.createLinearGradient(0, 0, 0, h);
-    grad.addColorStop(0, "rgba(0, 240, 255, 0.15)");
-    grad.addColorStop(1, "rgba(0, 240, 255, 0.0)");
+    grad.addColorStop(0, "rgba(201, 162, 39, 0.15)");
+    grad.addColorStop(1, "rgba(201, 162, 39, 0.0)");
 
     ctx.fillStyle = grad;
     ctx.beginPath();
@@ -338,7 +338,7 @@ export function FinanceVisual() {
     ctx.fill();
 
     // Main line
-    ctx.strokeStyle = "#00f0ff";
+    ctx.strokeStyle = "#C9A227";
     ctx.lineWidth = 2;
     ctx.beginPath();
     chartPoints.forEach((p, idx) => {
@@ -350,21 +350,21 @@ export function FinanceVisual() {
     // Secondary points
     chartPoints.forEach((p, idx) => {
       if (idx % 3 === 0) {
-        ctx.fillStyle = "#b5ff1a";
+        ctx.fillStyle = "#E5C76B";
         ctx.beginPath();
         ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
         ctx.fill();
       }
     });
 
-    ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+    ctx.fillStyle = "rgba(201, 162, 39, 0.7)";
     ctx.font = "8px ui-monospace, SFMono-Regular, monospace";
     ctx.fillText(`PORTFOLIO_VALUE: +12.4% // DTD_AVG`, 15, 20);
   };
 
   useCanvasOptimizer(canvasRef, drawFrame);
 
-  return <canvas ref={canvasRef} className="w-full bg-[#111215]/30 rounded-lg border border-white/[0.03]" />;
+  return <canvas ref={canvasRef} className="w-full bg-[#111111]/60 rounded-lg border border-[#2A2418]" />;
 }
 
 // Project 5: Radiusdia Studio Architectural Blueprint Grid
@@ -376,8 +376,8 @@ export function RadiusdiaVisual() {
     offsetRef.current = (offsetRef.current + 0.3) % 30;
     const offset = offsetRef.current;
 
-    // Draw blueprint lines (Skip full grid lines on mobile)
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.03)";
+    // Draw blueprint lines
+    ctx.strokeStyle = "rgba(42, 36, 24, 0.4)";
     ctx.lineWidth = 1;
     const spacing = isMobile ? 60 : 30;
     
@@ -396,7 +396,7 @@ export function RadiusdiaVisual() {
     }
 
     // Technical cube projection
-    ctx.strokeStyle = "rgba(181, 255, 26, 0.5)";
+    ctx.strokeStyle = "rgba(201, 162, 39, 0.55)";
     ctx.lineWidth = 1;
     ctx.beginPath();
     
@@ -424,14 +424,14 @@ export function RadiusdiaVisual() {
     ctx.lineTo(cx - scale * 1.5, cy - scale * 0.5);
     ctx.stroke();
 
-    ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
+    ctx.fillStyle = "rgba(245, 241, 232, 0.4)";
     ctx.font = "8px ui-monospace, SFMono-Regular, monospace";
     ctx.fillText(`VECTOR_CAD: ACTIVE // ORTHO_PROJ`, 15, 20);
   };
 
   useCanvasOptimizer(canvasRef, drawFrame);
 
-  return <canvas ref={canvasRef} className="w-full bg-[#111215]/30 rounded-lg border border-white/[0.03]" />;
+  return <canvas ref={canvasRef} className="w-full bg-[#111111]/60 rounded-lg border border-[#2A2418]" />;
 }
 
 // Master Component Switcher
