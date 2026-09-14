@@ -1,5 +1,4 @@
-import { ArrowUpRight } from "lucide-react";
-import ProjectVisual from "../components/ProjectVisuals";
+import ProjectCard from "../components/ProjectCard";
 import SplitHeading from "../components/SplitHeading";
 
 export default function Projects() {
@@ -82,95 +81,10 @@ export default function Projects() {
           </p>
         </div>
 
-        {/* Project List: One-by-one progressive reveal as user scrolls */}
+        {/* Project List: One-by-one progressive reveal with 3D Tilt & Local Gold Spotlight */}
         <div className="flex flex-col gap-28 sm:gap-36">
           {projectList.map((project, idx) => (
-            <div
-              key={project.id}
-              className="reveal-up project-card-interactive grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center text-left group p-6 sm:p-8 lg:p-10"
-              style={{ transitionDelay: `${(idx % 2) * 90}ms` }}
-            >
-
-              {/* Left: Details */}
-              <div className="lg:col-span-6 flex flex-col gap-4 sm:gap-5 order-2 lg:order-1">
-
-                {/* Number + Category */}
-                <div className="flex items-center gap-4">
-                  <span className="text-3xl sm:text-4xl font-serif font-bold text-stroke-gold tracking-tighter select-none">
-                    {project.num}
-                  </span>
-                  <div className="px-2.5 py-1 rounded bg-[#0E0E0E] border border-[#2A2418] text-[9px] font-sans tracking-widest text-[#E5C76B] uppercase font-medium">
-                    {project.category}
-                  </div>
-                </div>
-
-                {/* Title — primary focal point */}
-                <h3 className="text-2xl sm:text-3xl font-serif font-bold text-[#F5F1E8] tracking-tight leading-snug group-hover:text-[#E5C76B] transition-colors duration-[400ms]">
-                  {project.title}
-                </h3>
-
-                {/* Description */}
-                <p className="text-[#A8A29E] text-sm leading-relaxed font-light">
-                  {project.desc}
-                </p>
-
-                {/* Tech Tags */}
-                <div className="flex flex-wrap gap-2 mt-1">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-[9px] sm:text-[10px] font-mono text-[#A8A29E] bg-[#0E0E0E] border border-[#2A2418] px-2.5 py-0.5 rounded-sm"
-                    >
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Compact CTA — editorial, no invented links */}
-                <div className="mt-3">
-                  {project.link ? (
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="project-cta project-cta-live magnetic-btn"
-                    >
-                      View Live Site <ArrowUpRight className="w-3 h-3" />
-                    </a>
-                  ) : project.github ? (
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="project-cta project-cta-github magnetic-btn"
-                    >
-                      View on GitHub <ArrowUpRight className="w-3 h-3" />
-                    </a>
-                  ) : project.wip ? (
-                    <span className="project-cta project-cta-wip">
-                      In Development
-                    </span>
-                  ) : (
-                    <span className="project-cta project-cta-wip">
-                      Case Study Coming Soon
-                    </span>
-                  )}
-                </div>
-
-              </div>
-
-              {/* Right: Canvas Visual — secondary, subtle */}
-              <div className="lg:col-span-6 order-1 lg:order-2 w-full">
-                <div className="project-visual-frame relative">
-                  {/* Soft gold halo — only on hover, very subtle */}
-                  <div className="absolute inset-0 bg-[#C9A227]/[0.05] filter blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-xl" />
-                  <div className="project-visual-zoom">
-                    <ProjectVisual index={project.id} />
-                  </div>
-                </div>
-              </div>
-
-            </div>
+            <ProjectCard key={project.id} project={project} idx={idx} />
           ))}
         </div>
 

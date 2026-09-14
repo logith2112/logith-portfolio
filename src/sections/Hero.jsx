@@ -184,8 +184,48 @@ export default function Hero() {
     observer.observe(canvas);
     animationFrameId = requestAnimationFrame(draw);
 
+    // 3. Hero Parallax — subtle 5px-12px movement on non-critical decorative elements
+    const handleHeroParallax = (e) => {
+      if (prefersReducedMotion || window.innerWidth < 768 || !isVisible) return;
+      const relX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+      const relY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+
+      if (canvasContainerRef.current) {
+        gsap.to(canvasContainerRef.current, {
+          x: relX * 12,
+          y: relY * 12,
+          duration: 0.65,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+      }
+      if (photoRef.current) {
+        gsap.to(photoRef.current, {
+          x: relX * 6,
+          y: relY * 6,
+          duration: 0.65,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+      }
+    };
+
+    const handleHeroLeave = () => {
+      if (canvasContainerRef.current) {
+        gsap.to(canvasContainerRef.current, { x: 0, y: 0, duration: 0.5, ease: "power2.out" });
+      }
+      if (photoRef.current) {
+        gsap.to(photoRef.current, { x: 0, y: 0, duration: 0.5, ease: "power2.out" });
+      }
+    };
+
+    window.addEventListener("mousemove", handleHeroParallax, { passive: true });
+    document.documentElement.addEventListener("mouseleave", handleHeroLeave);
+
     return () => {
       window.removeEventListener("resize", resize);
+      window.removeEventListener("mousemove", handleHeroParallax);
+      document.documentElement.removeEventListener("mouseleave", handleHeroLeave);
       cancelAnimationFrame(animationFrameId);
       observer.disconnect();
     };

@@ -4,13 +4,36 @@ import { Menu, X, ArrowUpRight } from "lucide-react";
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 40);
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    // Track active section via IntersectionObserver
+    const sectionIds = ["about", "projects", "skills", "credentials", "contact"];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(`#${entry.target.id}`);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      observer.disconnect();
+    };
   }, []);
 
   const navLinks = [
@@ -44,30 +67,35 @@ export default function Navigation() {
             </span>
           </a>
 
-          {/* Desktop Navigation Links */}
+          {/* Desktop Navigation Links — 12. Animated underline & active section indicator */}
           <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="text-[10px] sm:text-xs font-display tracking-[0.2em] font-medium text-[#A8A29E] hover:text-[#E5C76B] transition-colors duration-[350ms] uppercase magnetic-btn"
-              >
-                {link.name}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.href;
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className={`text-[10px] sm:text-xs font-display tracking-[0.2em] font-medium transition-colors duration-[350ms] uppercase nav-link-animated magnetic-btn ${
+                    isActive ? "active text-[#E5C76B]" : "text-[#A8A29E] hover:text-[#E5C76B]"
+                  }`}
+                >
+                  {link.name}
+                </a>
+              );
+            })}
             <a
               href={`${import.meta.env.BASE_URL}Logith_T_Resume.pdf`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[10px] sm:text-xs font-display tracking-[0.2em] font-medium text-[#A8A29E] hover:text-[#E5C76B] transition-colors duration-[350ms] uppercase magnetic-btn flex items-center gap-1"
+              className="text-[10px] sm:text-xs font-display tracking-[0.2em] font-medium text-[#A8A29E] hover:text-[#E5C76B] transition-colors duration-[350ms] uppercase nav-link-animated magnetic-btn flex items-center gap-1"
             >
-              RESUME <ArrowUpRight className="w-3 h-3 text-[#C9A227]" />
+              RESUME <ArrowUpRight className="w-3 h-3 text-[#C9A227] arrow-micro" />
             </a>
             <a
               href="mailto:logithithiru@gmail.com"
               className="text-[10px] sm:text-xs font-display tracking-[0.15em] font-semibold text-[#0A0A0A] bg-[#C9A227] hover:bg-[#E5C76B] px-4 py-2 rounded-sm transition-colors duration-300 uppercase flex items-center gap-1.5 magnetic-btn"
             >
-              EMAIL ME <ArrowUpRight className="w-3.5 h-3.5" />
+              EMAIL ME <ArrowUpRight className="w-3.5 h-3.5 arrow-micro" />
             </a>
           </div>
 

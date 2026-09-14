@@ -34,14 +34,14 @@ export default function AmbientGlow() {
     const glow = glowRef.current;
     if (!glow) return;
 
-    // Responsive glow sizing: 320px on desktop, 200px on mobile
+    // Responsive glow sizing: 300px on desktop, 200px on mobile
     let isMobile = window.innerWidth < 768;
-    let size = isMobile ? 200 : 320;
+    let size = isMobile ? 200 : 300;
     let halfSize = size / 2;
 
     const updateDimensions = () => {
       isMobile = window.innerWidth < 768;
-      size = isMobile ? 200 : 320;
+      size = isMobile ? 200 : 300;
       halfSize = size / 2;
       if (glow) {
         glow.style.width = `${size}px`;
@@ -57,7 +57,7 @@ export default function AmbientGlow() {
     const current = { x: -500, y: -500 };
 
     // Fluid smoothing factor (0.12 gives natural, luxurious floating trail)
-    const LERP_FACTOR = isMobile ? 0.18 : 0.12;
+    const LERP_FACTOR = isMobile ? 0.16 : 0.12;
 
     let rafId = null;
     let isVisible = false;
@@ -144,11 +144,11 @@ export default function AmbientGlow() {
     };
 
     const onTouchEnd = () => {
-      // Smoothly fade out when touch concludes
+      // Smoothly fade out approximately 450ms after touch concludes
       if (touchFadeTimeout) clearTimeout(touchFadeTimeout);
       touchFadeTimeout = setTimeout(() => {
         hideGlow();
-      }, 250);
+      }, 450);
     };
 
     // Attach listeners
@@ -198,15 +198,15 @@ export default function AmbientGlow() {
           position: "absolute",
           top: 0,
           left: 0,
-          width: "320px",
-          height: "320px",
-          marginLeft: "-160px",
-          marginTop: "-160px",
+          width: "300px",
+          height: "300px",
+          marginLeft: "-150px",
+          marginTop: "-150px",
           borderRadius: "50%",
           pointerEvents: "none",
           background:
-            "radial-gradient(circle, rgba(229, 199, 107, 0.22) 0%, rgba(201, 162, 39, 0.12) 28%, rgba(201, 162, 39, 0.04) 52%, transparent 72%)",
-          filter: "blur(32px)",
+            "radial-gradient(circle, rgba(229, 199, 107, 0.18) 0%, rgba(201, 162, 39, 0.10) 25%, rgba(201, 162, 39, 0.04) 45%, transparent 70%)",
+          filter: "blur(36px)",
           willChange: "transform, opacity",
           opacity: 0,
           transition: "opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)",

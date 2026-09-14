@@ -51,9 +51,27 @@ export default function CustomCursor() {
 
     rafId = requestAnimationFrame(tick);
 
+    let currentMagneticBtn = null;
+
     const onMouseMove = (e) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
+
+      // 10. Continuous smooth magnetic movement
+      if (currentMagneticBtn) {
+        const rect = currentMagneticBtn.getBoundingClientRect();
+        const relX = (e.clientX - (rect.left + rect.width / 2)) * 0.35;
+        const relY = (e.clientY - (rect.top + rect.height / 2)) * 0.35;
+        const clampedX = Math.max(-10, Math.min(10, relX));
+        const clampedY = Math.max(-10, Math.min(10, relY));
+        gsap.to(currentMagneticBtn, {
+          x: clampedX,
+          y: clampedY,
+          duration: 0.25,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+      }
     };
 
     const onMouseDown = () => {
@@ -94,18 +112,10 @@ export default function CustomCursor() {
         dotRef.current.style.opacity = "0.5";
       }
 
-      // Magnetic pull on magnetic-btn elements
-      if (target.classList.contains("magnetic-btn")) {
-        const rect = target.getBoundingClientRect();
-        const relX = e.clientX - rect.left - rect.width / 2;
-        const relY = e.clientY - rect.top - rect.height / 2;
-        gsap.to(target, {
-          x: relX * 0.25,
-          y: relY * 0.25,
-          duration: 0.35,
-          ease: "power3.out",
-          overwrite: true,
-        });
+      // Active magnetic button detection
+      const magnetic = target.closest(".magnetic-btn");
+      if (magnetic) {
+        currentMagneticBtn = magnetic;
       }
     };
 
@@ -125,14 +135,18 @@ export default function CustomCursor() {
         dotRef.current.style.opacity = "1";
       }
 
-      if (target.classList.contains("magnetic-btn")) {
-        gsap.to(target, {
+      const magnetic = target.closest(".magnetic-btn");
+      if (magnetic) {
+        gsap.to(magnetic, {
           x: 0,
           y: 0,
-          duration: 0.4,
+          duration: 0.38,
           ease: "power3.out",
           overwrite: true,
         });
+        if (currentMagneticBtn === magnetic) {
+          currentMagneticBtn = null;
+        }
       }
     };
 

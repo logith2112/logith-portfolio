@@ -86,16 +86,17 @@
   mix-blend-mode: screen;
 }
 
-/* Scroll Progress Bar — Champagne Gold gradient */
+/* Scroll Progress Bar — Champagne Gold gradient with subtle glow */
 .progress-line {
   position: fixed;
   top: 0;
   left: 0;
-  height: 2px;
+  height: 2.5px;
   background: linear-gradient(90deg, #C9A227 0%, #E5C76B 100%);
+  box-shadow: 0 0 10px rgba(229, 199, 107, 0.45);
   z-index: 1000;
   width: 0%;
-  transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: width 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Hide default cursor on desktop */
@@ -111,11 +112,89 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Magnetic buttons */
+/* Magnetic buttons & Button Shine Sweep */
 .magnetic-btn {
   display: inline-block;
   position: relative;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.magnetic-btn::after,
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    110deg,
+    transparent 45%,
+    rgba(255, 255, 255, 0.30) 50%,
+    transparent 55%
+  );
+  pointer-events: none;
+  transform: skewX(-20deg);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.magnetic-btn:hover::after,
+.btn-shine:hover::after {
+  opacity: 1;
+  animation: btnShineSweep 0.75s ease-out;
+}
+
+@keyframes btnShineSweep {
+  0% { left: -120%; }
+  100% { left: 180%; }
+}
+
+/* Navigation link left-to-right animated underline */
+.nav-link-animated {
+  position: relative;
+  padding-bottom: 4px;
+}
+.nav-link-animated::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: #E5C76B;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-link-animated:hover::after,
+.nav-link-animated.active::after {
+  transform: scaleX(1);
+}
+.nav-link-animated.active {
+  color: #E5C76B !important;
+}
+
+/* Micro-interactions: subtle movement for arrows and icons */
+.arrow-micro {
+  display: inline-block;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .arrow-micro,
+.magnetic-btn:hover .arrow-micro {
+  transform: translateX(3px) translateY(-1px);
+}
+
+.social-icon-micro {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.social-icon-micro:hover {
+  transform: translateY(-2px);
 }
 
 /* Text utilities — Champagne Gold & Ivory Strokes */
@@ -303,19 +382,21 @@ html, body {
 .stagger-container > .stagger-item:nth-child(12),
 .stagger-auto > *:nth-child(12) { --delay: 1210ms; }
 
-/* Project card luxury hover: lift -6px, gold border & subtle gold glow */
+/* Project card 3D tilt & luxury hover: lift -6px, gold border & subtle gold shadow */
 .project-card-interactive {
+  position: relative;
   background: #161616;
   border: 1px solid #2A2418;
   border-radius: 0.75rem;
+  transform-style: preserve-3d;
+  will-change: transform, box-shadow, border-color;
   transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .project-card-interactive:hover {
-  transform: translateY(-6px);
   border-color: #C9A227;
-  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.7), 0 0 24px rgba(201, 162, 39, 0.07);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35), 0 0 25px rgba(201, 162, 39, 0.08);
 }
 
 /* Project Visual container & image hover zoom 1.02 over 0.4s */
