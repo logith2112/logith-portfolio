@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import ProjectVisual from "./ProjectVisuals";
+import GraphGlowWrapper from "./GraphGlowWrapper";
 
 /**
  * ProjectCard
@@ -150,7 +151,9 @@ export default function ProjectCard({ project, idx }) {
           {/* Soft gold halo — only on hover */}
           <div className="absolute inset-0 bg-[#C9A227]/[0.05] filter blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-xl" />
           <div className="project-visual-zoom">
-            <ProjectVisual index={project.id} />
+            <GraphGlowWrapper>
+              <ProjectVisual index={project.id} />
+            </GraphGlowWrapper>
           </div>
         </div>
       </div>

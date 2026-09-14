@@ -3,6 +3,7 @@ import { ArrowDown } from "lucide-react";
 import gsap from "gsap";
 import profileImg from "../assets/profile.jpg";
 import SplitHeading from "../components/SplitHeading";
+import GraphGlowWrapper from "../components/GraphGlowWrapper";
 
 export default function Hero() {
   const canvasRef = useRef(null);
@@ -313,14 +314,16 @@ export default function Hero() {
 
         {/* Right: Particle Canvas */}
         <div ref={canvasContainerRef} className="lg:col-span-5 h-[300px] lg:h-[500px] w-full relative rounded-xl border border-[#2A2418] bg-[#111111]/60 overflow-hidden">
-          <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
-          <div className="absolute top-4 left-4 font-mono text-[9px] text-[#A8A29E]/50 tracking-wider uppercase select-none">
-            MESH_NETWORK // AGENT_MODEL: VER_1.1
-          </div>
-          {/* Corner decorations */}
-          <div className="absolute bottom-4 right-4 font-mono text-[8px] text-[#C9A227]/80 tracking-wider uppercase select-none">
-            NODE_DYNAMICS // LIVE
-          </div>
+          <GraphGlowWrapper className="h-full">
+            <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+            <div className="absolute top-4 left-4 font-mono text-[9px] text-[#A8A29E]/50 tracking-wider uppercase select-none">
+              MESH_NETWORK // AGENT_MODEL: VER_1.1
+            </div>
+            {/* Corner decorations */}
+            <div className="absolute bottom-4 right-4 font-mono text-[8px] text-[#C9A227]/80 tracking-wider uppercase select-none">
+              NODE_DYNAMICS // LIVE
+            </div>
+          </GraphGlowWrapper>
         </div>
 
       </div>

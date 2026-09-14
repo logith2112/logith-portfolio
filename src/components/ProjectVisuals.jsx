@@ -2,12 +2,17 @@ import { useEffect, useRef } from "react";
 
 // Performance optimizer helper hook for Canvas
 function useCanvasOptimizer(canvasRef, drawFrame) {
+  const drawFrameRef = useRef(drawFrame);
+  drawFrameRef.current = drawFrame;
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
     let animationFrameId;
-    let isVisible = false;
+    let isVisible = true; // Start true so initial frames render immediately
     let lastTime = 0;
     const fpsInterval = 1000 / 30; // Limit to 30 FPS
 
@@ -23,6 +28,12 @@ function useCanvasOptimizer(canvasRef, drawFrame) {
       canvas.style.height = `${height}px`;
       ctx.resetTransform();
       ctx.scale(dpr, dpr);
+
+      // Render initial frame immediately on mount/resize so graph is NEVER blank
+      const isMobile = window.innerWidth < 768;
+      if (drawFrameRef.current) {
+        drawFrameRef.current(ctx, width, height, isMobile);
+      }
     };
 
     resize();
@@ -49,7 +60,9 @@ function useCanvasOptimizer(canvasRef, drawFrame) {
         ctx.clearRect(0, 0, w, h);
         
         const isMobile = window.innerWidth < 768;
-        drawFrame(ctx, w, h, isMobile);
+        if (drawFrameRef.current) {
+          drawFrameRef.current(ctx, w, h, isMobile);
+        }
       }
       animationFrameId = requestAnimationFrame(loop);
     };
@@ -60,7 +73,7 @@ function useCanvasOptimizer(canvasRef, drawFrame) {
           isVisible = entry.isIntersecting;
         });
       },
-      { threshold: 0.05 }
+      { threshold: 0.01 }
     );
     observer.observe(canvas);
 
@@ -71,7 +84,7 @@ function useCanvasOptimizer(canvasRef, drawFrame) {
       cancelAnimationFrame(animationFrameId);
       observer.disconnect();
     };
-  }, [drawFrame]);
+  }, []);
 }
 
 // Project 1: Buoy Water Pollution & Algal Bloom Detection
@@ -168,7 +181,13 @@ export function WaterBuoyVisual() {
 
   useCanvasOptimizer(canvasRef, drawFrame);
 
-  return <canvas ref={canvasRef} className="w-full bg-[#111111]/60 rounded-lg border border-[#2A2418]" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="w-full bg-[#111111]/60 rounded-lg border border-[#2A2418] block"
+      style={{ display: "block", opacity: 1, visibility: "visible", position: "relative", zIndex: 1 }}
+    />
+  );
 }
 
 // Project 2: Human Activity Recognition System
@@ -238,13 +257,22 @@ export function ActivityRecognitionVisual() {
 
   useCanvasOptimizer(canvasRef, drawFrame);
 
-  return <canvas ref={canvasRef} className="w-full bg-[#111111]/60 rounded-lg border border-[#2A2418]" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="w-full bg-[#111111]/60 rounded-lg border border-[#2A2418] block"
+      style={{ display: "block", opacity: 1, visibility: "visible", position: "relative", zIndex: 1 }}
+    />
+  );
 }
 
 // Project 3: Clinical Note Summarization & Coding Assistant
 export function ClinicalNLPVisual() {
   return (
-    <div className="w-full h-[240px] bg-[#111111]/60 rounded-lg border border-[#2A2418] p-4 font-mono text-[10px] sm:text-xs overflow-hidden flex flex-col justify-between">
+    <div
+      className="w-full h-[240px] bg-[#111111]/60 rounded-lg border border-[#2A2418] p-4 font-mono text-[10px] sm:text-xs overflow-hidden flex flex-col justify-between"
+      style={{ display: "flex", opacity: 1, visibility: "visible", position: "relative", zIndex: 1 }}
+    >
       <div className="flex items-center justify-between border-b border-[#2A2418] pb-2 text-[10px] text-stone-500">
         <span>PATIENT_RECORD_SUMMARIZER_V1.0</span>
         <span className="flex items-center gap-1.5">
@@ -364,7 +392,13 @@ export function FinanceVisual() {
 
   useCanvasOptimizer(canvasRef, drawFrame);
 
-  return <canvas ref={canvasRef} className="w-full bg-[#111111]/60 rounded-lg border border-[#2A2418]" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="w-full bg-[#111111]/60 rounded-lg border border-[#2A2418] block"
+      style={{ display: "block", opacity: 1, visibility: "visible", position: "relative", zIndex: 1 }}
+    />
+  );
 }
 
 // Project 5: Radiusdia Studio Architectural Blueprint Grid
@@ -431,7 +465,13 @@ export function RadiusdiaVisual() {
 
   useCanvasOptimizer(canvasRef, drawFrame);
 
-  return <canvas ref={canvasRef} className="w-full bg-[#111111]/60 rounded-lg border border-[#2A2418]" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="w-full bg-[#111111]/60 rounded-lg border border-[#2A2418] block"
+      style={{ display: "block", opacity: 1, visibility: "visible", position: "relative", zIndex: 1 }}
+    />
+  );
 }
 
 // Master Component Switcher
