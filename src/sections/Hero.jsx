@@ -298,14 +298,14 @@ export default function Hero() {
             </a>
           </div>
 
-          {/* Location telemetry */}
-          <div ref={telemetryRef} className="flex items-center gap-10 mt-10 border-t border-[#2A2418] pt-6 max-w-sm">
-            <div>
-              <div className="text-[9px] text-[#A8A29E]/60 tracking-widest uppercase mb-1">Location</div>
+          {/* Location telemetry — Reference-inspired HUD styling */}
+          <div ref={telemetryRef} className="flex flex-wrap items-center gap-8 mt-8 border-t border-[#2A2418] pt-6 max-w-md">
+            <div className="hud-telemetry">
+              <div className="text-[9px] text-[#A8A29E]/60 tracking-widest uppercase mb-1 font-mono">LOCATION // INDIA</div>
               <div className="text-xs text-[#F5F1E8] font-medium tracking-wide font-sans">Tamil Nadu, India</div>
             </div>
-            <div>
-              <div className="text-[9px] text-[#A8A29E]/60 tracking-widest uppercase mb-1">Coordinates</div>
+            <div className="hud-telemetry">
+              <div className="text-[9px] text-[#A8A29E]/60 tracking-widest uppercase mb-1 font-mono">COORDINATES // GPS</div>
               <div className="text-xs text-[#F5F1E8] font-medium tracking-wide font-sans">11.0168° N, 77.9332° E</div>
             </div>
           </div>
@@ -328,13 +328,13 @@ export default function Hero() {
 
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator — Reference-inspired Mouse Indicator */}
       <div ref={scrollIndicatorRef} className="absolute bottom-8 left-6 sm:left-12 flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full border border-[#2A2418] flex items-center justify-center animate-float-slow">
-          <ArrowDown className="w-4 h-4 text-[#C9A227]" />
+        <div className="scroll-mouse">
+          <div className="scroll-mouse-dot" />
         </div>
-        <span className="text-[9px] tracking-[0.22em] font-sans text-[#A8A29E]/80 uppercase">
-          Scroll to story
+        <span className="text-[9px] tracking-[0.22em] font-sans text-[#A8A29E]/80 uppercase font-medium">
+          Scroll to explore
         </span>
       </div>
     </section>

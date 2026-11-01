@@ -64,10 +64,12 @@ export default function Projects() {
     <section id="projects" className="py-24 sm:py-32 border-t border-[#2A2418] bg-[#0A0A0A] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 sm:px-12">
 
-        {/* Section Heading */}
-        <div className="flex flex-col gap-3 text-left mb-20 sm:mb-28">
-          <div className="reveal-up text-[10px] tracking-[0.3em] font-sans text-[#C9A227] uppercase font-semibold">
-            Projects // Portfolio
+        {/* Section Heading — Reference-inspired Tilted Banner */}
+        <div className="flex flex-col gap-4 text-left mb-20 sm:mb-28">
+          <div className="reveal-up flex items-center gap-3">
+            <span className="tilted-banner text-[10px] tracking-[0.25em] font-mono text-[#E5C76B] uppercase font-bold">
+              PORTFOLIO // CASE STUDIES
+            </span>
           </div>
           <div className="reveal-up" style={{ transitionDelay: "100ms" }}>
             <SplitHeading

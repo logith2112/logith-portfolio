@@ -48,54 +48,58 @@ export default function Navigation() {
     <>
       <nav
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? "py-3 bg-[#0A0A0A]/90 border-b border-[#2A2418] backdrop-blur-md"
-            : "py-6 bg-transparent"
+          scrolled ? "py-2 sm:py-3" : "py-4 sm:py-6"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 sm:px-12 flex items-center justify-between">
-          {/* Logo / Monogram */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 flex items-center justify-between">
+          {/* Left: Logo / Monogram */}
           <a
             href="#"
-            className="flex items-center gap-3 font-display font-bold tracking-tighter text-xl text-[#F5F1E8] group magnetic-btn"
+            className="flex items-center gap-2.5 font-display font-bold tracking-tighter text-lg sm:text-xl text-[#F5F1E8] group"
           >
-            <div className="w-8 h-8 rounded-md bg-[#161616] border border-[#2A2418] flex items-center justify-center text-[13px] text-[#C9A227] transition-all duration-[350ms] group-hover:border-[#C9A227] group-hover:shadow-[0_0_12px_rgba(201,162,39,0.2)]">
+            <div className="w-8 h-8 rounded-full bg-[#161616] border border-[#2A2418] flex items-center justify-center text-[12px] text-[#C9A227] transition-all duration-300 group-hover:border-[#C9A227] group-hover:shadow-[0_0_12px_rgba(201,162,39,0.3)]">
               LI
             </div>
-            <span className="hidden sm:inline-block text-[11px] tracking-[0.25em] text-[#A8A29E] group-hover:text-[#F5F1E8] transition-colors duration-[350ms]">
+            <span className="hidden lg:inline-block text-[11px] tracking-[0.25em] text-[#A8A29E] group-hover:text-[#F5F1E8] transition-colors duration-300">
               LOGITH T
             </span>
           </a>
 
-          {/* Desktop Navigation Links — 12. Animated underline & active section indicator */}
-          <div className="hidden md:flex items-center gap-8">
+          {/* Center: Reference-Inspired Floating Pill Navigation */}
+          <div className="hidden md:flex items-center p-1 rounded-full bg-[#14120e]/80 border border-[#2A2418]/90 backdrop-blur-md shadow-2xl relative">
             {navLinks.map((link) => {
               const isActive = activeSection === link.href;
               return (
                 <a
                   key={link.name}
                   href={link.href}
-                  className={`text-[10px] sm:text-xs font-display tracking-[0.2em] font-medium transition-colors duration-[350ms] uppercase nav-link-animated magnetic-btn ${
-                    isActive ? "active text-[#E5C76B]" : "text-[#A8A29E] hover:text-[#E5C76B]"
+                  className={`relative z-10 px-3.5 py-1.5 rounded-full text-[10px] lg:text-[11px] font-sans tracking-[0.18em] font-semibold transition-all duration-300 uppercase ${
+                    isActive
+                      ? "text-[#0A0A0A] bg-[#C9A227] shadow-[0_2px_10px_rgba(201,162,39,0.35)]"
+                      : "text-[#A8A29E] hover:text-[#F5F1E8]"
                   }`}
                 >
                   {link.name}
                 </a>
               );
             })}
+          </div>
+
+          {/* Right: Actions (Resume + Email Me CTA) */}
+          <div className="hidden md:flex items-center gap-3">
             <a
               href={`${import.meta.env.BASE_URL}Logith_T_Resume.pdf`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[10px] sm:text-xs font-display tracking-[0.2em] font-medium text-[#A8A29E] hover:text-[#E5C76B] transition-colors duration-[350ms] uppercase nav-link-animated magnetic-btn flex items-center gap-1"
+              className="text-[10px] lg:text-[11px] font-sans tracking-[0.18em] font-medium text-[#A8A29E] hover:text-[#E5C76B] transition-colors duration-300 uppercase flex items-center gap-1 px-3 py-1.5"
             >
               RESUME <ArrowUpRight className="w-3 h-3 text-[#C9A227] arrow-micro" />
             </a>
             <a
               href="mailto:logithithiru@gmail.com"
-              className="text-[10px] sm:text-xs font-display tracking-[0.15em] font-semibold text-[#0A0A0A] bg-[#C9A227] hover:bg-[#E5C76B] px-4 py-2 rounded-sm transition-colors duration-300 uppercase flex items-center gap-1.5 magnetic-btn"
+              className="text-[10px] lg:text-[11px] font-sans tracking-[0.15em] font-bold text-[#0A0A0A] bg-[#C9A227] hover:bg-[#E5C76B] px-4 py-2 rounded-full transition-all duration-300 uppercase flex items-center gap-1.5 shadow-[0_2px_12px_rgba(201,162,39,0.25)] hover:shadow-[0_4px_16px_rgba(201,162,39,0.4)] hover:scale-105 active:scale-95"
             >
-              EMAIL ME <ArrowUpRight className="w-3.5 h-3.5 arrow-micro" />
+              GET IN TOUCH <ArrowUpRight className="w-3.5 h-3.5 arrow-micro" />
             </a>
           </div>
 

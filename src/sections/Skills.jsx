@@ -58,8 +58,10 @@ export default function Skills() {
         
         {/* Editorial Title */}
         <div className="flex flex-col gap-4 text-left mb-16">
-          <div className="reveal-up text-[10px] tracking-[0.3em] font-sans text-[#C9A227] uppercase font-semibold">
-            SKILLS // TOOLKIT
+          <div className="reveal-up flex items-center gap-3">
+            <span className="tilted-banner text-[10px] tracking-[0.25em] font-mono text-[#E5C76B] uppercase font-bold">
+              TOOLKIT // CAPABILITIES
+            </span>
           </div>
           <div className="reveal-up" style={{ transitionDelay: "120ms" }}>
             <SplitHeading

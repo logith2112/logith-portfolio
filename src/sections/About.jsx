@@ -32,8 +32,10 @@ export default function About() {
 
           {/* Left: Story & Education (slides from left, heading fades upward) */}
           <div className="lg:col-span-7 flex flex-col gap-6 text-left">
-            <div className="reveal-up text-[10px] tracking-[0.3em] font-sans text-[#C9A227] uppercase font-semibold">
-              About // Mission
+            <div className="reveal-up flex items-center gap-3">
+              <span className="tilted-banner text-[10px] tracking-[0.25em] font-mono text-[#E5C76B] uppercase font-bold">
+                ABOUT // MISSION
+              </span>
             </div>
 
             <div className="reveal-up" style={{ transitionDelay: "100ms" }}>

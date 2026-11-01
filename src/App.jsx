@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import CustomCursor from "./components/CustomCursor";
 import AmbientGlow from "./components/AmbientGlow";
 import Loader from "./components/Loader";
 import BackgroundGrid from "./components/BackgroundGrid";
@@ -52,10 +51,7 @@ export default function App() {
         <Loader onComplete={() => setLoading(false)} />
       ) : (
         <div className="relative min-h-screen bg-[#0A0A0A] text-[#F5F1E8]">
-          {/* Custom Cursor */}
-          <CustomCursor />
-
-          {/* Interactive Golden Ambient Glow (Mouse & Touch) */}
+          {/* Interactive Soft Borderless Golden Ambient Glow (Mouse & Touch) */}
           <AmbientGlow />
 
           {/* Smooth Scroll Progress Indicator */}

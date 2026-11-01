@@ -32,8 +32,10 @@ export default function Credentials() {
 
           {/* Left: Heading (slides in from left) */}
           <div className="lg:col-span-5 flex flex-col gap-6 text-left">
-            <div className="reveal-left text-[10px] tracking-[0.3em] font-sans text-[#C9A227] uppercase font-semibold">
-              Credentials // Achievements
+            <div className="reveal-left flex items-center gap-3">
+              <span className="tilted-banner text-[10px] tracking-[0.25em] font-mono text-[#E5C76B] uppercase font-bold">
+                CERTIFICATIONS // PROOF
+              </span>
             </div>
 
             <div className="reveal-left" style={{ transitionDelay: "100ms" }}>

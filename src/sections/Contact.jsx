@@ -44,9 +44,11 @@ export default function Contact() {
       <div className="max-w-7xl mx-auto px-6 sm:px-12 relative z-10">
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto gap-8">
 
-          {/* 1. Badge */}
-          <div className="reveal-up text-[10px] tracking-[0.3em] font-sans text-[#C9A227] uppercase font-semibold">
-            Contact // Inquiries
+          {/* 1. Badge — Reference-inspired Tilted Banner */}
+          <div className="reveal-up flex items-center justify-center">
+            <span className="tilted-banner text-[10px] tracking-[0.25em] font-mono text-[#E5C76B] uppercase font-bold">
+              GET IN TOUCH // COLLABORATE
+            </span>
           </div>
 
           {/* 2. Heading */}
