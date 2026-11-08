@@ -4,17 +4,17 @@ import gsap from "gsap";
 export default function CustomCursor() {
   const dotRef = useRef(null);
   const ringRef = useRef(null);
-  const [visible, setVisible] = useState(false);
+  const [visible] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.matchMedia("(min-width: 1024px) and (pointer: fine)").matches;
+    }
+    return false;
+  });
 
   useEffect(() => {
-    // Only on desktop with a real pointer (mouse/trackpad)
-    const isDesktop = window.matchMedia(
-      "(min-width: 1024px) and (pointer: fine)"
-    ).matches;
-    if (!isDesktop) return;
+    if (!visible) return;
 
     document.documentElement.classList.add("custom-cursor-enabled");
-    setVisible(true);
 
     // Target mouse position (updated instantly on every move)
     const mouse = { x: -100, y: -100 };
@@ -28,7 +28,6 @@ export default function CustomCursor() {
     const RING_LERP = 0.10;  // ring trails softly behind
 
     let rafId;
-    let isHovering = false;
 
     const lerp = (a, b, t) => a + (b - a) * t;
 
@@ -101,7 +100,6 @@ export default function CustomCursor() {
         "a, button, [role='button'], input, textarea, select, .interactive-hover"
       );
       if (!target) return;
-      isHovering = true;
 
       if (ringRef.current) {
         ringRef.current.style.scale = "1.7";
@@ -124,7 +122,6 @@ export default function CustomCursor() {
         "a, button, [role='button'], input, textarea, select, .interactive-hover"
       );
       if (!target) return;
-      isHovering = false;
 
       if (ringRef.current) {
         ringRef.current.style.scale = "1";
@@ -179,7 +176,7 @@ export default function CustomCursor() {
       document.documentElement.removeEventListener("mouseleave", onMouseLeaveWindow);
       document.documentElement.removeEventListener("mouseenter", onMouseEnterWindow);
     };
-  }, []);
+  }, [visible]);
 
   if (!visible) return null;
 

@@ -37,7 +37,17 @@ export default function RobotAssistant() {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [speechText, setSpeechText] = useState("");
   const [isSpeechVisible, setIsSpeechVisible] = useState(false);
-  const [webGlAvailable, setWebGlAvailable] = useState(true);
+  const [webGlAvailable] = useState(() => {
+    try {
+      const c = document.createElement("canvas");
+      return !!(
+        window.WebGLRenderingContext &&
+        (c.getContext("webgl") || c.getContext("experimental-webgl"))
+      );
+    } catch {
+      return false;
+    }
+  });
   const speechTimerRef = useRef(null);
   const visitedSectionsRef = useRef(new Set());
 
@@ -53,7 +63,7 @@ export default function RobotAssistant() {
 
   // --- Three.js Scene Setup & Loop ---
   useEffect(() => {
-    if (isClosed || isMinimized) return;
+    if (isClosed || isMinimized || !webGlAvailable) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -69,11 +79,8 @@ export default function RobotAssistant() {
       });
     } catch (err) {
       console.warn("WebGL not supported or disabled in environment:", err);
-      setWebGlAvailable(false);
       return;
     }
-
-    setWebGlAvailable(true);
 
     // 1. Scene & Camera
     const scene = new THREE.Scene();
@@ -213,7 +220,7 @@ export default function RobotAssistant() {
         rendererRef.current.dispose();
       }
     };
-  }, [isClosed, isMinimized, showSpeech]);
+  }, [isClosed, isMinimized, showSpeech, webGlAvailable]);
 
   // --- Section Observers (Reactions on Scroll) ---
   useEffect(() => {
@@ -427,6 +434,7 @@ export default function RobotAssistant() {
           {webGlAvailable ? (
             <canvas
               ref={canvasRef}
+              aria-label="Interactive 3D Robot Assistant Canvas"
               className="w-full h-full block filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)]"
             />
           ) : (

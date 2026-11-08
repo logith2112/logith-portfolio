@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { ArrowDown } from "lucide-react";
 import gsap from "gsap";
 import profileImg from "../assets/profile.jpg";
 import SplitHeading from "../components/SplitHeading";

@@ -1034,7 +1034,7 @@ export class RobotModel {
     }
   }
 
-  _updateClick(delta) {
+  _updateClick(_delta) {
     const t = this.stateTime;
     const progress = Math.min(1.0, t / this.stateDuration);
 
@@ -1067,3 +1067,4 @@ export class RobotModel {
     });
   }
 }
+

@@ -13,7 +13,7 @@ export default function Navigation() {
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     // Track active section via IntersectionObserver
-    const sectionIds = ["about", "projects", "skills", "credentials", "contact"];
+    const sectionIds = ["about", "projects", "skills", "lab", "credentials", "contact"];
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -40,6 +40,7 @@ export default function Navigation() {
     { name: "ABOUT", href: "#about" },
     { name: "PROJECTS", href: "#projects" },
     { name: "SKILLS", href: "#skills" },
+    { name: "LAB", href: "#lab" },
     { name: "CREDENTIALS", href: "#credentials" },
     { name: "CONTACT", href: "#contact" }
   ];

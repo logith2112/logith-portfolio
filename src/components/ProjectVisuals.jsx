@@ -3,7 +3,10 @@ import { useEffect, useRef } from "react";
 // Performance optimizer helper hook for Canvas
 function useCanvasOptimizer(canvasRef, drawFrame) {
   const drawFrameRef = useRef(drawFrame);
-  drawFrameRef.current = drawFrame;
+
+  useEffect(() => {
+    drawFrameRef.current = drawFrame;
+  }, [drawFrame]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -84,7 +87,7 @@ function useCanvasOptimizer(canvasRef, drawFrame) {
       cancelAnimationFrame(animationFrameId);
       observer.disconnect();
     };
-  }, []);
+  }, [canvasRef]);
 }
 
 // Project 1: Buoy Water Pollution & Algal Bloom Detection

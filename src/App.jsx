@@ -3,10 +3,13 @@ import AmbientGlow from "./components/AmbientGlow";
 import Loader from "./components/Loader";
 import BackgroundGrid from "./components/BackgroundGrid";
 import Navigation from "./components/Navigation";
+import CustomCursor from "./components/CustomCursor";
+import CommandPalette from "./components/CommandPalette";
 import Hero from "./sections/Hero";
 import About from "./sections/About";
 import Projects from "./sections/Projects";
 import Skills from "./sections/Skills";
+import Lab from "./sections/Lab";
 import Credentials from "./sections/Credentials";
 import Contact from "./sections/Contact";
 import useScrollReveal from "./hooks/useScrollReveal";
@@ -22,6 +25,7 @@ export default function App() {
   // Hook for lightweight scroll-driven IntersectionObserver reveals
   useScrollReveal(!loading);
 
+  // Smooth scroll progress bar
   useEffect(() => {
     if (loading) return;
 
@@ -42,10 +46,32 @@ export default function App() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    // Run initial update
     handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
+  }, [loading]);
+
+  // Handle direct hash navigation after loader completes (e.g. /#lab, /#projects)
+  useEffect(() => {
+    if (!loading && window.location.hash) {
+      const targetId = window.location.hash.slice(1);
+      const el = document.getElementById(targetId);
+      if (el) {
+        // Instant alignment on initial landing by temporarily removing scroll-smooth
+        const html = document.documentElement;
+        const hadSmooth = html.classList.contains("scroll-smooth");
+        if (hadSmooth) html.classList.remove("scroll-smooth");
+        
+        el.scrollIntoView({ block: "start" });
+
+        // Restore smooth scrolling for user clicks on next frame
+        if (hadSmooth) {
+          requestAnimationFrame(() => {
+            html.classList.add("scroll-smooth");
+          });
+        }
+      }
+    }
   }, [loading]);
 
   return (
@@ -54,6 +80,9 @@ export default function App() {
         <Loader onComplete={() => setLoading(false)} />
       ) : (
         <div className="relative min-h-screen bg-[#0A0A0A] text-[#F5F1E8]">
+          {/* Luxury Custom Golden Cursor (Desktop fine pointers) */}
+          <CustomCursor />
+
           {/* Interactive Soft Borderless Golden Ambient Glow (Mouse & Touch) */}
           <AmbientGlow />
 
@@ -67,18 +96,22 @@ export default function App() {
           {/* Ambient Background Layout */}
           <BackgroundGrid />
 
-          {/* Core Navigation */}
+          {/* Core Floating Pill Navigation */}
           <Navigation />
+
+          {/* Quick Command Palette (Cmd+K / Ctrl+K) */}
+          <CommandPalette />
 
           {/* Grain texture overlay */}
           <div className="grain-overlay" />
 
-          {/* Page content grids */}
+          {/* Main Portfolio Sections */}
           <main className="relative z-10 w-full">
             <Hero />
             <About />
             <Projects />
             <Skills />
+            <Lab />
             <Credentials />
             <Contact />
           </main>
