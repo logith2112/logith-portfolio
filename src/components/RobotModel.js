@@ -23,85 +23,101 @@ export class RobotModel {
   constructor() {
     this.group = new THREE.Group();
 
-    // Color Palette Tokens — Champagne Gold update
+    // Color Palette Tokens — Premium Champagne Gold
     this.colors = {
-      midnightBlack: 0x080B10,       // head/body shell outer armour — kept dark
-      darkMetallic: 0x252525,        // graphite for joints (was 0x151B24)
-      champagneGold: 0xE8C77A,       // primary champagne gold (was 0xC9A227)
-      highlightGold: 0xFFD700,       // pure-gold highlights (was 0xE5C76B)
-      visorDark: 0x05070A,           // keep
-      eyeSocket: 0x030508,           // keep
-      thrusterCyan: 0x38bdf8,        // keep
+      midnightBlack: 0x0A0A0A,       // body shell outer armour
+      darkMetallic: 0x252525,        // graphite for joints
+      champagneGold: 0xE8C77A,       // primary champagne gold
+      secondaryGold: 0xC69B45,       // secondary gold details
+      highlightGold: 0xFFD700,       // pure-gold highlights / emissives
+      visorDark: 0x060608,           // visor face plate
+      eyeSocket: 0x030508,           // eye socket backing
+      thrusterCyan: 0x38bdf8,        // thruster glow
       eyeAmber: 0xFFB347,            // warm amber for eyes & eye-light
     };
 
-    // Shared Materials — Champagne Gold finish
+    // ─── Shared Materials ───────────────────────────────────────────────────────
+    // NOTE: MeshStandardMaterial without an env map needs higher emissiveIntensity
+    // on key surfaces so they read as bright/coloured against dark backgrounds.
     this.materials = {
-      // Main body armour panels → champagne gold #E8C77A
-      shell: new THREE.MeshPhysicalMaterial({
+      // ── Body armour panels → bright champagne gold ──
+      shell: new THREE.MeshStandardMaterial({
         color: this.colors.champagneGold,
-        metalness: 0.9,
-        roughness: 0.12,
-        reflectivity: 0.9,
-        clearcoat: 0.3,
-        clearcoatRoughness: 0.1,
+        emissive: new THREE.Color(this.colors.champagneGold).multiplyScalar(0.12),
+        metalness: 0.75,
+        roughness: 0.28,
       }),
-      // Joints / structural parts → dark graphite #252525
+      // ── Joints / structure → dark graphite ──
       darkMetal: new THREE.MeshStandardMaterial({
         color: this.colors.darkMetallic,
-        metalness: 0.85,
-        roughness: 0.35,
+        metalness: 0.8,
+        roughness: 0.45,
       }),
-      // Decorative gold details → bright champagne #E8C77A
-      gold: new THREE.MeshPhysicalMaterial({
+      // ── Decorative gold details → bright champagne ──
+      gold: new THREE.MeshStandardMaterial({
         color: this.colors.champagneGold,
-        metalness: 0.95,
-        roughness: 0.1,
-        reflectivity: 1.0,
-        clearcoat: 0.2,
-        clearcoatRoughness: 0.08,
+        emissive: new THREE.Color(this.colors.champagneGold).multiplyScalar(0.18),
+        metalness: 0.85,
+        roughness: 0.18,
       }),
+      // ── Secondary gold details → slightly darker ──
+      goldSecondary: new THREE.MeshStandardMaterial({
+        color: this.colors.secondaryGold,
+        emissive: new THREE.Color(this.colors.secondaryGold).multiplyScalar(0.1),
+        metalness: 0.8,
+        roughness: 0.25,
+      }),
+      // ── Visor face plate ──
       visor: new THREE.MeshStandardMaterial({
         color: this.colors.visorDark,
-        metalness: 0.92,
-        roughness: 0.1,
+        metalness: 0.95,
+        roughness: 0.08,
       }),
-      // Eyes → warm amber #FFB347
+      // ── Eye LED → warm amber glow ──
       eyeLed: new THREE.MeshStandardMaterial({
         color: this.colors.eyeAmber,
-        emissive: this.colors.eyeAmber,
-        emissiveIntensity: 2.0,
-        roughness: 0.1,
+        emissive: new THREE.Color(this.colors.eyeAmber),
+        emissiveIntensity: 2.8,
+        roughness: 0.05,
+        metalness: 0.0,
       }),
+      // ── Pupil (dark ring inside eye) ──
       pupil: new THREE.MeshStandardMaterial({
         color: 0x1A1406,
         metalness: 0.9,
         roughness: 0.2,
       }),
+      // ── Eyelid (covers eye during blink) ──
       eyelid: new THREE.MeshStandardMaterial({
         color: this.colors.midnightBlack,
-        metalness: 0.88,
-        roughness: 0.18,
+        emissive: new THREE.Color(0x000000),
+        metalness: 0.85,
+        roughness: 0.2,
+        side: THREE.FrontSide,
       }),
-      // Mouth → pure gold #FFD700
+      // ── Mouth emissive gold ──
       mouth: new THREE.MeshStandardMaterial({
         color: this.colors.highlightGold,
-        emissive: this.colors.highlightGold,
-        emissiveIntensity: 1.8,
-        roughness: 0.12,
+        emissive: new THREE.Color(this.colors.highlightGold),
+        emissiveIntensity: 2.0,
+        roughness: 0.1,
+        metalness: 0.0,
       }),
-      // Chest core → pure gold #FFD700 with strong glow
+      // ── Chest core strong glow ──
       chestCore: new THREE.MeshStandardMaterial({
         color: this.colors.highlightGold,
-        emissive: this.colors.highlightGold,
-        emissiveIntensity: 2.5,
-        roughness: 0.12,
+        emissive: new THREE.Color(this.colors.highlightGold),
+        emissiveIntensity: 3.0,
+        roughness: 0.05,
+        metalness: 0.0,
       }),
+      // ── Thruster cyan glow ──
       thruster: new THREE.MeshStandardMaterial({
         color: this.colors.thrusterCyan,
-        emissive: this.colors.thrusterCyan,
-        emissiveIntensity: 1.2,
+        emissive: new THREE.Color(this.colors.thrusterCyan),
+        emissiveIntensity: 1.5,
         roughness: 0.3,
+        metalness: 0.0,
       }),
     };
 
@@ -120,6 +136,13 @@ export class RobotModel {
     this.blinkProgress = 0;
     this.isBlinking = false;
     this.blinkDuration = 0.22;
+    // double-blink: fires a second blink shortly after
+    this.doubleBlink = false;
+    this.doubleBlinkDelay = 0;
+    this.doubleBlinkTimer = 0;
+
+    // Eye expression (normal | thinking | greeting)
+    this.eyeExpression = 'normal'; // 'normal' | 'thinking' | 'greeting'
 
     // Mouse Tracking target & current
     this.cursorTarget = { x: 0, y: 0 };
@@ -243,51 +266,55 @@ export class RobotModel {
     visorMesh.rotation.x = 0.22;
     headGroup.add(visorMesh);
 
-    // 3c. Expressive Golden LED Eyes
+    // 3c. Expressive Golden LED Eyes with realistic blinking eyelids
     const createEye = (isLeft) => {
       const eyeRoot = new THREE.Group();
       const xSign = isLeft ? -1 : 1;
       eyeRoot.position.set(xSign * 0.27, 0.06, 0.52);
 
-      // Gold Bezel Socket
+      // Gold Bezel Socket — ring around the eye
       const socket = new THREE.Mesh(
-        new THREE.TorusGeometry(0.13, 0.022, 16, 24),
+        new THREE.TorusGeometry(0.13, 0.025, 16, 24),
         this.materials.gold
       );
       eyeRoot.add(socket);
 
-      // Glowing Golden Eye Disc
+      // Glowing Amber Eye Disc (the LED iris)
       const ledDisc = new THREE.Mesh(
-        new THREE.CircleGeometry(0.12, 24),
+        new THREE.CircleGeometry(0.115, 32),
         this.materials.eyeLed
       );
+      ledDisc.position.z = 0.001;
       eyeRoot.add(ledDisc);
 
       // Moving Pupil Ring (tracks cursor)
       const pupil = new THREE.Mesh(
-        new THREE.RingGeometry(0.045, 0.08, 16),
+        new THREE.RingGeometry(0.042, 0.075, 20),
         this.materials.pupil
       );
-      pupil.position.z = 0.005;
+      pupil.position.z = 0.008;
       eyeRoot.add(pupil);
 
-      // Upper Eyelid for Blinking
+      // ── Eyelids: upper and lower halves that SLIDE in from edges ──────────
+      // Upper lid covers the top half of the eye; it starts at scaleY=0 (hidden)
+      // and slides to scaleY=1 (fully closed) during a blink.
       const lidUpper = new THREE.Mesh(
-        new THREE.CircleGeometry(0.125, 24, 0, Math.PI),
+        new THREE.CircleGeometry(0.122, 24, 0, Math.PI),     // top semicircle
         this.materials.eyelid
       );
-      lidUpper.position.z = 0.01;
+      lidUpper.position.z = 0.016;
+      lidUpper.scale.y = 0;    // start fully open (hidden)
       eyeRoot.add(lidUpper);
 
-      // Lower Eyelid for Blinking
       const lidLower = new THREE.Mesh(
-        new THREE.CircleGeometry(0.125, 24, Math.PI, Math.PI),
+        new THREE.CircleGeometry(0.122, 24, Math.PI, Math.PI), // bottom semicircle
         this.materials.eyelid
       );
-      lidLower.position.z = 0.01;
+      lidLower.position.z = 0.016;
+      lidLower.scale.y = 0;    // start fully open (hidden)
       eyeRoot.add(lidLower);
 
-      return { root: eyeRoot, pupil, lidUpper, lidLower };
+      return { root: eyeRoot, pupil, ledDisc, lidUpper, lidLower };
     };
 
     this.leftEye = createEye(true);
@@ -630,6 +657,9 @@ export class RobotModel {
     this.stateTime = 0;
     this.stateDuration = 4.2;
     this.returnToState = 'IDLE';
+    this.eyeExpression = 'greeting';
+    // Friendly welcoming blink at start
+    this.triggerBlink(0.15);
   }
 
   playWave() {
@@ -637,6 +667,7 @@ export class RobotModel {
     this.stateTime = 0;
     this.stateDuration = 3.4;
     this.returnToState = 'IDLE';
+    this.eyeExpression = 'normal';
   }
 
   playThinking() {
@@ -644,6 +675,7 @@ export class RobotModel {
     this.stateTime = 0;
     this.stateDuration = 3.8;
     this.returnToState = 'IDLE';
+    this.eyeExpression = 'thinking';
   }
 
   playPointing() {
@@ -651,6 +683,7 @@ export class RobotModel {
     this.stateTime = 0;
     this.stateDuration = 3.6;
     this.returnToState = 'IDLE';
+    this.eyeExpression = 'normal';
   }
 
   playThumbsUp() {
@@ -658,6 +691,7 @@ export class RobotModel {
     this.stateTime = 0;
     this.stateDuration = 3.2;
     this.returnToState = 'IDLE';
+    this.eyeExpression = 'normal';
   }
 
   playClickReaction() {
@@ -665,6 +699,8 @@ export class RobotModel {
     this.stateTime = 0;
     this.stateDuration = 2.2;
     this.returnToState = 'IDLE';
+    this.eyeExpression = 'greeting';
+    this.triggerBlink(0.12);
   }
 
   setCursor(nx, ny) {
@@ -685,9 +721,24 @@ export class RobotModel {
     this.isHovered = hovered;
   }
 
-  triggerBlink() {
+  triggerBlink(duration = 0.20) {
+    if (this.isBlinking) return;
     this.isBlinking = true;
     this.blinkProgress = 0;
+    this.blinkDuration = duration;
+  }
+
+  _setEyelids(closeAmount) {
+    // closeAmount: 0 = fully open (lids hidden), 1 = fully closed (lids at full scale)
+    const s = THREE.MathUtils.clamp(closeAmount, 0, 1);
+    this.leftEye.lidUpper.scale.y = s;
+    this.leftEye.lidLower.scale.y = s;
+    this.rightEye.lidUpper.scale.y = s;
+    this.rightEye.lidLower.scale.y = s;
+
+    // Dim eye glow proportionally when closing
+    const baseIntensity = this.eyeExpression === 'thinking' ? 1.4 : 2.8;
+    this.materials.eyeLed.emissiveIntensity = THREE.MathUtils.lerp(baseIntensity, 0.0, s);
   }
 
   // --- Update Loop ---
@@ -695,38 +746,46 @@ export class RobotModel {
   update(delta) {
     this.stateTime += delta;
 
-    // 1. Natural Blinking Controller
+    // 1. Natural Blinking Controller — random 3–6 s intervals, 20% double-blink
     this.blinkTimer -= delta;
+
+    // Double-blink second-trigger timer
+    if (this.doubleBlinkDelay > 0) {
+      this.doubleBlinkDelay -= delta;
+      if (this.doubleBlinkDelay <= 0 && !this.isBlinking) {
+        this.triggerBlink(0.16);
+        this.doubleBlinkDelay = 0;
+      }
+    }
+
     if (this.blinkTimer <= 0 && !this.isBlinking) {
-      this.triggerBlink();
-      // Schedule next blink in 3.0 to 5.5s, with 20% chance of quick double-blink
       const isDouble = Math.random() < 0.22;
-      this.blinkTimer = isDouble ? 0.35 : 3.2 + Math.random() * 2.4;
+      this.triggerBlink(0.18 + Math.random() * 0.08);
+      if (isDouble) {
+        this.doubleBlinkDelay = 0.32 + Math.random() * 0.1;
+      }
+      // Next blink in 3–6 s
+      this.blinkTimer = 3.0 + Math.random() * 3.0;
     }
 
     if (this.isBlinking) {
       this.blinkProgress += delta / this.blinkDuration;
       let closeAmount = 0;
-      if (this.blinkProgress <= 0.5) {
-        closeAmount = this.blinkProgress * 2; // 0 to 1
+      if (this.blinkProgress <= 0.42) {
+        // closing phase: 0 → 1 (eyelid slides in)
+        closeAmount = this.blinkProgress / 0.42;
       } else if (this.blinkProgress <= 1.0) {
-        closeAmount = (1.0 - this.blinkProgress) * 2; // 1 to 0
+        // opening phase: 1 → 0 (eyelid slides out)
+        closeAmount = 1.0 - (this.blinkProgress - 0.42) / 0.58;
       } else {
         this.isBlinking = false;
         closeAmount = 0;
       }
-
-      // Smooth eyelid closure (scale Y of upper and lower eyelids)
-      const scaleY = THREE.MathUtils.lerp(0.001, 1.0, closeAmount);
-      this.leftEye.lidUpper.scale.y = scaleY;
-      this.leftEye.lidLower.scale.y = scaleY;
-      this.rightEye.lidUpper.scale.y = scaleY;
-      this.rightEye.lidLower.scale.y = scaleY;
+      this._setEyelids(closeAmount);
     } else {
-      this.leftEye.lidUpper.scale.y = 0.001;
-      this.leftEye.lidLower.scale.y = 0.001;
-      this.rightEye.lidUpper.scale.y = 0.001;
-      this.rightEye.lidLower.scale.y = 0.001;
+      // Expression-based eyelid state (not blinking)
+      const targetClose = this.eyeExpression === 'thinking' ? 0.35 : 0.0;
+      this._setEyelids(targetClose);
     }
 
     // 2. Cursor Interpolation & Pupil Shift
@@ -783,6 +842,7 @@ export class RobotModel {
       this.state = this.returnToState;
       this.stateTime = 0;
       this.stateDuration = 0;
+      this.eyeExpression = 'normal';
     }
   }
 
@@ -1060,8 +1120,10 @@ export class RobotModel {
     this.leftArm.upperArm.rotation.z = 0.18 + armCheer;
     this.rightArm.upperArm.rotation.z = -0.18 - armCheer;
 
-    // Flashes eye intensity cheerfully
-    this.materials.eyeLed.emissiveIntensity = 2.4 + Math.sin(t * 18.0) * 0.8;
+    // Flash eye intensity cheerfully (only when not blinking)
+    if (!this.isBlinking) {
+      this.materials.eyeLed.emissiveIntensity = 2.8 + Math.sin(t * 18.0) * 1.2;
+    }
 
     // Head nods cheerfully
     this.joints.neck.rotation.x = Math.sin(t * 12.0) * 0.12;

@@ -82,41 +82,62 @@ export default function RobotAssistant() {
       return;
     }
 
+    // Tone mapping & output — critical for metallic materials to show correct colour
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.4;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+
     // 1. Scene & Camera
     const scene = new THREE.Scene();
     sceneRef.current = scene;
 
-    const width = canvas.clientWidth || 150;
-    const height = canvas.clientHeight || 180;
+    // Use offsetWidth/offsetHeight for real layout size; fall back gracefully
+    const getSize = () => ({
+      w: canvas.offsetWidth || canvas.parentElement?.offsetWidth || 180,
+      h: canvas.offsetHeight || canvas.parentElement?.offsetHeight || 220,
+    });
+    const { w: initW, h: initH } = getSize();
 
-    const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 50);
-    camera.position.set(0, 1.45, 3.8);
-    camera.lookAt(0, 1.25, 0);
+    // Camera: wider FOV + pull back so the full robot fits
+    // Robot spans y≈−0.5 (feet) to y≈2.9 (antenna tip) → centred at y≈1.2
+    const camera = new THREE.PerspectiveCamera(52, initW / initH, 0.1, 50);
+    camera.position.set(0, 1.2, 4.2);
+    camera.lookAt(0, 1.1, 0);
     cameraRef.current = camera;
 
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.setSize(width, height, false);
+    renderer.setSize(initW, initH, false);
     rendererRef.current = renderer;
 
-    // 2. Lighting Setup — warm golden theme for champagne gold robot
-    const ambientLight = new THREE.AmbientLight(0xFFF8E7, 1.1);  // warm white ambient
+    // 2. Warm golden lighting — balanced for champagne gold MeshPhysical materials
+    // Ambient — base fill so dark joints stay readable
+    const ambientLight = new THREE.AmbientLight(0xFFF8E7, 2.2);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xFFF5D6, 1.8);  // warm white key
-    keyLight.position.set(2.5, 4.0, 3.0);
+    // Key light (upper-front-right) — main definition
+    const keyLight = new THREE.DirectionalLight(0xFFFBF0, 2.6);
+    keyLight.position.set(2.0, 3.5, 3.5);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0xE8C77A, 1.4);  // champagne gold rim
-    rimLight.position.set(-3.0, 2.5, -2.0);
+    // Rim / back light (upper-left-rear) — separates gold body from black bg
+    const rimLight = new THREE.DirectionalLight(0xFFD080, 1.8);
+    rimLight.position.set(-2.5, 2.0, -2.0);
     scene.add(rimLight);
 
-    const frontGoldFill = new THREE.PointLight(0xFFD700, 1.0, 5.5);  // pure gold fill
-    frontGoldFill.position.set(0, 1.5, 2.5);
-    scene.add(frontGoldFill);
+    // Front fill — lifts shadow on the chest/face
+    const frontFill = new THREE.PointLight(0xFFE8A0, 1.4, 6.0);
+    frontFill.position.set(0.2, 1.8, 2.8);
+    scene.add(frontFill);
 
-    const underFill = new THREE.PointLight(0xFFB347, 0.35, 4.0);  // amber underlight
-    underFill.position.set(0, -0.5, 1.5);
+    // Amber under-chin light — illuminates lower face & chest core
+    const underFill = new THREE.PointLight(0xFFB347, 0.9, 4.5);
+    underFill.position.set(0, 0.5, 1.8);
     scene.add(underFill);
+
+    // Top-down accent — highlights antenna and head dome
+    const topAccent = new THREE.DirectionalLight(0xFFE066, 1.0);
+    topAccent.position.set(0, 5.0, 1.0);
+    scene.add(topAccent);
 
     // 3. Initialize Robot Character
     const robot = new RobotModel();
@@ -131,11 +152,11 @@ export default function RobotAssistant() {
       }
     }, 900);
 
-    // 4. Resize Observer
+    // 4. Resize Observer — use offsetWidth for accurate CSS pixel size
     const handleResize = () => {
       if (!canvas || !rendererRef.current || !cameraRef.current) return;
-      const w = canvas.clientWidth || 150;
-      const h = canvas.clientHeight || 180;
+      const w = canvas.offsetWidth || canvas.parentElement?.offsetWidth || 180;
+      const h = canvas.offsetHeight || canvas.parentElement?.offsetHeight || 220;
       cameraRef.current.aspect = w / h;
       cameraRef.current.updateProjectionMatrix();
       rendererRef.current.setSize(w, h, false);
@@ -423,7 +444,7 @@ export default function RobotAssistant() {
           onClick={handleRobotClick}
           onMouseEnter={() => robotRef.current?.setHover(true)}
           onMouseLeave={() => robotRef.current?.setHover(false)}
-          className="w-[110px] h-[135px] sm:w-[145px] sm:h-[175px] cursor-pointer touch-manipulation relative transition-transform duration-300 hover:scale-[1.03] active:scale-[0.98]"
+          className="w-[150px] h-[200px] sm:w-[190px] sm:h-[250px] cursor-pointer touch-manipulation relative transition-transform duration-300 hover:scale-[1.03] active:scale-[0.98]"
           title="Click to interact with Logith's AI Assistant"
           role="button"
           tabIndex={0}
@@ -439,7 +460,7 @@ export default function RobotAssistant() {
             <canvas
               ref={canvasRef}
               aria-label="Interactive 3D Robot Assistant Canvas"
-              className="w-full h-full block filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)]"
+              className="w-full h-full block filter drop-shadow-[0_8px_24px_rgba(232,199,122,0.25)] drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]"
             />
           ) : (
             /* Resilient Fallback Vector Character (for environments without GPU WebGL context) */
