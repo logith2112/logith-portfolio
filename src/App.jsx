@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, lazy, Suspense } from "react";
 import AmbientGlow from "./components/AmbientGlow";
 import Loader from "./components/Loader";
 import BackgroundGrid from "./components/BackgroundGrid";
@@ -10,6 +10,9 @@ import Skills from "./sections/Skills";
 import Credentials from "./sections/Credentials";
 import Contact from "./sections/Contact";
 import useScrollReveal from "./hooks/useScrollReveal";
+
+// Lazy-load the 3D Robot Assistant for optimal initial page load performance
+const RobotAssistant = lazy(() => import("./components/RobotAssistant"));
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -79,6 +82,11 @@ export default function App() {
             <Credentials />
             <Contact />
           </main>
+
+          {/* Premium Interactive 3D Robot Assistant (Lazy-loaded) */}
+          <Suspense fallback={null}>
+            <RobotAssistant />
+          </Suspense>
         </div>
       )}
     </>
