@@ -23,44 +23,55 @@ export class RobotModel {
   constructor() {
     this.group = new THREE.Group();
 
-    // Color Palette Tokens (strictly from specification)
+    // Color Palette Tokens — Champagne Gold update
     this.colors = {
-      midnightBlack: 0x080B10,
-      darkMetallic: 0x151B24,
-      champagneGold: 0xC9A227,
-      highlightGold: 0xE5C76B,
-      visorDark: 0x05070A,
-      eyeSocket: 0x030508,
-      thrusterCyan: 0x38bdf8,
+      midnightBlack: 0x080B10,       // head/body shell outer armour — kept dark
+      darkMetallic: 0x252525,        // graphite for joints (was 0x151B24)
+      champagneGold: 0xE8C77A,       // primary champagne gold (was 0xC9A227)
+      highlightGold: 0xFFD700,       // pure-gold highlights (was 0xE5C76B)
+      visorDark: 0x05070A,           // keep
+      eyeSocket: 0x030508,           // keep
+      thrusterCyan: 0x38bdf8,        // keep
+      eyeAmber: 0xFFB347,            // warm amber for eyes & eye-light
     };
 
-    // Shared Materials
+    // Shared Materials — Champagne Gold finish
     this.materials = {
-      shell: new THREE.MeshStandardMaterial({
-        color: this.colors.midnightBlack,
-        metalness: 0.88,
-        roughness: 0.18,
+      // Main body armour panels → champagne gold #E8C77A
+      shell: new THREE.MeshPhysicalMaterial({
+        color: this.colors.champagneGold,
+        metalness: 0.9,
+        roughness: 0.12,
+        reflectivity: 0.9,
+        clearcoat: 0.3,
+        clearcoatRoughness: 0.1,
       }),
+      // Joints / structural parts → dark graphite #252525
       darkMetal: new THREE.MeshStandardMaterial({
         color: this.colors.darkMetallic,
-        metalness: 0.82,
-        roughness: 0.28,
+        metalness: 0.85,
+        roughness: 0.35,
       }),
-      gold: new THREE.MeshStandardMaterial({
+      // Decorative gold details → bright champagne #E8C77A
+      gold: new THREE.MeshPhysicalMaterial({
         color: this.colors.champagneGold,
         metalness: 0.95,
-        roughness: 0.22,
+        roughness: 0.1,
+        reflectivity: 1.0,
+        clearcoat: 0.2,
+        clearcoatRoughness: 0.08,
       }),
       visor: new THREE.MeshStandardMaterial({
         color: this.colors.visorDark,
         metalness: 0.92,
         roughness: 0.1,
       }),
+      // Eyes → warm amber #FFB347
       eyeLed: new THREE.MeshStandardMaterial({
-        color: this.colors.highlightGold,
-        emissive: this.colors.highlightGold,
-        emissiveIntensity: 1.8,
-        roughness: 0.12,
+        color: this.colors.eyeAmber,
+        emissive: this.colors.eyeAmber,
+        emissiveIntensity: 2.0,
+        roughness: 0.1,
       }),
       pupil: new THREE.MeshStandardMaterial({
         color: 0x1A1406,
@@ -72,17 +83,19 @@ export class RobotModel {
         metalness: 0.88,
         roughness: 0.18,
       }),
+      // Mouth → pure gold #FFD700
       mouth: new THREE.MeshStandardMaterial({
         color: this.colors.highlightGold,
         emissive: this.colors.highlightGold,
-        emissiveIntensity: 1.6,
-        roughness: 0.15,
+        emissiveIntensity: 1.8,
+        roughness: 0.12,
       }),
+      // Chest core → pure gold #FFD700 with strong glow
       chestCore: new THREE.MeshStandardMaterial({
         color: this.colors.highlightGold,
         emissive: this.colors.highlightGold,
-        emissiveIntensity: 2.2,
-        roughness: 0.15,
+        emissiveIntensity: 2.5,
+        roughness: 0.12,
       }),
       thruster: new THREE.MeshStandardMaterial({
         color: this.colors.thrusterCyan,
@@ -191,8 +204,8 @@ export class RobotModel {
     coreGroup.add(coreDisc);
     this.joints.chestCore = coreDisc;
 
-    // Soft golden chest point light
-    const coreLight = new THREE.PointLight(this.colors.highlightGold, 1.2, 2.5);
+    // Warm amber chest point light
+    const coreLight = new THREE.PointLight(this.colors.eyeAmber, 1.6, 3.0);
     coreLight.position.set(0, 0, 0.1);
     coreGroup.add(coreLight);
     this.lights.core = coreLight;
@@ -282,8 +295,8 @@ export class RobotModel {
     headGroup.add(this.leftEye.root);
     headGroup.add(this.rightEye.root);
 
-    // Soft golden eye light casting forward
-    const eyeLight = new THREE.PointLight(this.colors.highlightGold, 1.4, 2.8);
+    // Warm amber eye light casting forward
+    const eyeLight = new THREE.PointLight(this.colors.eyeAmber, 1.8, 3.2);
     eyeLight.position.set(0, 0.1, 0.7);
     headGroup.add(eyeLight);
     this.lights.eyes = eyeLight;

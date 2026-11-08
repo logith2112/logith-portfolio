@@ -98,21 +98,25 @@ export default function RobotAssistant() {
     renderer.setSize(width, height, false);
     rendererRef.current = renderer;
 
-    // 2. Lighting Setup
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+    // 2. Lighting Setup — warm golden theme for champagne gold robot
+    const ambientLight = new THREE.AmbientLight(0xFFF8E7, 1.1);  // warm white ambient
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xfff7ed, 1.5);
+    const keyLight = new THREE.DirectionalLight(0xFFF5D6, 1.8);  // warm white key
     keyLight.position.set(2.5, 4.0, 3.0);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0xC9A227, 1.2);
+    const rimLight = new THREE.DirectionalLight(0xE8C77A, 1.4);  // champagne gold rim
     rimLight.position.set(-3.0, 2.5, -2.0);
     scene.add(rimLight);
 
-    const frontGoldFill = new THREE.PointLight(0xE5C76B, 0.8, 5.0);
+    const frontGoldFill = new THREE.PointLight(0xFFD700, 1.0, 5.5);  // pure gold fill
     frontGoldFill.position.set(0, 1.5, 2.5);
     scene.add(frontGoldFill);
+
+    const underFill = new THREE.PointLight(0xFFB347, 0.35, 4.0);  // amber underlight
+    underFill.position.set(0, -0.5, 1.5);
+    scene.add(underFill);
 
     // 3. Initialize Robot Character
     const robot = new RobotModel();
