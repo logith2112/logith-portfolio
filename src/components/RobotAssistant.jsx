@@ -7,12 +7,12 @@ import {
   Bot,
   User,
   FolderGit2,
-  Cpu,
-  GraduationCap,
-  Award,
-  FileText,
   Mail,
-  ArrowUpRight,
+  Volume2,
+  Compass,
+  Layers,
+  Calendar,
+  Beaker,
 } from "lucide-react";
 
 /**
@@ -22,7 +22,7 @@ import {
  * Positioned in bottom-right corner.
  * Fully responsive, keyboard accessible, and preserves site performance.
  */
-export default function RobotAssistant() {
+export default function RobotAssistant({ onOpenBooking }) {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const robotRef = useRef(null);
@@ -50,6 +50,77 @@ export default function RobotAssistant() {
   });
   const speechTimerRef = useRef(null);
   const visitedSectionsRef = useRef(new Set());
+  const welcomeMessage =
+    "Welcome to Logith’s portfolio. What would you like to do today? You can explore my work, learn about my process, meet me, or book a call.";
+
+  // Pre-load voices so Indian English voice is ready when needed
+  useEffect(() => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    const loadVoices = () => {
+      window.speechSynthesis.getVoices();
+    };
+    loadVoices();
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+  }, []);
+
+  // Built-in speech synthesis with Indian English voice preference
+  const speak = useCallback((text) => {
+    if (
+      typeof window === "undefined" ||
+      !("speechSynthesis" in window) ||
+      !("SpeechSynthesisUtterance" in window)
+    ) {
+      return false;
+    }
+
+    try {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "en-IN";
+      utterance.rate = 0.95;
+      utterance.pitch = 1.05;
+
+      const pickIndianVoice = () => {
+        const voices = window.speechSynthesis.getVoices();
+        if (!voices || voices.length === 0) return null;
+
+        // 1. Exact or variant Indian English voice
+        const inVoice = voices.find(
+          (v) =>
+            v.lang === "en-IN" ||
+            v.lang === "en_IN" ||
+            v.lang.toLowerCase().replace("_", "-") === "en-in" ||
+            (v.lang.startsWith("en") &&
+              (v.name.toLowerCase().includes("india") ||
+                v.name.toLowerCase().includes("indian")))
+        );
+        if (inVoice) return inVoice;
+
+        // 2. Any available English voice fallback
+        return voices.find((v) => v.lang.startsWith("en")) || null;
+      };
+
+      const selectedVoice = pickIndianVoice();
+      if (selectedVoice) {
+        utterance.voice = selectedVoice;
+      }
+
+      window.speechSynthesis.speak(utterance);
+      return true;
+    } catch (err) {
+      console.warn("Speech synthesis could not speak:", err);
+      return false;
+    }
+  }, []);
+
+  // Stop speech when robot is closed
+  useEffect(() => {
+    if (isClosed && typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
+  }, [isClosed]);
 
   // Show speech bubble with auto-dismiss
   const showSpeech = useCallback((text, duration = 4500) => {
@@ -148,7 +219,8 @@ export default function RobotAssistant() {
     const initialGreetingTimer = setTimeout(() => {
       if (robotRef.current) {
         robotRef.current.playGreeting();
-        showSpeech("Hey! Welcome to Logith's Portfolio.");
+        showSpeech(welcomeMessage, 8000);
+        speak(welcomeMessage);
       }
     }, 900);
 
@@ -233,6 +305,7 @@ export default function RobotAssistant() {
     return () => {
       clearTimeout(initialGreetingTimer);
       if (speechTimerRef.current) clearTimeout(speechTimerRef.current);
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
       document.removeEventListener("visibilitychange", onVisibilityChange);
       if (canvas._cleanupMouse) canvas._cleanupMouse();
       resizeObserver.disconnect();
@@ -245,7 +318,7 @@ export default function RobotAssistant() {
         rendererRef.current.dispose();
       }
     };
-  }, [isClosed, isMinimized, showSpeech, webGlAvailable]);
+  }, [isClosed, isMinimized, showSpeech, speak, webGlAvailable]);
 
   // --- Section Observers (Reactions on Scroll) ---
   useEffect(() => {
@@ -253,31 +326,52 @@ export default function RobotAssistant() {
 
     const sectionConfigs = [
       {
-        id: "projects",
+        id: "home",
         action: () => {
-          if (robotRef.current) robotRef.current.playPointing();
-          showSpeech("Explore my projects!");
+          if (robotRef.current) robotRef.current.playWave();
+          showSpeech("Welcome! Turning ideas into digital experiences.");
         },
       },
       {
-        id: "skills",
+        id: "work",
+        action: () => {
+          if (robotRef.current) robotRef.current.playPointing();
+          showSpeech("Work worth exploring! Check out my projects.");
+        },
+      },
+      {
+        id: "projects",
+        action: () => {
+          if (robotRef.current) robotRef.current.playPointing();
+          showSpeech("Work worth exploring! Check out my projects.");
+        },
+      },
+      {
+        id: "process",
         action: () => {
           if (robotRef.current) robotRef.current.playThinking();
-          showSpeech("Let's explore my skills!");
+          showSpeech("Great ideas deserve a great process!");
         },
       },
       {
         id: "about",
         action: () => {
           if (robotRef.current) robotRef.current.playWave();
-          showSpeech("Here's a little about me!");
+          showSpeech("Who are we? Meet the developer behind the experience!");
+        },
+      },
+      {
+        id: "lab",
+        action: () => {
+          if (robotRef.current) robotRef.current.playThumbsUp();
+          showSpeech("Try live ML & IoT in the Interactive Lab!");
         },
       },
       {
         id: "contact",
         action: () => {
-          if (robotRef.current) robotRef.current.playWave();
-          showSpeech("Let's connect!");
+          if (robotRef.current) robotRef.current.playThumbsUp();
+          showSpeech("Have something great in mind? Let's connect!");
         },
       },
     ];
@@ -321,7 +415,8 @@ export default function RobotAssistant() {
       robotRef.current.playClickReaction();
     }
     setIsPanelOpen(true);
-    showSpeech("How can I assist your portfolio tour?", 3000);
+    showSpeech(welcomeMessage, 8000);
+    speak(welcomeMessage);
   };
 
   // --- Assistant Panel Action Navigation ---
@@ -413,6 +508,14 @@ export default function RobotAssistant() {
       >
         <div className="relative p-3 rounded-xl bg-[#14120e]/95 border border-[#C9A227]/70 text-[#F5F1E8] text-xs font-sans leading-relaxed shadow-[0_8px_30px_rgba(0,0,0,0.7),0_0_15px_rgba(201,162,39,0.18)] backdrop-blur-md">
           {speechText}
+          <button
+            type="button"
+            onClick={() => speak(welcomeMessage)}
+            className="mt-2 inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-[#E5C76B] hover:text-[#FFF0B3]"
+            aria-label="Replay robot welcome speech"
+          >
+            <Volume2 className="w-3.5 h-3.5" /> Hear welcome
+          </button>
           <div className="absolute -bottom-1.5 right-8 w-3 h-3 bg-[#14120e] border-r border-b border-[#C9A227]/70 transform rotate-45" />
         </div>
       </div>
@@ -422,7 +525,12 @@ export default function RobotAssistant() {
         {/* Top Control Bar (Minimize / Close) */}
         <div className="absolute -top-7 right-2 flex items-center gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity duration-200 z-10">
           <button
-            onClick={() => setIsMinimized(true)}
+            onClick={() => {
+              if (typeof window !== "undefined" && "speechSynthesis" in window) {
+                window.speechSynthesis.cancel();
+              }
+              setIsMinimized(true);
+            }}
             className="w-5 h-5 rounded-full bg-[#161616]/90 border border-[#2A2418] hover:border-[#C9A227] text-[#A8A29E] hover:text-[#F5F1E8] flex items-center justify-center transition-colors shadow-md cursor-pointer"
             aria-label="Minimize Robot Assistant"
             title="Minimize"
@@ -430,7 +538,12 @@ export default function RobotAssistant() {
             <Minus className="w-2.5 h-2.5" />
           </button>
           <button
-            onClick={() => setIsClosed(true)}
+            onClick={() => {
+              if (typeof window !== "undefined" && "speechSynthesis" in window) {
+                window.speechSynthesis.cancel();
+              }
+              setIsClosed(true);
+            }}
             className="w-5 h-5 rounded-full bg-[#161616]/90 border border-[#2A2418] hover:border-[#ef4444] text-[#A8A29E] hover:text-[#f87171] flex items-center justify-center transition-colors shadow-md cursor-pointer"
             aria-label="Close Robot Assistant"
             title="Close"
@@ -545,90 +658,105 @@ export default function RobotAssistant() {
               </button>
             </div>
 
-            {/* Greeting */}
-            <p className="text-xs text-[#A8A29E] font-light leading-relaxed mb-4">
-              Hi! I'm Logith's portfolio assistant. What would you like to explore?
-            </p>
+            {/* Greeting & Voice Introduction Trigger */}
+            <div className="flex flex-col gap-2 mb-4">
+              <p className="text-xs text-[#A8A29E] font-light leading-relaxed">
+                Hi! I'm Logith's portfolio assistant. What would you like to explore?
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  robotRef.current?.playGreeting();
+                  showSpeech(welcomeMessage, 8500);
+                  speak(welcomeMessage);
+                }}
+                className="self-start inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1b170e] border border-[#E8C77A]/40 hover:border-[#E8C77A] text-[10px] font-sans font-semibold uppercase tracking-wider text-[#E8C77A] hover:text-[#FFF0B3] transition-colors cursor-pointer"
+                aria-label="Hear welcome voice introduction"
+              >
+                <Volume2 className="w-3 h-3 text-[#E8C77A]" /> Hear welcome
+              </button>
+            </div>
 
-            {/* 7 Action Buttons */}
+            {/* Action Navigation Buttons */}
             <div className="flex flex-col gap-1.5">
               <button
+                onClick={() => handleNavigate("home")}
+                className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-[#161616] hover:bg-[#1f1a10] border border-[#2A2418] hover:border-[#E8C77A] text-[#F5F1E8] text-xs font-sans transition-all duration-200 group cursor-pointer text-left"
+              >
+                <span className="flex items-center gap-2.5">
+                  <Compass className="w-3.5 h-3.5 text-[#E8C77A]" />
+                  <span>Home</span>
+                </span>
+                <span className="text-[9px] font-mono text-[#A8A29E] group-hover:text-[#E8C77A]">#home</span>
+              </button>
+
+              <button
+                onClick={() => handleNavigate("work")}
+                className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-[#161616] hover:bg-[#1f1a10] border border-[#2A2418] hover:border-[#E8C77A] text-[#F5F1E8] text-xs font-sans transition-all duration-200 group cursor-pointer text-left"
+              >
+                <span className="flex items-center gap-2.5">
+                  <FolderGit2 className="w-3.5 h-3.5 text-[#E8C77A]" />
+                  <span>Work</span>
+                </span>
+                <span className="text-[9px] font-mono text-[#A8A29E] group-hover:text-[#E8C77A]">#work</span>
+              </button>
+
+              <button
+                onClick={() => handleNavigate("process")}
+                className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-[#161616] hover:bg-[#1f1a10] border border-[#2A2418] hover:border-[#E8C77A] text-[#F5F1E8] text-xs font-sans transition-all duration-200 group cursor-pointer text-left"
+              >
+                <span className="flex items-center gap-2.5">
+                  <Layers className="w-3.5 h-3.5 text-[#E8C77A]" />
+                  <span>Process</span>
+                </span>
+                <span className="text-[9px] font-mono text-[#A8A29E] group-hover:text-[#E8C77A]">#process</span>
+              </button>
+
+              <button
                 onClick={() => handleNavigate("about")}
-                className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-[#161616] hover:bg-[#1f1a10] border border-[#2A2418] hover:border-[#C9A227] text-[#F5F1E8] text-xs font-sans transition-all duration-200 group cursor-pointer text-left"
+                className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-[#161616] hover:bg-[#1f1a10] border border-[#2A2418] hover:border-[#E8C77A] text-[#F5F1E8] text-xs font-sans transition-all duration-200 group cursor-pointer text-left"
               >
                 <span className="flex items-center gap-2.5">
-                  <User className="w-3.5 h-3.5 text-[#C9A227]" />
-                  <span>About Me</span>
+                  <User className="w-3.5 h-3.5 text-[#E8C77A]" />
+                  <span>Who are we?</span>
                 </span>
-                <span className="text-[9px] font-mono text-[#A8A29E] group-hover:text-[#E5C76B]">#about</span>
+                <span className="text-[9px] font-mono text-[#A8A29E] group-hover:text-[#E8C77A]">#about</span>
               </button>
 
               <button
-                onClick={() => handleNavigate("projects")}
-                className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-[#161616] hover:bg-[#1f1a10] border border-[#2A2418] hover:border-[#C9A227] text-[#F5F1E8] text-xs font-sans transition-all duration-200 group cursor-pointer text-left"
+                onClick={() => handleNavigate("lab")}
+                className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-[#161616] hover:bg-[#1f1a10] border border-[#2A2418] hover:border-[#E8C77A] text-[#F5F1E8] text-xs font-sans transition-all duration-200 group cursor-pointer text-left"
               >
                 <span className="flex items-center gap-2.5">
-                  <FolderGit2 className="w-3.5 h-3.5 text-[#C9A227]" />
-                  <span>My Projects</span>
+                  <Beaker className="w-3.5 h-3.5 text-[#E8C77A]" />
+                  <span>Interactive Lab</span>
                 </span>
-                <span className="text-[9px] font-mono text-[#A8A29E] group-hover:text-[#E5C76B]">#projects</span>
-              </button>
-
-              <button
-                onClick={() => handleNavigate("skills")}
-                className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-[#161616] hover:bg-[#1f1a10] border border-[#2A2418] hover:border-[#C9A227] text-[#F5F1E8] text-xs font-sans transition-all duration-200 group cursor-pointer text-left"
-              >
-                <span className="flex items-center gap-2.5">
-                  <Cpu className="w-3.5 h-3.5 text-[#C9A227]" />
-                  <span>Technical Skills</span>
-                </span>
-                <span className="text-[9px] font-mono text-[#A8A29E] group-hover:text-[#E5C76B]">#skills</span>
-              </button>
-
-              <button
-                onClick={() => handleNavigate("credentials")}
-                className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-[#161616] hover:bg-[#1f1a10] border border-[#2A2418] hover:border-[#C9A227] text-[#F5F1E8] text-xs font-sans transition-all duration-200 group cursor-pointer text-left"
-              >
-                <span className="flex items-center gap-2.5">
-                  <GraduationCap className="w-3.5 h-3.5 text-[#C9A227]" />
-                  <span>Education</span>
-                </span>
-                <span className="text-[9px] font-mono text-[#A8A29E] group-hover:text-[#E5C76B]">#credentials</span>
-              </button>
-
-              <button
-                onClick={() => handleNavigate("credentials")}
-                className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-[#161616] hover:bg-[#1f1a10] border border-[#2A2418] hover:border-[#C9A227] text-[#F5F1E8] text-xs font-sans transition-all duration-200 group cursor-pointer text-left"
-              >
-                <span className="flex items-center gap-2.5">
-                  <Award className="w-3.5 h-3.5 text-[#C9A227]" />
-                  <span>Certifications</span>
-                </span>
-                <span className="text-[9px] font-mono text-[#A8A29E] group-hover:text-[#E5C76B]">#credentials</span>
-              </button>
-
-              <button
-                onClick={() => handleNavigate("", true)}
-                className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-[#161616] hover:bg-[#1f1a10] border border-[#2A2418] hover:border-[#C9A227] text-[#F5F1E8] text-xs font-sans transition-all duration-200 group cursor-pointer text-left"
-              >
-                <span className="flex items-center gap-2.5">
-                  <FileText className="w-3.5 h-3.5 text-[#C9A227]" />
-                  <span>Resume</span>
-                </span>
-                <span className="flex items-center gap-1 text-[9px] font-mono text-[#E5C76B]">
-                  PDF <ArrowUpRight className="w-2.5 h-2.5" />
-                </span>
+                <span className="text-[9px] font-mono text-[#A8A29E] group-hover:text-[#E8C77A]">#lab</span>
               </button>
 
               <button
                 onClick={() => handleNavigate("contact")}
-                className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-[#1a160c] hover:bg-[#C9A227] border border-[#C9A227] text-[#E5C76B] hover:text-[#0A0A0A] text-xs font-sans font-semibold transition-all duration-200 group cursor-pointer text-left mt-1"
+                className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-[#161616] hover:bg-[#1f1a10] border border-[#2A2418] hover:border-[#E8C77A] text-[#F5F1E8] text-xs font-sans transition-all duration-200 group cursor-pointer text-left"
               >
                 <span className="flex items-center gap-2.5">
-                  <Mail className="w-3.5 h-3.5" />
-                  <span>Contact Me</span>
+                  <Mail className="w-3.5 h-3.5 text-[#E8C77A]" />
+                  <span>Contact</span>
                 </span>
-                <span className="text-[9px] font-mono opacity-80">#contact</span>
+                <span className="text-[9px] font-mono text-[#A8A29E] group-hover:text-[#E8C77A]">#contact</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setIsPanelOpen(false);
+                  if (onOpenBooking) onOpenBooking();
+                }}
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg bg-[#E8C77A] hover:bg-[#FFD700] text-[#080808] text-xs font-sans font-semibold transition-all duration-200 shadow-md group cursor-pointer text-left mt-1"
+              >
+                <span className="flex items-center gap-2.5">
+                  <Calendar className="w-3.5 h-3.5" />
+                  <span>Book a call</span>
+                </span>
+                <span className="text-[9px] font-mono uppercase tracking-wider">Direct</span>
               </button>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Search, Navigation as NavIcon, ArrowUpRight, X } from "lucide-react";
 
-export default function CommandPalette() {
+export default function CommandPalette({ onOpenBooking }) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
@@ -9,12 +9,19 @@ export default function CommandPalette() {
   const previousActiveElementRef = useRef(null);
 
   const items = [
-    { name: "ABOUT", category: "SECTION", href: "#about" },
-    { name: "PROJECTS", category: "SECTION", href: "#projects" },
-    { name: "SKILLS", category: "SECTION", href: "#skills" },
-    { name: "LAB", category: "SECTION", href: "#lab" },
+    { name: "HOME", category: "SECTION", href: "#home" },
+    { name: "WORK", category: "SECTION", href: "#work" },
+    { name: "PROCESS", category: "SECTION", href: "#process" },
+    { name: "WHO ARE WE?", category: "SECTION", href: "#about" },
+    { name: "INTERACTIVE LAB", category: "SECTION", href: "#lab" },
     { name: "CREDENTIALS", category: "SECTION", href: "#credentials" },
     { name: "CONTACT", category: "SECTION", href: "#contact" },
+    {
+      name: "BOOK A CALL",
+      category: "ACTION",
+      isBooking: true,
+      href: "#contact",
+    },
     {
       name: "VIEW RESUME",
       category: "ACTION",
@@ -24,7 +31,7 @@ export default function CommandPalette() {
     {
       name: "EMAIL LOGITH",
       category: "ACTION",
-      href: "mailto:logithithiru@gmail.com",
+      href: "mailto:logiththiru@gmail.com",
       external: true,
     },
     {
@@ -36,7 +43,7 @@ export default function CommandPalette() {
     {
       name: "LINKEDIN PROFILE",
       category: "LINK",
-      href: "https://linkedin.com/in/logith-t",
+      href: "https://www.linkedin.com/in/logith-t-635294378/",
       external: true,
     },
   ];
@@ -68,6 +75,10 @@ export default function CommandPalette() {
 
   const selectItem = (item) => {
     closePalette();
+    if (item.isBooking) {
+      if (onOpenBooking) onOpenBooking();
+      return;
+    }
     if (item.external) {
       if (item.href.startsWith("mailto:")) {
         window.location.href = item.href;
@@ -242,3 +253,4 @@ export default function CommandPalette() {
     </>
   );
 }
+

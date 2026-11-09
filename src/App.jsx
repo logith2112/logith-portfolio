@@ -5,9 +5,12 @@ import BackgroundGrid from "./components/BackgroundGrid";
 import Navigation from "./components/Navigation";
 import CustomCursor from "./components/CustomCursor";
 import CommandPalette from "./components/CommandPalette";
-import Hero from "./sections/Hero";
+import BookingModal from "./components/BookingModal";
+import Footer from "./components/Footer";
+import Home from "./sections/Home";
+import Work from "./sections/Work";
+import Process from "./sections/Process";
 import About from "./sections/About";
-import Projects from "./sections/Projects";
 import Skills from "./sections/Skills";
 import Lab from "./sections/Lab";
 import Credentials from "./sections/Credentials";
@@ -19,6 +22,7 @@ const RobotAssistant = lazy(() => import("./components/RobotAssistant"));
 
 export default function App() {
   const [loading, setLoading] = useState(true);
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
   const progressBarRef = useRef(null);
   const tickingRef = useRef(false);
 
@@ -51,20 +55,18 @@ export default function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [loading]);
 
-  // Handle direct hash navigation after loader completes (e.g. /#lab, /#projects)
+  // Handle direct hash navigation after loader completes (e.g. /#lab, /#work, /#about)
   useEffect(() => {
     if (!loading && window.location.hash) {
       const targetId = window.location.hash.slice(1);
       const el = document.getElementById(targetId);
       if (el) {
-        // Instant alignment on initial landing by temporarily removing scroll-smooth
         const html = document.documentElement;
         const hadSmooth = html.classList.contains("scroll-smooth");
         if (hadSmooth) html.classList.remove("scroll-smooth");
         
         el.scrollIntoView({ block: "start" });
 
-        // Restore smooth scrolling for user clicks on next frame
         if (hadSmooth) {
           requestAnimationFrame(() => {
             html.classList.add("scroll-smooth");
@@ -79,7 +81,7 @@ export default function App() {
       {loading ? (
         <Loader onComplete={() => setLoading(false)} />
       ) : (
-        <div className="relative min-h-screen bg-[#0A0A0A] text-[#F5F1E8]">
+        <div className="relative min-h-screen bg-[#080808] text-[#F5F2EA]">
           {/* Luxury Custom Golden Cursor (Desktop fine pointers) */}
           <CustomCursor />
 
@@ -96,29 +98,54 @@ export default function App() {
           {/* Ambient Background Layout */}
           <BackgroundGrid />
 
-          {/* Core Floating Pill Navigation */}
-          <Navigation />
+          {/* Core Navigation with Exact Requested Labels */}
+          <Navigation onOpenBooking={() => setIsBookingOpen(true)} />
 
           {/* Quick Command Palette (Cmd+K / Ctrl+K) */}
-          <CommandPalette />
+          <CommandPalette onOpenBooking={() => setIsBookingOpen(true)} />
 
           {/* Grain texture overlay */}
           <div className="grain-overlay" />
 
           {/* Main Portfolio Sections */}
           <main className="relative z-10 w-full">
-            <Hero />
+            {/* Phase 3: Home Section */}
+            <Home onOpenBooking={() => setIsBookingOpen(true)} />
+
+            {/* Phase 4: Work Section */}
+            <Work />
+
+            {/* Phase 5: Process Section */}
+            <Process />
+
+            {/* Phase 6: Who are we? Section */}
             <About />
-            <Projects />
+
+            {/* Preserved Feature: Technical Toolkit */}
             <Skills />
+
+            {/* Preserved Feature: Interactive Lab (Sentiment, IoT, Skill Map) */}
             <Lab />
+
+            {/* Preserved Feature: Verified Credentials & Certifications */}
             <Credentials />
-            <Contact />
+
+            {/* Phase 7: Contact Section */}
+            <Contact onOpenBooking={() => setIsBookingOpen(true)} />
           </main>
 
-          {/* Premium Interactive 3D Robot Assistant (Lazy-loaded) */}
+          {/* Editorial Footer */}
+          <Footer onOpenBooking={() => setIsBookingOpen(true)} />
+
+          {/* Phase 8: Book a Call Modal */}
+          <BookingModal
+            isOpen={isBookingOpen}
+            onClose={() => setIsBookingOpen(false)}
+          />
+
+          {/* Premium Interactive 3D Robot Assistant (Champagne Gold Three.js) */}
           <Suspense fallback={null}>
-            <RobotAssistant />
+            <RobotAssistant onOpenBooking={() => setIsBookingOpen(true)} />
           </Suspense>
         </div>
       )}

@@ -981,3 +981,4 @@ export default function Lab() {
     </section>
   );
 }
+

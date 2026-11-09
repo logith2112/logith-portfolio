@@ -12,6 +12,7 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@emailjs/browser": "^5.0.3",
     "@gsap/react": "^2.1.2",
     "gsap": "^3.15.0",
     "lucide-react": "^0.428.0",

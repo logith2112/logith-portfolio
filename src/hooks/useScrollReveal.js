@@ -65,6 +65,23 @@ export default function useScrollReveal(enabled = true) {
       });
     };
 
+    // Filters and other interactive sections can mount reveal elements after
+    // the initial page scan. Observe those additions too, or they stay hidden.
+    const mutationObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType !== Node.ELEMENT_NODE) return;
+          if (node.matches(selector) && !node.classList.contains("active")) {
+            observer.observe(node);
+          }
+          node.querySelectorAll(selector).forEach((el) => {
+            if (!el.classList.contains("active")) observer.observe(el);
+          });
+        });
+      });
+    });
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
+
     // Initial pass with requestAnimationFrame to ensure DOM is painted
     const rafId = requestAnimationFrame(() => {
       observeElements();
@@ -78,6 +95,7 @@ export default function useScrollReveal(enabled = true) {
     return () => {
       cancelAnimationFrame(rafId);
       clearTimeout(timerId);
+      mutationObserver.disconnect();
       observer.disconnect();
     };
   }, [enabled]);
